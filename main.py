@@ -505,7 +505,6 @@ def run_ocr(img):
             strategems.append(best_name)
     return strategems
 
-print("Press CTRL to take a screenshot and OCR it (ESC to quit).")
 
 def on_screenshot(e):
     screenshot = pyautogui.screenshot()
