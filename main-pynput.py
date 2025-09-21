@@ -5,7 +5,8 @@ import keyboard
 import pyautogui
 from difflib import get_close_matches
 import time
-from pynput import keyboard as keyboard_pynput
+from pynput import keyboard
+
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
@@ -462,6 +463,7 @@ strategems_all = {
         "countdown": 0
     }
 }
+
 gap = 0.22
 
 
@@ -479,9 +481,9 @@ def detect_strategem_icons(hud_img):
     boxes = []
     for c in cnts:
         x, y, w, h = cv2.boundingRect(c)
-        aspect = w/float(h)
-        area = w*h
-        if 0.7 < aspect < 1.3 and area > 1800 and x < hud_img.shape[1]*0.3:
+        aspect = w / float(h)
+        area = w * h
+        if 0.7 < aspect < 1.3 and area > 1800 and x < hud_img.shape[1] * 0.3:
             boxes.append((y, x, w, h))
     return sorted(boxes, key=lambda b: b[0])
 
@@ -496,10 +498,10 @@ def run_ocr(img):
     icons = detect_strategem_icons(hud)
     strategems = []
     for (y, x, w, h) in icons:
-        row = hud[y:y+h, :]
-        right_th = row[:, int(hud.shape[1]*gap):]
+        row = hud[y:y + h, :]
+        right_th = row[:, int(hud.shape[1] * gap):]
         h_right = right_th.shape[0]
-        top_roi = right_th[:h_right//2, :]
+        top_roi = right_th[:h_right // 2, :]
         name_text = extract_text(top_roi)
         match = get_close_matches(name_text.lower(),
                                   strategems_all.keys(),
@@ -525,25 +527,20 @@ def on_screenshot():
 
 
 def strategem_operator(key_sequence):
-    print(f"Executing key sequence: {key_sequence}")
-    pyautogui.PAUSE = 0.015
     for key in str(key_sequence):
+        time.sleep(0.05)  # small delay between presses
         match key:
             case '1':
-                pyautogui.keyDown("left")
-                pyautogui.keyUp("left")
+                pyautogui.press("left")
                 print("Left")
             case '2':
-                pyautogui.keyDown("up")
-                pyautogui.keyUp("up")
+                pyautogui.press("up")
                 print("Up")
             case '3':
-                pyautogui.keyDown("right")
-                pyautogui.keyUp("right")
+                pyautogui.press("right")
                 print("Right")
             case '4':
-                pyautogui.keyDown("down")
-                pyautogui.keyUp("down")
+                pyautogui.press("down")
                 print("Down")
             case _:  # fallback
                 print(f"Unknown key: {key}")
@@ -555,69 +552,65 @@ def strategem_controller(num):
         print("No strategems detected or invalid slot number.")
         return
     match num:
-        case 1: #slot 1
+        case 1:  # slot 1
             strategem_operator(statragems_current[-4])
-            pass
-        case 2: #slot 2
+        case 2:  # slot 2
             strategem_operator(statragems_current[-3])
-            pass
-        case 3: #slot 3
+        case 3:  # slot 3
             strategem_operator(statragems_current[-2])
-            pass
-        case 4: #slot 4
+        case 4:  # slot 4
             strategem_operator(statragems_current[-1])
-            pass
-        case 5: #spare
+        case 5:  # spare
             strategem_operator(statragems_current[0])
-            pass
-        case 6: #spare
+        case 6:  # spare
             strategem_operator(statragems_current[1])
-            pass
-        case 7: #spare
+        case 7:  # spare
             strategem_operator(statragems_current[2])
+        case 8:  # spare
             pass
-        case 8: #spare
+        case 9:  # spare
             pass
-        case 9: #spare
+        case 0:  # spare
             pass
-        case 0: #spare
-            pass
+
 
 def stg_supply():
     print("Supply calling...")
     strategem_operator(strategems_all["supply"]["key"])
 
+
 def stg_reinforce():
     print("Reinforce calling...")
     strategem_operator(strategems_all["reinforce"]["key"])
 
-keyboard.add_hotkey("ctrl+]", on_screenshot)
-keyboard.add_hotkey("/", stg_reinforce)
 
-# for i in range(0, 10):
-#     key_combo = f"ctrl+{i}"
-#     keyboard.add_hotkey(key_combo, strategem_controller, args=(i,))
+# Function to handle hotkey presses
+def on_press(key):
+    try:
+        if hasattr(key, 'char') and key.char == ']':
+            on_screenshot()
+        elif key == keyboard.Key.f1:
+            stg_reinforce()
+        elif hasattr(key, 'char') and key.char.isdigit():
+            num = int(key.char)
+            strategem_controller(num)
+    except AttributeError:
+        # Special key handling, e.g., ESC key
+        if key == keyboard.Key.esc:
+            # Stop the listener
+            print("Exiting...")
+            return False
 
+
+# Function to handle key releases (optional)
+def on_release(key):
+    pass
+
+
+# Set up the listener to handle key events
+listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+listener.start()
+
+# Keep the program running
 print("Press ESC to quit.")
-# keyboard.wait("ctrl+esc")
-
-def check_hotkey():
-    while True:
-        # Check if 'Ctrl' is being held down
-        if keyboard.is_pressed('ctrl'):
-            # List of numpad keys to check
-            numpad_keys = [
-                '0', '1', '2', '3', '4', '5', '6',
-                '7', '8', '9'
-            ]
-            
-            # Check for each numpad key if it's being pressed
-            for key in numpad_keys:
-                if keyboard.is_pressed(key):
-                    strategem_controller(int(key))
-                    time.sleep(0.1)  # Prevent multiple triggers in a short time
-                    break  # Once a key is pressed, break the loop
-        time.sleep(0.1)  # Sleep to prevent high CPU usage
-
-# Run the check_hotkey function
-check_hotkey()
+listener.join()

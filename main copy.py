@@ -525,7 +525,6 @@ def on_screenshot():
 
 
 def strategem_operator(key_sequence):
-    print(f"Executing key sequence: {key_sequence}")
     pyautogui.PAUSE = 0.015
     for key in str(key_sequence):
         match key:
@@ -594,30 +593,9 @@ def stg_reinforce():
 keyboard.add_hotkey("ctrl+]", on_screenshot)
 keyboard.add_hotkey("/", stg_reinforce)
 
-# for i in range(0, 10):
-#     key_combo = f"ctrl+{i}"
-#     keyboard.add_hotkey(key_combo, strategem_controller, args=(i,))
+for i in range(0, 10):
+    key_combo = f"ctrl+{i}"
+    keyboard.add_hotkey(key_combo, strategem_controller, args=(i,))
 
 print("Press ESC to quit.")
-# keyboard.wait("ctrl+esc")
-
-def check_hotkey():
-    while True:
-        # Check if 'Ctrl' is being held down
-        if keyboard.is_pressed('ctrl'):
-            # List of numpad keys to check
-            numpad_keys = [
-                '0', '1', '2', '3', '4', '5', '6',
-                '7', '8', '9'
-            ]
-            
-            # Check for each numpad key if it's being pressed
-            for key in numpad_keys:
-                if keyboard.is_pressed(key):
-                    strategem_controller(int(key))
-                    time.sleep(0.1)  # Prevent multiple triggers in a short time
-                    break  # Once a key is pressed, break the loop
-        time.sleep(0.1)  # Sleep to prevent high CPU usage
-
-# Run the check_hotkey function
-check_hotkey()
+keyboard.wait("ctrl+esc")
