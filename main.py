@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import pytesseract
-import keyboard 
+import keyboard
 import pyautogui
 from difflib import get_close_matches
 import time
@@ -505,17 +505,15 @@ def run_ocr(img):
             strategems.append(best_name)
     return strategems
 
-
 print("Press CTRL to take a screenshot and OCR it (ESC to quit).")
 
-while True:
-    if keyboard.is_pressed("p"):
-        print("📸 Screenshotting...")
-        screenshot = pyautogui.screenshot()
-        frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-        detected = run_ocr(frame)
-        print("Detected:", detected)
-        time.sleep(1)  # debounce, avoid rapid trigger
-    if keyboard.is_pressed("esc"):
-        print("Exiting...")
-        break
+def on_screenshot(e):
+    screenshot = pyautogui.screenshot()
+    frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+    detected = run_ocr(frame)
+    print("Detected:", detected)
+
+
+keyboard.on_press_key("p", on_screenshot)
+print("Press ESC to quit.")
+keyboard.wait("esc")
