@@ -488,33 +488,13 @@ def extract_text(img):
 def run_ocr(img):
     hud = img[30:800, 30:600]
     icons = detect_strategem_icons(hud)
-    
-    print("Detected boxes:", icons)  # debug
-
     strategems = []
     for (y,x,w,h) in icons:
         row = hud[y:y+h, :]
         right_th = row[:, int(hud.shape[1]*gap):]
         h_right = right_th.shape[0]
         top_roi = right_th[:h_right//2, :]
-        
-        # Draw rectangles for visualization
-        # x1 = int(hud.shape[1]*gap)
-        # x2 = hud.shape[1]
-        # cv2.rectangle(hud, (x1, y), (x2, y + h_right//2), (0,0,255), 2)          # Top = name
-        # cv2.rectangle(hud, (x1, y + h_right//2), (x2, y + h_right), (0,0,255), 2)  # Bottom = status
-
-        # test = hud[y-10:y+h-20, :]
-        # cv2.imshow("Test Row Debug", test)
-        # name_text = extract_text(test)
-
-        # cv2.imshow("Row Debug", top_roi)
-
         name_text = extract_text(top_roi)
-
-        # cv2.rectangle(hud, (x,y), (x+w,y+h), (0,255,0), 2)
-        # cv2.putText(hud, f"{len(strategems)+1}", (x-4,y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200,0,200), 2)
-
         match = get_close_matches(name_text.lower(),
                                   strategems_all.keys(),
                                   n=1,
@@ -523,12 +503,6 @@ def run_ocr(img):
         if best_name:
             print(f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
             strategems.append(best_name)
-
-    # Show the HUD with drawn boxes
-    # cv2.imshow("HUD Debug", hud)
-    # cv2.waitKey(10000)
-    # cv2.destroyAllWindows()
-
     return strategems
 
 
