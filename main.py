@@ -526,7 +526,7 @@ def on_screenshot():
 
 def strategem_operator(key_sequence):
     print(f"Executing key sequence: {key_sequence}")
-    pyautogui.PAUSE = 0.015
+    pyautogui.PAUSE = 0.025
     for key in str(key_sequence):
         match key:
             case '1':
@@ -568,10 +568,10 @@ def strategem_controller(num):
             strategem_operator(statragems_current[-1])
             pass
         case 5: #spare
-            strategem_operator(statragems_current[0])
+            strategem_operator(strategems_all["reinforce"]["key"])
             pass
         case 6: #spare
-            strategem_operator(statragems_current[1])
+            strategem_operator(strategems_all["resupply"]["key"])
             pass
         case 7: #spare
             strategem_operator(statragems_current[2])
