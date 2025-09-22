@@ -1,3 +1,4 @@
+import sys
 import cv2
 import numpy as np
 import pytesseract
@@ -5,10 +6,25 @@ import keyboard
 import pyautogui
 from difflib import get_close_matches
 import time
-from pynput import keyboard as keyboard_pynput
+# from pynput import keyboard as keyboard_pynput
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QTimer
+from overlay_window import OverlayWindow
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
+
+# hotkeys
+reinforce_keys = {
+    "name": "reinforce",
+    "key": "'"
+}
+supply_keys = {
+    "name": "supply",
+    "key": "/"
+}
+numpad_keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+allowkeys = [reinforce_keys, supply_keys]
 
 strategems_all = {
     "mg-43 machine gun": {
@@ -463,6 +479,7 @@ strategems_all = {
     }
 }
 gap = 0.22
+pyautogui.PAUSE = 0.025
 
 
 def preprocess_for_contours(img):
@@ -509,24 +526,26 @@ def run_ocr(img):
         if best_name:
             print(
                 f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
-            strategems.append(strategems_all[best_name]["key"])
+            strategemsEntry = strategems_all[best_name]
+            strategemsEntry["name"] = best_name
+            strategems.append(strategemsEntry)
     return strategems
 
 
-statragems_current = []
+strategems_current = []
 
 
 def on_screenshot():
-    global statragems_current
+    global strategems_current
     screenshot = pyautogui.screenshot()
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-    statragems_current = run_ocr(frame)
-    print("Detected:", statragems_current)
+    strategems_current = run_ocr(frame)
+    print(strategems_current)
+    print("Detected:", strategems_current)
 
 
 def strategem_operator(key_sequence):
     print(f"Executing key sequence: {key_sequence}")
-    pyautogui.PAUSE = 0.025
     for key in str(key_sequence):
         match key:
             case '1':
@@ -550,74 +569,106 @@ def strategem_operator(key_sequence):
 
 
 def strategem_controller(num):
+    num = int(num)
     print(f"Activating strategem slot {num}")
-    if not statragems_current and num not in range(1, 5):
+    if not strategems_current and num not in range(1, 5):
         print("No strategems detected or invalid slot number.")
         return
     match num:
-        case 1: #slot 1
-            strategem_operator(statragems_current[-4])
+        case 1:  # slot 1
+            strategem_operator(strategems_current[-4])
             pass
-        case 2: #slot 2
-            strategem_operator(statragems_current[-3])
+        case 2:  # slot 2
+            strategem_operator(strategems_current[-3])
             pass
-        case 3: #slot 3
-            strategem_operator(statragems_current[-2])
+        case 3:  # slot 3
+            strategem_operator(strategems_current[-2])
             pass
-        case 4: #slot 4
-            strategem_operator(statragems_current[-1])
+        case 4:  # slot 4
+            strategem_operator(strategems_current[-1])
             pass
-        case 5: #spare
+        case 5:  # spare
             strategem_operator(strategems_all["reinforce"]["key"])
             pass
-        case 6: #spare
+        case 6:  # spare
             strategem_operator(strategems_all["resupply"]["key"])
             pass
-        case 7: #spare
-            strategem_operator(statragems_current[2])
+        case 7:  # spare
+            strategem_operator(strategems_current[2])
             pass
-        case 8: #spare
+        case 8:  # spare
             pass
-        case 9: #spare
+        case 9:  # spare
             pass
-        case 0: #spare
+        case 0:  # spare
             pass
+
 
 def stg_supply():
     print("Supply calling...")
     strategem_operator(strategems_all["supply"]["key"])
 
+
 def stg_reinforce():
     print("Reinforce calling...")
     strategem_operator(strategems_all["reinforce"]["key"])
 
-keyboard.add_hotkey("ctrl+]", on_screenshot)
-keyboard.add_hotkey("/", stg_reinforce)
+# keyboard.add_hotkey("ctrl+]", on_screenshot)
+# keyboard.add_hotkey("/", stg_reinforce)
 
-# for i in range(0, 10):
-#     key_combo = f"ctrl+{i}"
-#     keyboard.add_hotkey(key_combo, strategem_controller, args=(i,))
 
 print("Press ESC to quit.")
 # keyboard.wait("ctrl+esc")
 
-def check_hotkey():
-    while True:
-        # Check if 'Ctrl' is being held down
-        if keyboard.is_pressed('ctrl'):
-            # List of numpad keys to check
-            numpad_keys = [
-                '0', '1', '2', '3', '4', '5', '6',
-                '7', '8', '9'
-            ]
-            
-            # Check for each numpad key if it's being pressed
-            for key in numpad_keys:
-                if keyboard.is_pressed(key):
-                    strategem_controller(int(key))
-                    time.sleep(0.1)  # Prevent multiple triggers in a short time
-                    break  # Once a key is pressed, break the loop
-        time.sleep(0.1)  # Sleep to prevent high CPU usage
 
-# Run the check_hotkey function
-check_hotkey()
+def check_hotkey(overlay_window):
+    # Check if 'Ctrl' is being held down and one of the numpad keys is pressed
+    # if keyboard.is_pressed('ctrl'):
+    #     overlay_window.toggle_visibility(True)
+    # elif not keyboard.is_pressed('ctrl'):
+    #     overlay_window.toggle_visibility(False)
+
+    if keyboard.is_pressed('ctrl+esc'):
+        print("Exiting...")
+        sys.exit(0)
+    
+    if keyboard.is_pressed('ctrl+]'):
+        on_screenshot()
+        overlay_window.update_labels(strategems_current)
+            # print("Waiting for key release... ")
+        # print("Key released.")
+
+    for ckey in allowkeys:
+        if keyboard.is_pressed(f'ctrl+{ckey["key"]}'):
+            strategem_controller(strategems_all[ckey["name"]]["key"])
+
+    for key in numpad_keys:
+        if keyboard.is_pressed(f'ctrl+{key}'):  # Check for Ctrl + numpad key
+            strategem_controller(key)
+            while keyboard.is_pressed(f'ctrl+{key}'):
+                time.sleep(0.1)
+                continue  # Wait until the key is released
+                # print("Waiting for key release... ",key)
+            # print("Key released.")
+            break  # Once a key is pressed, break the loop to prevent multiple triggers
+    
+    time.sleep(0.1)  # Small delay to prevent multiple detections
+
+
+def main():
+    app = QApplication(sys.argv)
+    overlay_window = OverlayWindow()
+
+    # Create the overlay window
+    # Create a QTimer to check for hotkeys every 100ms (0.1 seconds)
+    timer = QTimer()
+    # Pass overlay_window to check_hotkey
+    timer.timeout.connect(lambda: check_hotkey(overlay_window))
+    timer.start(50)  # Check every [xx]ms
+
+    overlay_window.show()  # Show the overlay window
+    sys.exit(app.exec_())  # Start the event loop
+
+
+if __name__ == '__main__':
+    main()
