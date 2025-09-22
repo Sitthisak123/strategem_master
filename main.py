@@ -17,11 +17,11 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract
 # hotkeys
 reinforce_keys = {
     "name": "reinforce",
-    "key": "'"
+    "key": "g"
 }
 supply_keys = {
-    "name": "supply",
-    "key": "/"
+    "name": "resupply",
+    "key": "v"
 }
 numpad_keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 allowkeys = [reinforce_keys, supply_keys]
@@ -541,7 +541,7 @@ def on_screenshot():
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     strategems_current = run_ocr(frame)
     print(strategems_current)
-    print("Detected:", strategems_current)
+    # print("Detected:", strategems_current)
 
 
 def strategem_operator(key_sequence):
@@ -576,25 +576,25 @@ def strategem_controller(num):
         return
     match num:
         case 1:  # slot 1
-            strategem_operator(strategems_current[-4])
+            strategem_operator(strategems_current[-4]["key"])
             pass
         case 2:  # slot 2
-            strategem_operator(strategems_current[-3])
+            strategem_operator(strategems_current[-3]["key"])
             pass
         case 3:  # slot 3
-            strategem_operator(strategems_current[-2])
+            strategem_operator(strategems_current[-2]["key"])
             pass
         case 4:  # slot 4
-            strategem_operator(strategems_current[-1])
+            strategem_operator(strategems_current[-1]["key"])
             pass
         case 5:  # spare
-            strategem_operator(strategems_all["reinforce"]["key"])
+            strategem_operator(strategems_current[-5]["key"])
             pass
         case 6:  # spare
-            strategem_operator(strategems_all["resupply"]["key"])
+            # strategem_operator(strategems_all["resupply"]["key"])
             pass
         case 7:  # spare
-            strategem_operator(strategems_current[2])
+            # strategem_operator(strategems_current[2])
             pass
         case 8:  # spare
             pass
@@ -604,14 +604,14 @@ def strategem_controller(num):
             pass
 
 
-def stg_supply():
-    print("Supply calling...")
-    strategem_operator(strategems_all["supply"]["key"])
+# def stg_supply():
+#     print("Supply calling...")
+#     strategem_operator(strategems_all["supply"]["key"])
 
 
-def stg_reinforce():
-    print("Reinforce calling...")
-    strategem_operator(strategems_all["reinforce"]["key"])
+# def stg_reinforce():
+#     print("Reinforce calling...")
+#     strategem_operator(strategems_all["reinforce"]["key"])
 
 # keyboard.add_hotkey("ctrl+]", on_screenshot)
 # keyboard.add_hotkey("/", stg_reinforce)
@@ -627,10 +627,14 @@ def check_hotkey(overlay_window):
     #     overlay_window.toggle_visibility(True)
     # elif not keyboard.is_pressed('ctrl'):
     #     overlay_window.toggle_visibility(False)
-
+    # print("Checking hotkeys...")
     if keyboard.is_pressed('ctrl+esc'):
         print("Exiting...")
         sys.exit(0)
+    if keyboard.is_pressed(f'ctrl+{supply_keys["key"]}'): # resupply 
+        strategem_operator(strategems_all[supply_keys["name"]]["key"])
+    if keyboard.is_pressed(f'ctrl+{reinforce_keys["key"]}'): # reinforce
+        strategem_operator(strategems_all[reinforce_keys["name"]]["key"])
     
     if keyboard.is_pressed('ctrl+]'):
         on_screenshot()
@@ -645,14 +649,13 @@ def check_hotkey(overlay_window):
     for key in numpad_keys:
         if keyboard.is_pressed(f'ctrl+{key}'):  # Check for Ctrl + numpad key
             strategem_controller(key)
+            overlay_window.stg_Selected(key)
             while keyboard.is_pressed(f'ctrl+{key}'):
                 time.sleep(0.1)
                 continue  # Wait until the key is released
                 # print("Waiting for key release... ",key)
             # print("Key released.")
             break  # Once a key is pressed, break the loop to prevent multiple triggers
-    
-    time.sleep(0.1)  # Small delay to prevent multiple detections
 
 
 def main():
@@ -664,7 +667,7 @@ def main():
     timer = QTimer()
     # Pass overlay_window to check_hotkey
     timer.timeout.connect(lambda: check_hotkey(overlay_window))
-    timer.start(50)  # Check every [xx]ms
+    timer.start(20)  # Check every [xx]ms
 
     overlay_window.show()  # Show the overlay window
     sys.exit(app.exec_())  # Start the event loop

@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
 
 
 class OverlayWindow(QWidget):
+    defaultStyleText = "color: rgba(0, 230, 0, 0.8); font-size: 30px;"
+    selectedStyleText = "color: rgba(0, 60, 150, 0.8); font-size: 38px;"
 
     def __init__(self):
         super().__init__()
@@ -32,8 +34,7 @@ class OverlayWindow(QWidget):
         # Create and add labels to the layout
         for item in info:
             label = QLabel(item)
-            label.setStyleSheet(
-                "color: rgba(0, 230, 0, 0.8); font-size: 30px;")  # Style the text
+            label.setStyleSheet(self.defaultStyleText)  # Style the text
             label.setAlignment(Qt.AlignLeft)
             layout.addWidget(label)
             self.info_labels.append(label)
@@ -44,12 +45,16 @@ class OverlayWindow(QWidget):
     def update_labels(self, slot_data):
         n = len(slot_data)
         if n < 7:
-            slot_data = slot_data[-4+3:] # Pad with empty entries if less than 7
+            slot_data = slot_data[-4+2:] # Pad with empty entries if less than 7
         else:
             slot_data = slot_data[-4:] # Get the last 4 entries
         for i, label in enumerate(self.info_labels):
+            if i>n-1:
+                label.setText(f"slot-?: -----")
+                continue
             slot_num = i + 1
             label.setText(f"slot-{slot_num}: {slot_data[i]['name']}")
+            label.setVisible(True)  # Ensure label is visible when updated
         # Set Timer here to clear labels after 5 seconds
         QTimer.singleShot(5000, lambda: self.toggle_visibility(False))
 
@@ -64,3 +69,21 @@ class OverlayWindow(QWidget):
         else:
             for label in self.info_labels:
                 label.setVisible(not label.isVisible())
+    def stg_Selected(self, slot_num):
+        slot_num = int(slot_num)
+        for i, label in enumerate(self.info_labels):
+            if i == slot_num - 1:
+                label.setStyleSheet(self.selectedStyleText)
+                label.setVisible(True)  # Ensure label is visible when selected
+            else:
+                label.setStyleSheet(self.defaultStyleText)
+                label.setVisible(True)  # Ensure label is visible when not selected
+        # Kill existing timer if it exists
+        if hasattr(self, '_visibility_timer'):
+            self._visibility_timer.stop()
+        
+        # Create new timer
+        self._visibility_timer = QTimer()
+        self._visibility_timer.setSingleShot(True)
+        self._visibility_timer.timeout.connect(lambda: self.toggle_visibility(False))
+        self._visibility_timer.start(5000)
