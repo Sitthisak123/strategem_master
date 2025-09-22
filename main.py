@@ -19,6 +19,8 @@ reinforce_keys = {
     "name": "reinforce",
     "key": "g"
 }
+gap = 0.22
+
 supply_keys = {
     "name": "resupply",
     "key": "v"
@@ -27,6 +29,7 @@ numpad_keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 allowkeys = [reinforce_keys, supply_keys]
 
 strategems_all = {
+
     "mg-43 machine gun": {
         "id": 2,
         "key": 41423,
@@ -478,7 +481,12 @@ strategems_all = {
         "countdown": 0
     }
 }
-gap = 0.22
+strategem_default_slots = [
+    "resupply",
+    "reinforce",
+    "sos beacon",
+]
+
 pyautogui.PAUSE = 0.025
 
 
@@ -526,6 +534,8 @@ def run_ocr(img):
         if best_name:
             print(
                 f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
+            if best_name in strategem_default_slots:
+                continue
             strategemsEntry = strategems_all[best_name]
             strategemsEntry["name"] = best_name
             strategems.append(strategemsEntry)

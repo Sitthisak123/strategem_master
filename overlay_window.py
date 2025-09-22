@@ -44,12 +44,12 @@ class OverlayWindow(QWidget):
 
     def update_labels(self, slot_data):
         n = len(slot_data)
-        if n < 7:
-            slot_data = slot_data[-4+2:] # Pad with empty entries if less than 7
-        else:
-            slot_data = slot_data[-4:] # Get the last 4 entries
+        if n == 0:
+            self.clear_labels()
+            return
+        print(f"Updating labels with {slot_data}")
         for i, label in enumerate(self.info_labels):
-            if i>n-1:
+            if i > n - 1:
                 label.setText(f"slot-?: -----")
                 continue
             slot_num = i + 1
@@ -69,6 +69,7 @@ class OverlayWindow(QWidget):
         else:
             for label in self.info_labels:
                 label.setVisible(not label.isVisible())
+
     def stg_Selected(self, slot_num):
         slot_num = int(slot_num)
         for i, label in enumerate(self.info_labels):
@@ -77,13 +78,15 @@ class OverlayWindow(QWidget):
                 label.setVisible(True)  # Ensure label is visible when selected
             else:
                 label.setStyleSheet(self.defaultStyleText)
-                label.setVisible(True)  # Ensure label is visible when not selected
+                # Ensure label is visible when not selected
+                label.setVisible(True)
         # Kill existing timer if it exists
         if hasattr(self, '_visibility_timer'):
             self._visibility_timer.stop()
-        
+
         # Create new timer
         self._visibility_timer = QTimer()
         self._visibility_timer.setSingleShot(True)
-        self._visibility_timer.timeout.connect(lambda: self.toggle_visibility(False))
+        self._visibility_timer.timeout.connect(
+            lambda: self.toggle_visibility(False))
         self._visibility_timer.start(5000)
