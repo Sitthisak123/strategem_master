@@ -6,7 +6,6 @@ import keyboard
 import pyautogui
 from difflib import get_close_matches
 import time
-# from pynput import keyboard as keyboard_pynput
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
 from overlay_window import OverlayWindow
@@ -532,8 +531,7 @@ def run_ocr(img):
                                   cutoff=0.55)
         best_name = match[0] if match else None
         if best_name:
-            print(
-                f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
+            print(f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
             if best_name in strategem_default_slots:
                 continue
             strategemsEntry = strategems_all[best_name]
@@ -541,9 +539,7 @@ def run_ocr(img):
             strategems.append(strategemsEntry)
     return strategems
 
-
 strategems_current = []
-
 
 def on_screenshot():
     global strategems_current
@@ -553,7 +549,6 @@ def on_screenshot():
     strategems_current.extend(stg_inSlot)
     print(strategems_current)
     # print("Detected:", strategems_current)
-
 
 def strategem_operator(key_sequence):
     print(f"Executing key sequence: {key_sequence}")
@@ -577,7 +572,6 @@ def strategem_operator(key_sequence):
                 print("Down")
             case _:  # fallback
                 print(f"Unknown key: {key}")
-
 
 def strategem_controller(num):
     num = int(num)
@@ -642,22 +636,6 @@ def strategem_controller(num):
         #     pass
 
 
-# def stg_supply():
-#     print("Supply calling...")
-#     strategem_operator(strategems_all["supply"]["key"])
-
-
-# def stg_reinforce():
-#     print("Reinforce calling...")
-#     strategem_operator(strategems_all["reinforce"]["key"])
-
-# keyboard.add_hotkey("ctrl+]", on_screenshot)
-# keyboard.add_hotkey("/", stg_reinforce)
-
-
-print(f"Press {exit_keys} to exit the program.")
-# keyboard.wait("ctrl+esc")
-
 
 def check_hotkey(overlay_window):
     # Check if 'Ctrl' is being held down and one of the numpad keys is pressed
@@ -695,6 +673,9 @@ def check_hotkey(overlay_window):
                 # print("Waiting for key release... ",key)
             # print("Key released.")
             break  # Once a key is pressed, break the loop to prevent multiple triggers
+
+
+print(f"Press {exit_keys} to exit the program.")
 
 def main():
     app = QApplication(sys.argv)
