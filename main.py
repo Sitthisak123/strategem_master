@@ -15,12 +15,12 @@ from overlay_window import OverlayWindow
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
 
 # hotkeys
+exit_keys = "ctrl+esc"
 reinforce_keys = {
     "name": "reinforce",
     "key": "g"
 }
 gap = 0.22
-
 supply_keys = {
     "name": "resupply",
     "key": "v"
@@ -581,7 +581,7 @@ def strategem_operator(key_sequence):
 
 def strategem_controller(num):
     num = int(num)
-    print(f"Activating strategem slot {num}")
+    # print(f"Activating strategem slot {num}")
     if not strategems_current and num not in range(1, 5):
         print("No strategems detected or invalid slot number.")
         return
@@ -655,7 +655,7 @@ def strategem_controller(num):
 # keyboard.add_hotkey("/", stg_reinforce)
 
 
-print("Press ESC to quit.")
+print(f"Press {exit_keys} to exit the program.")
 # keyboard.wait("ctrl+esc")
 
 
@@ -666,7 +666,7 @@ def check_hotkey(overlay_window):
     # elif not keyboard.is_pressed('ctrl'):
     #     overlay_window.toggle_visibility(False)
     # print("Checking hotkeys...")
-    if keyboard.is_pressed('ctrl+esc'):
+    if keyboard.is_pressed(exit_keys):
         print("Exiting...")
         sys.exit(0)
     if keyboard.is_pressed(f'ctrl+{supply_keys["key"]}'): # resupply 
@@ -695,7 +695,6 @@ def check_hotkey(overlay_window):
             # print("Key released.")
             break  # Once a key is pressed, break the loop to prevent multiple triggers
 
-
 def main():
     app = QApplication(sys.argv)
     overlay_window = OverlayWindow()
@@ -713,3 +712,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
