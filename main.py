@@ -541,12 +541,14 @@ def run_ocr(img):
 
 strategems_current = []
 
-def on_screenshot():
+def on_screenshot(overlay_window):
     global strategems_current
+    overlay_window.update_labels(loading=True)
+    QApplication.processEvents()  # Force UI update
     screenshot = pyautogui.screenshot()
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     stg_inSlot = run_ocr(frame)
-    strategems_current.extend(stg_inSlot)
+    strategems_current = stg_inSlot
     print(strategems_current)
     # print("Detected:", strategems_current)
 
@@ -654,7 +656,7 @@ def check_hotkey(overlay_window):
         strategem_operator(strategems_all[reinforce_keys["name"]]["key"])
     
     if keyboard.is_pressed('ctrl+]'):
-        on_screenshot()
+        on_screenshot(overlay_window)
         overlay_window.update_labels(strategems_current)
             # print("Waiting for key release... ")
         # print("Key released.")
