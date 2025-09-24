@@ -87,6 +87,5 @@ class OverlayWindow(QWidget):
         # Create new timer
         self._visibility_timer = QTimer()
         self._visibility_timer.setSingleShot(True)
-        self._visibility_timer.timeout.connect(
-            lambda: self.toggle_visibility(False))
+        self._visibility_timer.timeout.connect(lambda: self.toggle_visibility(False))
         self._visibility_timer.start(5000)

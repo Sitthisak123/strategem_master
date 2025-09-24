@@ -666,6 +666,7 @@ def check_hotkey(overlay_window):
     # elif not keyboard.is_pressed('ctrl'):
     #     overlay_window.toggle_visibility(False)
     # print("Checking hotkeys...")
+    
     if keyboard.is_pressed(exit_keys):
         print("Exiting...")
         sys.exit(0)
@@ -697,19 +698,16 @@ def check_hotkey(overlay_window):
 
 def main():
     app = QApplication(sys.argv)
-    overlay_window = OverlayWindow()
+    overlay_window = OverlayWindow()  # Create an instance of OverlayWindow
 
-    # Create the overlay window
-    # Create a QTimer to check for hotkeys every 100ms (0.1 seconds)
-    timer = QTimer()
-    # Pass overlay_window to check_hotkey
-    timer.timeout.connect(lambda: check_hotkey(overlay_window))
-    timer.start(20)  # Check every [xx]ms
+
+    timer = QTimer()  # Create a QTimer to check for hotkeys
+    timer.timeout.connect(lambda: check_hotkey(overlay_window))  # Pass overlay_window to check_hotkey
+    timer.start(10)  # Check every 10ms
 
     overlay_window.show()  # Show the overlay window
-    sys.exit(app.exec_())  # Start the event loop
+    sys.exit(app.exec_())  # Start the Qt event loop
 
 
 if __name__ == '__main__':
     main()
-    
