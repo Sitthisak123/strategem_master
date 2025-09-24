@@ -47,9 +47,6 @@ class OverlayWindow(QWidget):
 
     def update_labels(self, slot_data=[], loading=False):
         n = len(slot_data)
-        if n == 0 and not loading:
-            self.clear_labels()
-            return
         # print(f"Updating labels with {slot_data}")
         for i, label in enumerate(self.info_labels):
             slot_num = i + 1
@@ -59,7 +56,7 @@ class OverlayWindow(QWidget):
                 print("Loading...")
                 continue
             if i > n - 1:
-                label.setText(f"slot-{slot_num}: -----")
+                label.setText(f"slot-{slot_num}: -Empty slot-")
                 label.setVisible(True)
                 continue
             label.setText(f"slot-{slot_num}: {slot_data[i]['name']}")
