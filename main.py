@@ -549,7 +549,8 @@ def on_screenshot():
     global strategems_current
     screenshot = pyautogui.screenshot()
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-    strategems_current = run_ocr(frame)
+    stg_inSlot = run_ocr(frame)
+    strategems_current.extend(stg_inSlot)
     print(strategems_current)
     # print("Detected:", strategems_current)
 
@@ -586,32 +587,59 @@ def strategem_controller(num):
         return
     match num:
         case 1:  # slot 1
+            if len(strategems_current) < 4:
+                print("slot: 1 Not enough strategems detected.")
+                return
             strategem_operator(strategems_current[-4]["key"])
             pass
         case 2:  # slot 2
+            if len(strategems_current) < 3:
+                print("slot: 2 Not enough strategems detected.")
+                return
             strategem_operator(strategems_current[-3]["key"])
             pass
         case 3:  # slot 3
+            if len(strategems_current) < 2:
+                print("slot: 3 Not enough strategems detected.")
+                return
             strategem_operator(strategems_current[-2]["key"])
             pass
         case 4:  # slot 4
+            if len(strategems_current) < 1:
+                print("slot: 4 Not enough strategems detected.")
+                return
             strategem_operator(strategems_current[-1]["key"])
             pass
         case 5:  # spare
+            if len(strategems_current) < 5:
+                print("slot: 5 Not enough strategems detected.")
             strategem_operator(strategems_current[-5]["key"])
             pass
         case 6:  # spare
-            # strategem_operator(strategems_all["resupply"]["key"])
+            if len(strategems_current) < 6:
+                print("slot: 6 Not enough strategems detected.")
+            strategem_operator(strategems_current[-6]["key"])
             pass
-        case 7:  # spare
-            # strategem_operator(strategems_current[2])
-            pass
-        case 8:  # spare
-            pass
-        case 9:  # spare
-            pass
-        case 0:  # spare
-            pass
+        # case 7:  # spare
+        #     if len(strategems_current) < 7:
+        #         print("slot: 7 Not enough strategems detected.")
+        #     strategem_operator(strategems_current[-7]["key"])
+        #     pass
+        # case 8:  # spare
+        #     if len(strategems_current) < 8:
+        #         print("slot: 8 Not enough strategems detected.")
+        #     strategem_operator(strategems_current[-8]["key"])
+        #     pass
+        # case 9:  # spare
+        #     if len(strategems_current) < 9:
+        #         print("slot: 9 Not enough strategems detected.")
+        #     strategem_operator(strategems_current[-9]["key"])
+        #     pass
+        # case 0:  # spare
+        #     if len(strategems_current) < 10:
+        #         print("slot: 0 Not enough strategems detected.")
+        #     strategem_operator(strategems_current[-10]["key"])
+        #     pass
 
 
 # def stg_supply():
