@@ -24,7 +24,20 @@ supply_keys = {
     "name": "resupply",
     "key": "v"
 }
-numpad_keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+top_row_keys = {
+    2: '1',
+    3: '2',
+    4: '3',
+    5: '4',
+    6: '5',
+    7: '6',
+    8: '7',
+    9: '8',
+    10: '9',
+    11: '0',
+}
+
 allowkeys = [reinforce_keys, supply_keys]
 
 strategems_all = {
@@ -646,6 +659,7 @@ def check_hotkey(overlay_window):
     # elif not keyboard.is_pressed('ctrl'):
     #     overlay_window.toggle_visibility(False)
     # print("Checking hotkeys...")
+    event = keyboard.read_event()
     
     if keyboard.is_pressed(exit_keys):
         print("Exiting...")
@@ -665,17 +679,17 @@ def check_hotkey(overlay_window):
         if keyboard.is_pressed(f'ctrl+{ckey["key"]}'):
             strategem_controller(strategems_all[ckey["name"]]["key"])
 
-    for key in numpad_keys:
-        if keyboard.is_pressed(f'ctrl+{key}'):  # Check for Ctrl + numpad key
+    if event.event_type == 'down' and event.scan_code in top_row_keys:
+        key = top_row_keys[event.scan_code]
+        if keyboard.is_pressed(f'ctrl+{key}'):  # Check for Ctrl + num key
             strategem_controller(key)
             overlay_window.stg_Selected(key)
             while keyboard.is_pressed(f'ctrl+{key}'):
-                time.sleep(0.1)
+                time.sleep(0.005)
                 continue  # Wait until the key is released
                 # print("Waiting for key release... ",key)
             # print("Key released.")
-            break  # Once a key is pressed, break the loop to prevent multiple triggers
-
+            # Once a key is pressed, break the loop to prevent multiple triggers
 
 print(f"Press {exit_keys} to exit the program.")
 
