@@ -10,6 +10,9 @@ class OverlayWindow(QWidget):
 
     def __init__(self):
         super().__init__()
+        self._visibility_timer = QTimer()
+        self._visibility_timer.setSingleShot(True)
+        self._visibility_timer.timeout.connect(lambda: self.toggle_visibility(False))
 
         # Set window properties
         self.setWindowTitle("Overlay Info")
@@ -47,7 +50,7 @@ class OverlayWindow(QWidget):
         if n == 0:
             self.clear_labels()
             return
-        print(f"Updating labels with {slot_data}")
+        # print(f"Updating labels with {slot_data}")
         for i, label in enumerate(self.info_labels):
             if i > n - 1:
                 label.setText(f"slot-?: -----")
@@ -56,7 +59,7 @@ class OverlayWindow(QWidget):
             label.setText(f"slot-{slot_num}: {slot_data[i]['name']}")
             label.setVisible(True)  # Ensure label is visible when updated
         # Set Timer here to clear labels after 5 seconds
-        QTimer.singleShot(5000, lambda: self.toggle_visibility(False))
+        self._visibility_timer.start(5000)
 
     def clear_labels(self):
         for label in self.info_labels:
@@ -80,12 +83,4 @@ class OverlayWindow(QWidget):
                 label.setStyleSheet(self.defaultStyleText)
                 # Ensure label is visible when not selected
                 label.setVisible(True)
-        # Kill existing timer if it exists
-        if hasattr(self, '_visibility_timer'):
-            self._visibility_timer.stop()
-
-        # Create new timer
-        self._visibility_timer = QTimer()
-        self._visibility_timer.setSingleShot(True)
-        self._visibility_timer.timeout.connect(lambda: self.toggle_visibility(False))
         self._visibility_timer.start(5000)
