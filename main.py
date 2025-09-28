@@ -668,18 +668,24 @@ def check_hotkey(overlay_window):
         sys.exit(0)
     if keyboard.is_pressed(f'ctrl+{supply_keys["key"]}'): # resupply 
         strategem_operator(strategems_all[supply_keys["name"]]["key"])
+        return
     if keyboard.is_pressed(f'ctrl+{reinforce_keys["key"]}'): # reinforce
         strategem_operator(strategems_all[reinforce_keys["name"]]["key"])
+        return
     
     if keyboard.is_pressed('ctrl+]'):
         on_screenshot(overlay_window)
         overlay_window.update_labels(strategems_current)
-            # print("Waiting for key release... ")
+        while keyboard.is_pressed(f'ctrl+]'):
+                time.sleep(0.005)
+                continue  # Wait until the key is released
         # print("Key released.")
+        return
 
     for ckey in allowkeys:
         if keyboard.is_pressed(f'ctrl+{ckey["key"]}'):
             strategem_controller(strategems_all[ckey["name"]]["key"])
+            return
 
     if event.event_type == 'down' and event.scan_code in top_row_keys:
         key = top_row_keys[event.scan_code]
@@ -689,9 +695,9 @@ def check_hotkey(overlay_window):
             while keyboard.is_pressed(f'ctrl+{key}'):
                 time.sleep(0.005)
                 continue  # Wait until the key is released
-                # print("Waiting for key release... ",key)
             # print("Key released.")
             # Once a key is pressed, break the loop to prevent multiple triggers
+            return
 
 print(f"Press {exit_keys} to exit the program.")
 
@@ -703,7 +709,7 @@ def main():
 
     timer = QTimer()  # Create a QTimer to check for hotkeys
     timer.timeout.connect(lambda: check_hotkey(overlay_window))  # Pass overlay_window to check_hotkey
-    timer.start(10)  # Check every 10ms 
+    timer.start(15)  # Check every 15ms
 
     sys.exit(app.exec_())  # Start the Qt event loop
 
