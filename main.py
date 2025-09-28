@@ -547,7 +547,7 @@ def run_ocr(img):
         best_name = match[0] if match else None
         if best_name:
             print(f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
-            if best_name in strategem_default_slots and best_name in [s["name"] for s in strategems]:
+            if best_name in strategem_default_slots or best_name in [s["name"] for s in strategems]:
                 continue
             strategemsEntry = strategems_all[best_name]
             strategemsEntry["name"] = best_name
