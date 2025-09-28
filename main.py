@@ -25,7 +25,9 @@ supply_keys = {
     "key": "v"
 }
 
+
 top_row_keys = {
+    #scanCode: top-row-num-key
     2: '1',
     3: '2',
     4: '3',
@@ -545,7 +547,7 @@ def run_ocr(img):
         best_name = match[0] if match else None
         if best_name:
             print(f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
-            if best_name in strategem_default_slots:
+            if best_name in strategem_default_slots and best_name in [s["name"] for s in strategems]:
                 continue
             strategemsEntry = strategems_all[best_name]
             strategemsEntry["name"] = best_name
@@ -693,16 +695,16 @@ def check_hotkey(overlay_window):
 
 print(f"Press {exit_keys} to exit the program.")
 
-def main():
+def main(): 
     app = QApplication(sys.argv)
     overlay_window = OverlayWindow()  # Create an instance of OverlayWindow
+    overlay_window.show()  # Show the overlay window
 
 
     timer = QTimer()  # Create a QTimer to check for hotkeys
     timer.timeout.connect(lambda: check_hotkey(overlay_window))  # Pass overlay_window to check_hotkey
-    timer.start(10)  # Check every 10ms
+    timer.start(10)  # Check every 10ms 
 
-    overlay_window.show()  # Show the overlay window
     sys.exit(app.exec_())  # Start the Qt event loop
 
 

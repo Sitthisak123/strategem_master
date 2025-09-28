@@ -2,11 +2,11 @@
 import sys
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
-
+from PyQt5.QtGui import QPalette, QColor
 
 class OverlayWindow(QWidget):
-    defaultStyleText = "color: rgba(0, 230, 0, 0.8); font-size: 30px;"
-    selectedStyleText = "color: rgba(0, 60, 150, 0.8); font-size: 38px;"
+    defaultStyleText = "color: rgba(230, 230, 230, 0.8); font-size: 30px; font-family: monospace;"
+    selectedStyleText = "color: rgba(30, 255, 30, 1); font-size: 38px; font-family: monospace;"
 
     def __init__(self):
         super().__init__()
@@ -17,10 +17,18 @@ class OverlayWindow(QWidget):
         # Set window properties
         self.setWindowTitle("Overlay Info")
         self.setGeometry(400, 100, 300, 150)  # Position and size of window
-        # Make window transparent
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        
+        self.setAttribute(Qt.WA_TranslucentBackground) # Make window transparent bg
         self.setWindowFlag(Qt.FramelessWindowHint)  # Remove borders
+        self.setWindowFlag(Qt.WindowTransparentForInput)  # Click-through
         self.setWindowFlag(Qt.WindowStaysOnTopHint)  # Keep window on top
+        self.setWindowFlag(Qt.Tool)  # Do not show in taskbar
+
+        # Optional: subtle background for readability
+        self.setAutoFillBackground(True)
+        palette = self.palette()
+        palette.setColor(QPalette.Window, QColor(110, 110, 100, 50))  # semi-transparent black
+        self.setPalette(palette)
 
         # Layout and labels
         layout = QVBoxLayout()
@@ -62,7 +70,7 @@ class OverlayWindow(QWidget):
             label.setText(f"slot-{slot_num}: {slot_data[i]['name']}")
             label.setVisible(True)  # Ensure label is visible when updated
         # Set Timer here to clear labels after 5 seconds
-        self._visibility_timer.start(5000)
+        self._visibility_timer.start(2500)
 
     def clear_labels(self):
         for label in self.info_labels:
@@ -86,4 +94,4 @@ class OverlayWindow(QWidget):
                 label.setStyleSheet(self.defaultStyleText)
                 # Ensure label is visible when not selected
                 label.setVisible(True)
-        self._visibility_timer.start(5000)
+        self._visibility_timer.start(2500)
