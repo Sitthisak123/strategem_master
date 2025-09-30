@@ -12,6 +12,7 @@ from overlay_window import OverlayWindow
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
+gap = 0.22  # gap from left edge to start of text area
 
 # hotkeys
 exit_keys = "ctrl+esc"
@@ -19,10 +20,13 @@ reinforce_keys = {
     "name": "reinforce",
     "key": "g"
 }
-gap = 0.22
 supply_keys = {
     "name": "resupply",
     "key": "v"
+}
+eagleRearm_keys = {
+    "name": "eagle rearm",
+    "key": "q"
 }
 
 
@@ -499,9 +503,10 @@ strategem_default_slots = [
     "resupply",
     "reinforce",
     "sos beacon",
+    "eagle rearm",
 ]
 
-pyautogui.PAUSE = 0.025
+pyautogui.PAUSE = 0.030
 
 
 def preprocess_for_contours(img):
@@ -552,6 +557,8 @@ def run_ocr(img):
             strategemsEntry = strategems_all[best_name]
             strategemsEntry["name"] = best_name
             strategems.append(strategemsEntry)
+    if len(strategems) > 4:
+        strategems = strategems[-4:] + strategems[:-4]
     return strategems
 
 strategems_current = []
@@ -672,7 +679,11 @@ def check_hotkey(overlay_window):
     if keyboard.is_pressed(f'ctrl+{reinforce_keys["key"]}'): # reinforce
         strategem_operator(strategems_all[reinforce_keys["name"]]["key"])
         return
-    
+
+    if keyboard.is_pressed(f'ctrl+{eagleRearm_keys["key"]}'): # eagle rearm
+        strategem_operator(strategems_all[eagleRearm_keys["name"]]["key"])
+        return
+
     if keyboard.is_pressed('ctrl+]'):
         on_screenshot(overlay_window)
         overlay_window.update_labels(strategems_current)
