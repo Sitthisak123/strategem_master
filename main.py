@@ -9,13 +9,14 @@ import time
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
 from overlay_window import OverlayWindow
+import functools
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
 gap = 0.22  # gap from left edge to start of text area
 
 # hotkeys
-exit_keys = "ctrl+esc"
+exit_keys = "ctrl+c"
 reinforce_keys = {
     "name": "reinforce",
     "key": "g"
@@ -565,13 +566,15 @@ strategems_current = []
 
 def on_screenshot(overlay_window):
     global strategems_current
-    overlay_window.update_labels(loading=True)
+    # overlay_window.update_labels(loading=True)
+    QTimer.singleShot(0, functools.partial(overlay_window.update_labels, loading=True))
     QApplication.processEvents()  # Force UI update
     screenshot = pyautogui.screenshot()
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     stg_inSlot = run_ocr(frame)
     strategems_current = stg_inSlot
-    overlay_window.update_labels(stg_inSlot)
+    # overlay_window.update_labels(stg_inSlot)
+    QTimer.singleShot(0, functools.partial(overlay_window.update_labels, stg_inSlot))
     print(strategems_current)
     # print("Detected:", strategems_current)
 
@@ -606,28 +609,11 @@ def strategem_controller(slotnum):
         return
     strategem_operator(strategems_current[slotnum - 1]["key"])
 
-def check_hotkey(overlay_window):
-    # Check if 'Ctrl' is being held down and one of the numpad keys is pressed
-    # if keyboard.is_pressed('ctrl'):
-    #     overlay_window.toggle_visibility(True)
-    # elif not keyboard.is_pressed('ctrl'):
-    #     overlay_window.toggle_visibility(False)
-    # print("Checking hotkeys...")
-    event = keyboard.read_event()
-    
+def check_hotkey(overlay_window, event):
     if keyboard.is_pressed(exit_keys):
         print("Exiting...")
-        sys.exit(0)
-    # if keyboard.is_pressed(f'ctrl+{supply_keys["key"]}'): # resupply 
-    #     strategem_operator(strategems_all[supply_keys["name"]]["key"])
-    #     return
-    # if keyboard.is_pressed(f'ctrl+{reinforce_keys["key"]}'): # reinforce
-    #     strategem_operator(strategems_all[reinforce_keys["name"]]["key"])
-    #     return
-
-    # if keyboard.is_pressed(f'ctrl+{eagleRearm_keys["key"]}'): # eagle rearm
-    #     strategem_operator(strategems_all[eagleRearm_keys["name"]]["key"])
-    #     return
+        keyboard.unhook_all()
+        QApplication.exit()
 
     if keyboard.is_pressed('ctrl+]'):
         on_screenshot(overlay_window)
@@ -646,7 +632,8 @@ def check_hotkey(overlay_window):
         key = top_row_keys[event.scan_code]
         if keyboard.is_pressed(f'ctrl+{key}'):  # Check for Ctrl + num key
             strategem_controller(key)
-            overlay_window.stg_Selected(key)
+            # overlay_window.stg_Selected(key)
+            QTimer.singleShot(0, functools.partial(overlay_window.stg_Selected, key))
             while keyboard.is_pressed(f'ctrl+{key}'):
                 time.sleep(0.005)
                 continue  # Wait until the key is released
@@ -660,14 +647,8 @@ def main():
     app = QApplication(sys.argv)
     overlay_window = OverlayWindow()  # Create an instance of OverlayWindow
     overlay_window.show()  # Show the overlay window
-
-
-    timer = QTimer()  # Create a QTimer to check for hotkeys
-    timer.timeout.connect(lambda: check_hotkey(overlay_window))  # Pass overlay_window to check_hotkey
-    timer.start(15)  # Check every 15ms
-
+    
+    keyboard.hook(lambda event: check_hotkey(overlay_window, event))
     sys.exit(app.exec_())  # Start the Qt event loop
 
-
-if __name__ == '__main__':
-    main()
+main()
