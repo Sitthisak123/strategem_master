@@ -44,7 +44,7 @@ top_row_keys = {
     11: '0',
 }
 
-allowkeys = [reinforce_keys, supply_keys]
+allowkeys = [reinforce_keys, supply_keys, eagleRearm_keys]
 
 strategems_all = {
 
@@ -571,6 +571,7 @@ def on_screenshot(overlay_window):
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     stg_inSlot = run_ocr(frame)
     strategems_current = stg_inSlot
+    overlay_window.update_labels(stg_inSlot)
     print(strategems_current)
     # print("Detected:", strategems_current)
 
@@ -597,69 +598,13 @@ def strategem_operator(key_sequence):
             case _:  # fallback
                 print(f"Unknown key: {key}")
 
-def strategem_controller(num):
-    num = int(num)
-    # print(f"Activating strategem slot {num}")
-    if not strategems_current and num not in range(1, 5):
-        print("No strategems detected or invalid slot number.")
+def strategem_controller(slotnum):
+    slotnum = int(slotnum)
+    # print(f"Activating strategem slot {slotnum}")
+    if len(strategems_current) < slotnum:
+        print(f"slot: {slotnum} Not enough strategems detected.")
         return
-    match num:
-        case 1:  # slot 1
-            if len(strategems_current) < 4:
-                print("slot: 1 Not enough strategems detected.")
-                return
-            strategem_operator(strategems_current[-4]["key"])
-            pass
-        case 2:  # slot 2
-            if len(strategems_current) < 3:
-                print("slot: 2 Not enough strategems detected.")
-                return
-            strategem_operator(strategems_current[-3]["key"])
-            pass
-        case 3:  # slot 3
-            if len(strategems_current) < 2:
-                print("slot: 3 Not enough strategems detected.")
-                return
-            strategem_operator(strategems_current[-2]["key"])
-            pass
-        case 4:  # slot 4
-            if len(strategems_current) < 1:
-                print("slot: 4 Not enough strategems detected.")
-                return
-            strategem_operator(strategems_current[-1]["key"])
-            pass
-        case 5:  # spare
-            if len(strategems_current) < 5:
-                print("slot: 5 Not enough strategems detected.")
-            strategem_operator(strategems_current[-5]["key"])
-            pass
-        case 6:  # spare
-            if len(strategems_current) < 6:
-                print("slot: 6 Not enough strategems detected.")
-            strategem_operator(strategems_current[-6]["key"])
-            pass
-        # case 7:  # spare
-        #     if len(strategems_current) < 7:
-        #         print("slot: 7 Not enough strategems detected.")
-        #     strategem_operator(strategems_current[-7]["key"])
-        #     pass
-        # case 8:  # spare
-        #     if len(strategems_current) < 8:
-        #         print("slot: 8 Not enough strategems detected.")
-        #     strategem_operator(strategems_current[-8]["key"])
-        #     pass
-        # case 9:  # spare
-        #     if len(strategems_current) < 9:
-        #         print("slot: 9 Not enough strategems detected.")
-        #     strategem_operator(strategems_current[-9]["key"])
-        #     pass
-        # case 0:  # spare
-        #     if len(strategems_current) < 10:
-        #         print("slot: 0 Not enough strategems detected.")
-        #     strategem_operator(strategems_current[-10]["key"])
-        #     pass
-
-
+    strategem_operator(strategems_current[slotnum - 1]["key"])
 
 def check_hotkey(overlay_window):
     # Check if 'Ctrl' is being held down and one of the numpad keys is pressed
@@ -673,20 +618,19 @@ def check_hotkey(overlay_window):
     if keyboard.is_pressed(exit_keys):
         print("Exiting...")
         sys.exit(0)
-    if keyboard.is_pressed(f'ctrl+{supply_keys["key"]}'): # resupply 
-        strategem_operator(strategems_all[supply_keys["name"]]["key"])
-        return
-    if keyboard.is_pressed(f'ctrl+{reinforce_keys["key"]}'): # reinforce
-        strategem_operator(strategems_all[reinforce_keys["name"]]["key"])
-        return
+    # if keyboard.is_pressed(f'ctrl+{supply_keys["key"]}'): # resupply 
+    #     strategem_operator(strategems_all[supply_keys["name"]]["key"])
+    #     return
+    # if keyboard.is_pressed(f'ctrl+{reinforce_keys["key"]}'): # reinforce
+    #     strategem_operator(strategems_all[reinforce_keys["name"]]["key"])
+    #     return
 
-    if keyboard.is_pressed(f'ctrl+{eagleRearm_keys["key"]}'): # eagle rearm
-        strategem_operator(strategems_all[eagleRearm_keys["name"]]["key"])
-        return
+    # if keyboard.is_pressed(f'ctrl+{eagleRearm_keys["key"]}'): # eagle rearm
+    #     strategem_operator(strategems_all[eagleRearm_keys["name"]]["key"])
+    #     return
 
     if keyboard.is_pressed('ctrl+]'):
         on_screenshot(overlay_window)
-        overlay_window.update_labels(strategems_current)
         while keyboard.is_pressed(f'ctrl+]'):
                 time.sleep(0.005)
                 continue  # Wait until the key is released
@@ -695,7 +639,7 @@ def check_hotkey(overlay_window):
 
     for ckey in allowkeys:
         if keyboard.is_pressed(f'ctrl+{ckey["key"]}'):
-            strategem_controller(strategems_all[ckey["name"]]["key"])
+            strategem_operator(strategems_all[ckey["name"]]["key"])
             return
 
     if event.event_type == 'down' and event.scan_code in top_row_keys:
