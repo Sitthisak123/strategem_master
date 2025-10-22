@@ -7,7 +7,7 @@ from PyQt5.QtGui import QPalette, QColor
 class OverlayWindow(QWidget):
     defaultStyleText = "color: rgba(230, 230, 230, 0.8); font-size: 30px; font-family: monospace;"
     selectedStyleText = "color: rgba(30, 255, 30, 1); font-size: 38px; font-family: monospace;"
-
+    overlayTimeout = 2500
     def __init__(self):
         super().__init__()
         self._visibility_timer = QTimer()
@@ -73,7 +73,10 @@ class OverlayWindow(QWidget):
             label.setStyleSheet(self.defaultStyleText)
             label.setVisible(True)  # Ensure label is visible when updated
         # Set Timer here to clear labels after 5 seconds
-        self._visibility_timer.start(2500)
+        if not loading:
+            self._visibility_timer.start(self.overlayTimeout)
+        else:
+            self._visibility_timer.stop()
 
     def clear_labels(self):
         for label in self.info_labels:
@@ -97,4 +100,4 @@ class OverlayWindow(QWidget):
                 label.setStyleSheet(self.defaultStyleText)
                 # Ensure label is visible when not selected
                 label.setVisible(True)
-        self._visibility_timer.start(2500)
+        self._visibility_timer.start(self.overlayTimeout)
