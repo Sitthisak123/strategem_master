@@ -508,6 +508,7 @@ strategem_default_slots = [
 ]
 
 pyautogui.PAUSE = 0.030
+strategems_current = []
 
 
 def preprocess_for_contours(img):
@@ -530,14 +531,15 @@ def detect_strategem_icons(hud_img):
             boxes.append((y, x, w, h))
     return sorted(boxes, key=lambda b: b[0])
 
+def extract_image(img):
+    pass
 
-def extract_text(img):
-    cfg = r'--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    return pytesseract.image_to_string(img, config=cfg).strip()
+# def extract_text(img):
+#     cfg = r'--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+#     return pytesseract.image_to_string(img, config=cfg).strip()
 
-
-def run_ocr(img):
-    hud = img[30:800, 30:600]
+def run_recog(img):
+    hud = img[30:1000, 30:550]
     icons = detect_strategem_icons(hud)
     strategems = []
     for (y, x, w, h) in icons:
@@ -545,24 +547,54 @@ def run_ocr(img):
         right_th = row[:, int(hud.shape[1]*gap):]
         h_right = right_th.shape[0]
         top_roi = right_th[:h_right//2, :]
-        name_text = extract_text(top_roi)
-        match = get_close_matches(name_text.lower(),
-                                  strategems_all.keys(),
-                                  n=1,
-                                  cutoff=0.55)
-        best_name = match[0] if match else None
-        if best_name:
-            print(f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
-            if best_name in strategem_default_slots or best_name in [s["name"] for s in strategems]:
-                continue
-            strategemsEntry = strategems_all[best_name]
-            strategemsEntry["name"] = best_name
-            strategems.append(strategemsEntry)
-    if len(strategems) > 4:
-        strategems = strategems[-4:] + strategems[:-4]
-    return strategems
+        # cv2.rectangle(hud, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    y, x, w, h = icons[0]
+    cv2.imshow("img", hud[x:y+h, x:x+w])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
-strategems_current = []
+    print(icons)
+    # if len(strategems) > 4:
+    #     strategems = strategems[-4:] + strategems[:-4]
+    # return strategems
+    pass
+
+def on_screenshot():
+    global strategems_current
+    screenshot = pyautogui.screenshot()
+    frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+    stg_inSlot = run_recog(frame)
+    strategems_current = stg_inSlot
+    print(strategems_current)
+
+# def run_ocr(img):
+#     hud = img[30:800, 30:600]
+#     icons = detect_strategem_icons(hud)
+#     strategems = []
+#     for (y, x, w, h) in icons:
+#         row = hud[y:y+h, :]
+#         right_th = row[:, int(hud.shape[1]*gap):]
+#         h_right = right_th.shape[0]
+#         top_roi = right_th[:h_right//2, :]
+#         name_text = extract_text(top_roi)
+#         match = get_close_matches(name_text.lower(),
+#                                   strategems_all.keys(),
+#                                   n=1,
+#                                   cutoff=0.55)
+#         best_name = match[0] if match else None
+#         if best_name:
+#             print(f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
+#             if best_name in strategem_default_slots or best_name in [s["name"] for s in strategems]:
+#                 continue
+#             strategemsEntry = strategems_all[best_name]
+#             strategemsEntry["name"] = best_name
+#             strategems.append(strategemsEntry)
+#     if len(strategems) > 4:
+#         strategems = strategems[-4:] + strategems[:-4]
+#     return strategems
+
+'''
+
 
 def on_screenshot(overlay_window):
     global strategems_current
@@ -577,6 +609,7 @@ def on_screenshot(overlay_window):
     QTimer.singleShot(0, functools.partial(overlay_window.update_labels, stg_inSlot))
     print(strategems_current)
     # print("Detected:", strategems_current)
+
 
 def strategem_operator(key_sequence):
     print(f"Executing key sequence: {key_sequence}")
@@ -650,5 +683,22 @@ def main():
     
     keyboard.hook(lambda event: check_hotkey(overlay_window, event))
     sys.exit(app.exec_())  # Start the Qt event loop
+'''
+count = 0
+def testkey(event):
+    if keyboard.is_pressed("p"):
+        global count
+        count += 1
+        print("testing...",count)
+        on_screenshot()
+    if keyboard.is_pressed(exit_keys):
+        print("Exiting...")
+        keyboard.unhook_all()
+        QApplication.exit()
+
+def main():
+    app = QApplication(sys.argv)
+    keyboard.hook(lambda event: testkey(event))
+    sys.exit(app.exec_())
 
 main()
