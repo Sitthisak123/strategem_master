@@ -8,8 +8,9 @@ from difflib import get_close_matches
 import time
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
-from overlay_window import OverlayWindow
 import functools
+from overlay_window import OverlayWindow
+from src.utils.matchTemplate import match_template
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
@@ -548,10 +549,11 @@ def run_recog(img):
         h_right = right_th.shape[0]
         top_roi = right_th[:h_right//2, :]
         # cv2.rectangle(hud, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    y, x, w, h = icons[0]
-    cv2.imshow("img", hud[x:y+h, x:x+w])
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    
+    # y, x, w, h = icons[0]
+    # cv2.imshow("img", hud[x:y+h, x:x+w])
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     print(icons)
     # if len(strategems) > 4:

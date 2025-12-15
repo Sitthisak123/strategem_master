@@ -4,10 +4,11 @@ import pyautogui
 
 # Load the main image and the template
 # pyautogui.sleep(2)
-img = cv2.imread('./img/sp02.png', cv2.IMREAD_GRAYSCALE)
-# screenshot = pyautogui.screenshot()
-template2 = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-template = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2GRAY)
+img = cv2.imread('./img/silo.png', cv2.IMREAD_GRAYSCALE)
+screenshot = pyautogui.screenshot()
+
+template2 = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)[30:,30:550]
+template = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2GRAY)[30:,30:550]
 assert img is not None, "Source image not found"
 assert template is not None, "Template image not found"
 

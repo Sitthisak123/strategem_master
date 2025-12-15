@@ -547,11 +547,7 @@ def run_recog(img):
         right_th = row[:, int(hud.shape[1]*gap):]
         h_right = right_th.shape[0]
         top_roi = right_th[:h_right//2, :]
-        # cv2.rectangle(hud, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    y, x, w, h = icons[0]
-    cv2.imshow("img", hud[x:y+h, x:x+w])
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+        # cv2.rectangle(hud, (x, y), (x+w, y+h), (0, 255, 0), 2
 
     print(icons)
     # if len(strategems) > 4:
