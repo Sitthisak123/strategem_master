@@ -1,517 +1,70 @@
-import sys
 import cv2
 import numpy as np
 import pytesseract
-import keyboard
-import pyautogui
 from difflib import get_close_matches
+import csv
+import os
+from pathlib import Path
 import time
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QTimer
-from overlay_window import OverlayWindow
-import functools
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
 gap = 0.22  # gap from left edge to start of text area
 
-# hotkeys
-exit_keys = "ctrl+c"
-reinforce_keys = {
-    "name": "reinforce",
-    "key": "g"
-}
-supply_keys = {
-    "name": "resupply",
-    "key": "v"
-}
-eagleRearm_keys = {
-    "name": "eagle rearm",
-    "key": "q"
-}
+# Directories
+SRC_IMG_DIR = "./src/img/group"
+OUTPUT_DIR = "./output"
+CSV_FILE = "./src/strategems.csv"
+LOG_FILE = os.path.join(OUTPUT_DIR, "log.txt")
+
+# Ensure output directory exists
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-top_row_keys = {
-    #scanCode: top-row-num-key
-    2: '1',
-    3: '2',
-    4: '3',
-    5: '4',
-    6: '5',
-    7: '6',
-    8: '7',
-    9: '8',
-    10: '9',
-    11: '0',
-}
+class Logger:
+    """Logger class to write logs in real-time"""
+    def __init__(self, log_path):
+        self.log_path = log_path
+        self.file = open(log_path, 'w', encoding='utf-8')
+        self.file.write(f"[LOG STARTED] {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+        self.file.flush()
+    
+    def log(self, message):
+        """Log message to file and print to console"""
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
+        log_msg = f"[{timestamp}] {message}"
+        print(log_msg)
+        self.file.write(log_msg + "\n")
+        self.file.flush()
+    
+    def close(self):
+        """Close the log file"""
+        self.file.write(f"[LOG ENDED] {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+        self.file.close()
 
-allowkeys = [reinforce_keys, supply_keys, eagleRearm_keys]
 
-strategems_all = {
-
-    "mg-43 machine gun": {
-        "id": 2,
-        "key": 41423,
-        "countdown": "480 sec"
-    },
-    "apw-1 anti-materiel rifle": {
-        "id": 3,
-        "key": 41324,
-        "countdown": "480 sec"
-    },
-    "m-105 stalwart": {
-        "id": 4,
-        "key": 414221,
-        "countdown": "480 sec"
-    },
-    "eat-17 expendable anti-tank": {
-        "id": 5,
-        "key": 44123,
-        "countdown": "70 sec"
-    },
-    "gr-8 recoilless rifle": {
-        "id": 6,
-        "key": 41331,
-        "countdown": "480 sec"
-    },
-    "flam-40 flamethrower": {
-        "id": 7,
-        "key": 41242,
-        "countdown": "480 sec"
-    },
-    "ac-8 autocannon": {
-        "id": 8,
-        "key": 414223,
-        "countdown": "480 sec"
-    },
-    "mg-206 heavy machine gun": {
-        "id": 9,
-        "key": 41244,
-        "countdown": "480 sec"
-    },
-    "rl-77 airburst rocket launcher": {
-        "id": 10,
-        "key": 42213,
-        "countdown": "480 sec"
-    },
-    "mls-4x commando": {
-        "id": 11,
-        "key": 41243,
-        "countdown": "120 sec"
-    },
-    "rs-422 railgun": {
-        "id": 12,
-        "key": 434213,
-        "countdown": "480 sec"
-    },
-    "faf-14 spear": {
-        "id": 13,
-        "key": 44244,
-        "countdown": "480 sec"
-    },
-    "sta-x3 w.a.s.p. launcher": {
-        "id": 14,
-        "key": 44243,
-        "countdown": "480 sec"
-    },
-    "orbital gatling barrage": {
-        "id": 15,
-        "key": 34122,
-        "countdown": "70 sec"
-    },
-    "orbital airburst strike": {
-        "id": 16,
-        "key": 333,
-        "countdown": "100 sec"
-    },
-    "orbital 120mm he barrage": {
-        "id": 17,
-        "key": 334134,
-        "countdown": "180 sec"
-    },
-    "orbital 380mm he barrage": {
-        "id": 18,
-        "key": 3422144,
-        "countdown": "240 sec"
-    },
-    "orbital walking barrage": {
-        "id": 19,
-        "key": 343434,
-        "countdown": "240 sec"
-    },
-    "orbital laser": {
-        "id": 20,
-        "key": 34234,
-        "countdown": "300 sec"
-    },
-    "orbital napalm barrage": {
-        "id": 21,
-        "key": 334132,
-        "countdown": "240 sec"
-    },
-    "orbital railcannon strike": {
-        "id": 22,
-        "key": 32443,
-        "countdown": "210 sec"
-    },
-    "eagle strafing run": {
-        "id": 23,
-        "key": 233,
-        "countdown": "8 sec"
-    },
-    "eagle airstrike": {
-        "id": 24,
-        "key": 2343,
-        "countdown": "8 sec"
-    },
-    "eagle cluster bomb": {
-        "id": 25,
-        "key": 23443,
-        "countdown": "8 sec"
-    },
-    "eagle napalm airstrike": {
-        "id": 26,
-        "key": 2342,
-        "countdown": "8 sec"
-    },
-    "lift-850 jump pack": {
-        "id": 27,
-        "key": 42242,
-        "countdown": "480 sec"
-    },
-    "eagle smoke strike": {
-        "id": 28,
-        "key": 2324,
-        "countdown": "8 sec"
-    },
-    "eagle 110mm rocket pods": {
-        "id": 29,
-        "key": 2321,
-        "countdown": "8 sec"
-    },
-    "eagle 500kg bomb": {
-        "id": 30,
-        "key": 23444,
-        "countdown": "8 sec"
-    },
-    "m-102 fast recon vehicle": {
-        "id": 31,
-        "key": 1434342,
-        "countdown": "480 sec"
-    },
-    "orbital precision strike": {
-        "id": 32,
-        "key": 332,
-        "countdown": "90 sec"
-    },
-    "orbital gas strike": {
-        "id": 33,
-        "key": 3343,
-        "countdown": "75 sec"
-    },
-    "orbital ems strike": {
-        "id": 34,
-        "key": 3314,
-        "countdown": "75 sec"
-    },
-    "orbital smoke strike": {
-        "id": 35,
-        "key": 3342,
-        "countdown": "100 sec"
-    },
-    "e/mg-101 hmg emplacement": {
-        "id": 36,
-        "key": 421331,
-        "countdown": "180 sec"
-    },
-    "fx-12 shield generator relay": {
-        "id": 37,
-        "key": 441313,
-        "countdown": "90 sec"
-    },
-    "a/arc-3 tesla tower": {
-        "id": 38,
-        "key": 423213,
-        "countdown": "120 sec"
-    },
-    "e/gl-21 grenadier battlement": {
-        "id": 39,
-        "key": 43413,
-        "countdown": "120 sec"
-    },
-    "md-6 anti-personnel minefield": {
-        "id": 40,
-        "key": 4123,
-        "countdown": "120 sec"
-    },
-    "b-1 supply pack": {
-        "id": 41,
-        "key": 414224,
-        "countdown": "480 sec"
-    },
-    "gl-21 grenade launcher": {
-        "id": 42,
-        "key": 41214,
-        "countdown": "480 sec"
-    },
-    "las-98 laser cannon": {
-        "id": 43,
-        "key": 41421,
-        "countdown": "480 sec"
-    },
-    "md-i4 incendiary mines": {
-        "id": 44,
-        "key": 4114,
-        "countdown": "120 sec"
-    },
-    "ax/las-5 \"guard dog\" rover": {
-        "id": 45,
-        "key": 421233,
-        "countdown": "480 sec"
-    },
-    "sh-20 ballistic shield backpack": {
-        "id": 46,
-        "key": 414421,
-        "countdown": "300 sec"
-    },
-    "arc-3 arc thrower": {
-        "id": 47,
-        "key": 434211,
-        "countdown": "480 sec"
-    },
-    "md-17 anti-tank mines": {
-        "id": 48,
-        "key": 4122,
-        "countdown": "120 sec"
-    },
-    "las-99 quasar cannon": {
-        "id": 49,
-        "key": 44213,
-        "countdown": "480 sec"
-    },
-    "sh-32 shield generator pack": {
-        "id": 50,
-        "key": 421313,
-        "countdown": "480 sec"
-    },
-    "md-8 gas mines": {
-        "id": 51,
-        "key": 4113,
-        "countdown": "120 sec"
-    },
-    "a/mg-43 machine gun sentry": {
-        "id": 52,
-        "key": 42332,
-        "countdown": "90 sec"
-    },
-    "a/g-16 gatling sentry": {
-        "id": 53,
-        "key": 4231,
-        "countdown": "150 sec"
-    },
-    "a/m-12 mortar sentry": {
-        "id": 54,
-        "key": 42334,
-        "countdown": "180 sec"
-    },
-    "ax/ar-23 \"guard dog\"": {
-        "id": 55,
-        "key": 421234,
-        "countdown": "480 sec"
-    },
-    "a/ac-8 autocannon sentry": {
-        "id": 56,
-        "key": 423212,
-        "countdown": "150 sec"
-    },
-    "a/mls-4x rocket sentry": {
-        "id": 57,
-        "key": 42331,
-        "countdown": "150 sec"
-    },
-    "a/m-23 ems mortar sentry": {
-        "id": 58,
-        "key": 42343,
-        "countdown": "180 sec"
-    },
-    "exo-45 patriot exosuit": {
-        "id": 59,
-        "key": 1432144,
-        "countdown": "600 sec"
-    },
-    "exo-49 emancipator exosuit": {
-        "id": 60,
-        "key": 1432142,
-        "countdown": "600 sec"
-    },
-    "tx-41 sterilizer": {
-        "id": 61,
-        "key": 41241,
-        "countdown": "480 sec"
-    },
-    "ax/tx-13 \"guard dog\" dog breath": {
-        "id": 62,
-        "key": 421232,
-        "countdown": "480 sec"
-    },
-    "sh-51 directional shield": {
-        "id": 63,
-        "key": 421322,
-        "countdown": "300 sec"
-    },
-    "e/at-12 anti-tank emplacement": {
-        "id": 64,
-        "key": 421333,
-        "countdown": "180 sec"
-    },
-    "a/flam-40 flame sentry": {
-        "id": 65,
-        "key": 423422,
-        "countdown": "100 sec"
-    },
-    "b-100 portable hellbomb": {
-        "id": 66,
-        "key": 43222,
-        "countdown": "300 sec"
-    },
-    "lift-860 hover pack": {
-        "id": 67,
-        "key": 422413,
-        "countdown": "480 sec"
-    },
-    "cqc-1 one true flag": {
-        "id": 68,
-        "key": 41332,
-        "countdown": "480 sec"
-    },
-    "gl-52 de-escalator": {
-        "id": 69,
-        "key": 43213,
-        "countdown": "480 sec"
-    },
-    "ax/arc-3 \"guard dog\" k-9": {
-        "id": 70,
-        "key": 421231,
-        "countdown": "480 sec"
-    },
-    "plas-45 epoch": {
-        "id": 71,
-        "key": 41213,
-        "countdown": "480 sec"
-    },
-    "a/las-98 laser sentry": {
-        "id": 72,
-        "key": 423423,
-        "countdown": "150 sec"
-    },
-    "lift-182 warp pack": {
-        "id": 73,
-        "key": 413413,
-        "countdown": "480 sec"
-    },
-    "s-11 speargun": {
-        "id": 74,
-        "key": 434123,
-        "countdown": "480 sec"
-    },
-    "eat-700 expendable napalm": {
-        "id": 75,
-        "key": 44121,
-        "countdown": "140 sec"
-    },
-    "ms-11 solo silo": {
-        "id": 76,
-        "key": 42344,
-        "countdown": "180 sec"
-    },
-    "reinforce": {
-        "id": 77,
-        "key": 24312,
-        "countdown": 0
-    },
-    "sos beacon": {
-        "id": 78,
-        "key": 2432,
-        "countdown": 0
-    },
-    "resupply": {
-        "id": 79,
-        "key": 4423,
-        "countdown": 0
-    },
-    "eagle rearm": {
-        "id": 80,
-        "key": 22123,
-        "countdown": 0
-    },
-    "sssd delivery": {
-        "id": 81,
-        "key": 44422,
-        "countdown": 0
-    },
-    "prospecting drill": {
-        "id": 82,
-        "key": 441344,
-        "countdown": 0
-    },
-    "super earth flag": {
-        "id": 83,
-        "key": 4242,
-        "countdown": 0
-    },
-    "hellbomb": {
-        "id": 84,
-        "key": 42142342,
-        "countdown": 0
-    },
-    "upload data": {
-        "id": 85,
-        "key": 13222,
-        "countdown": 0
-    },
-    "seismic probe": {
-        "id": 86,
-        "key": 221344,
-        "countdown": 0
-    },
-    "orbital illumination flare": {
-        "id": 87,
-        "key": 3311,
-        "countdown": 0
-    },
-    "seaf artillery": {
-        "id": 88,
-        "key": 3224,
-        "countdown": 0
-    },
-    "dark fluid vessel": {
-        "id": 89,
-        "key": 213422,
-        "countdown": 0
-    },
-    "tectonic drill": {
-        "id": 90,
-        "key": 242424,
-        "countdown": 0
-    },
-    "hive breaker drill": {
-        "id": 91,
-        "key": 124344,
-        "countdown": 0
-    }
-}
-strategem_default_slots = [
-    "resupply",
-    "reinforce",
-    "sos beacon",
-    "eagle rearm",
-]
-
-pyautogui.PAUSE = 0.030
-strategems_current = []
+def load_strategems_csv(csv_path):
+    """Load strategems from CSV file and return as dict indexed by name"""
+    strategems = {}
+    try:
+        with open(csv_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row['Name']:
+                    name_lower = row['Name'].lower()
+                    strategems[name_lower] = {
+                        'index': row['Index'],
+                        'name': row['Name'],
+                        'code': row['Code']
+                    }
+        return strategems
+    except Exception as e:
+        print(f"Error loading CSV: {e}")
+        return {}
 
 
 def preprocess_for_contours(img):
+    """Preprocess image for contour detection"""
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
     edges = cv2.Canny(gray, 50, 150)
@@ -519,182 +72,153 @@ def preprocess_for_contours(img):
 
 
 def detect_strategem_icons(hud_img):
+    """Detect strategem icons from HUD image"""
     edges = preprocess_for_contours(hud_img)
     cnts, _ = cv2.findContours(
         edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     boxes = []
     for c in cnts:
         x, y, w, h = cv2.boundingRect(c)
-        aspect = w/float(h)
-        area = w*h
-        if 0.7 < aspect < 1.3 and area > 1800 and x < hud_img.shape[1]*0.3:
+        aspect = w / float(h)
+        area = w * h
+        if 0.7 < aspect < 1.3 and area > 1800 and x < hud_img.shape[1] * 0.3:
             boxes.append((y, x, w, h))
     return sorted(boxes, key=lambda b: b[0])
 
-def extract_image(img):
-    pass
 
-# def extract_text(img):
-#     cfg = r'--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-#     return pytesseract.image_to_string(img, config=cfg).strip()
+def extract_text(img):
+    """Extract text from image using Tesseract"""
+    cfg = r'--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    return pytesseract.image_to_string(img, config=cfg).strip()
 
-def run_recog(img):
-    hud = img[30:, 30:550]
+
+def extract_icon_region(hud_img, y, x, w, h):
+    """Extract the icon region from the HUD"""
+    # Return the icon (left side)
+    return hud_img[y:y+h, x:x+w]
+
+
+def run_ocr(img, strategems_dict, logger):
+    """Run OCR on image to detect and extract strategem icons"""
+    hud = img[30:800, 30:600]
     icons = detect_strategem_icons(hud)
-    strategems = []
+    extracted_icons = []
+    
     for (y, x, w, h) in icons:
         row = hud[y:y+h, :]
         right_th = row[:, int(hud.shape[1]*gap):]
         h_right = right_th.shape[0]
         top_roi = right_th[:h_right//2, :]
-        # cv2.rectangle(hud, (x, y), (x+w, y+h), (0, 255, 0), 2
-
-    print(icons)
-    # if len(strategems) > 4:
-    #     strategems = strategems[-4:] + strategems[:-4]
-    # return strategems
-    pass
-
-def on_screenshot():
-    global strategems_current
-    screenshot = pyautogui.screenshot()
-    frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-    stg_inSlot = run_recog(frame)
-    strategems_current = stg_inSlot
-    print(strategems_current)
-
-# def run_ocr(img):
-#     hud = img[30:800, 30:600]
-#     icons = detect_strategem_icons(hud)
-#     strategems = []
-#     for (y, x, w, h) in icons:
-#         row = hud[y:y+h, :]
-#         right_th = row[:, int(hud.shape[1]*gap):]
-#         h_right = right_th.shape[0]
-#         top_roi = right_th[:h_right//2, :]
-#         name_text = extract_text(top_roi)
-#         match = get_close_matches(name_text.lower(),
-#                                   strategems_all.keys(),
-#                                   n=1,
-#                                   cutoff=0.55)
-#         best_name = match[0] if match else None
-#         if best_name:
-#             print(f"OCR: '{name_text}' → {best_name} ({strategems_all[best_name]['key']})")
-#             if best_name in strategem_default_slots or best_name in [s["name"] for s in strategems]:
-#                 continue
-#             strategemsEntry = strategems_all[best_name]
-#             strategemsEntry["name"] = best_name
-#             strategems.append(strategemsEntry)
-#     if len(strategems) > 4:
-#         strategems = strategems[-4:] + strategems[:-4]
-#     return strategems
-
-'''
-
-
-def on_screenshot(overlay_window):
-    global strategems_current
-    # overlay_window.update_labels(loading=True)
-    QTimer.singleShot(0, functools.partial(overlay_window.update_labels, loading=True))
-    QApplication.processEvents()  # Force UI update
-    screenshot = pyautogui.screenshot()
-    frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-    stg_inSlot = run_ocr(frame)
-    strategems_current = stg_inSlot
-    # overlay_window.update_labels(stg_inSlot)
-    QTimer.singleShot(0, functools.partial(overlay_window.update_labels, stg_inSlot))
-    print(strategems_current)
-    # print("Detected:", strategems_current)
-
-
-def strategem_operator(key_sequence):
-    print(f"Executing key sequence: {key_sequence}")
-    for key in str(key_sequence):
-        match key:
-            case '1':
-                pyautogui.keyDown("left")
-                pyautogui.keyUp("left")
-                print("Left")
-            case '2':
-                pyautogui.keyDown("up")
-                pyautogui.keyUp("up")
-                print("Up")
-            case '3':
-                pyautogui.keyDown("right")
-                pyautogui.keyUp("right")
-                print("Right")
-            case '4':
-                pyautogui.keyDown("down")
-                pyautogui.keyUp("down")
-                print("Down")
-            case _:  # fallback
-                print(f"Unknown key: {key}")
-
-def strategem_controller(slotnum):
-    slotnum = int(slotnum)
-    # print(f"Activating strategem slot {slotnum}")
-    if len(strategems_current) < slotnum:
-        print(f"slot: {slotnum} Not enough strategems detected.")
-        return
-    strategem_operator(strategems_current[slotnum - 1]["key"])
-
-def check_hotkey(overlay_window, event):
-    if keyboard.is_pressed(exit_keys):
-        print("Exiting...")
-        keyboard.unhook_all()
-        QApplication.exit()
-
-    if keyboard.is_pressed('ctrl+]'):
-        on_screenshot(overlay_window)
-        while keyboard.is_pressed(f'ctrl+]'):
-                time.sleep(0.005)
-                continue  # Wait until the key is released
-        # print("Key released.")
-        return
-
-    for ckey in allowkeys:
-        if keyboard.is_pressed(f'ctrl+{ckey["key"]}'):
-            strategem_operator(strategems_all[ckey["name"]]["key"])
-            return
-
-    if event.event_type == 'down' and event.scan_code in top_row_keys:
-        key = top_row_keys[event.scan_code]
-        if keyboard.is_pressed(f'ctrl+{key}'):  # Check for Ctrl + num key
-            strategem_controller(key)
-            # overlay_window.stg_Selected(key)
-            QTimer.singleShot(0, functools.partial(overlay_window.stg_Selected, key))
-            while keyboard.is_pressed(f'ctrl+{key}'):
-                time.sleep(0.005)
-                continue  # Wait until the key is released
-            # print("Key released.")
-            # Once a key is pressed, break the loop to prevent multiple triggers
-            return
-
-print(f"Press {exit_keys} to exit the program.")
-
-def main(): 
-    app = QApplication(sys.argv)
-    overlay_window = OverlayWindow()  # Create an instance of OverlayWindow
-    overlay_window.show()  # Show the overlay window
+        name_text = extract_text(top_roi)
+        
+        match = get_close_matches(name_text.lower(),
+                                  strategems_dict.keys(),
+                                  n=1,
+                                  cutoff=0.55)
+        best_name = match[0] if match else None
+        
+        if best_name:
+            strategem_info = strategems_dict[best_name]
+            icon_img = extract_icon_region(hud, y, x, w, h)
+            
+            logger.log(f"  Detected: '{name_text}' → {strategem_info['name']} (Index: {strategem_info['index']})")
+            
+            extracted_icons.append({
+                'name': best_name,
+                'display_name': strategem_info['name'],
+                'index': strategem_info['index'],
+                'code': strategem_info['code'],
+                'image': icon_img
+            })
+        else:
+            logger.log(f"  SKIPPED: '{name_text}' - Not found in strategems.csv")
     
-    keyboard.hook(lambda event: check_hotkey(overlay_window, event))
-    sys.exit(app.exec_())  # Start the Qt event loop
-'''
-count = 0
-def testkey(event):
-    if keyboard.is_pressed("p"):
-        global count
-        count += 1
-        print("testing...",count)
-        on_screenshot()
-    if keyboard.is_pressed(exit_keys):
-        print("Exiting...")
-        keyboard.unhook_all()
-        QApplication.exit()
+    return extracted_icons
+
+
+def save_extracted_icons(extracted_icons, output_dir, logger):
+    """Save extracted icon images to output directory"""
+    for icon_data in extracted_icons:
+        try:
+            # Use index as filename for consistency with CSV
+            filename = f"{int(icon_data['index'])}.png"
+            # filename = f"{int(icon_data['index']):03d}_{icon_data['display_name']}.png"
+            filepath = os.path.join(output_dir, filename)
+            
+            cv2.imwrite(filepath, icon_data['image'])
+            logger.log(f"  Saved: {filename}")
+        except Exception as e:
+            logger.log(f"  ERROR saving {icon_data['display_name']}: {e}")
+
+
+def get_sorted_images(img_dir):
+    """Get all image files from directory sorted by name"""
+    if not os.path.exists(img_dir):
+        return []
+    
+    image_extensions = {'.png', '.jpg', '.jpeg', '.bmp', '.tiff'}
+    images = [f for f in os.listdir(img_dir) 
+              if os.path.splitext(f)[1].lower() in image_extensions]
+    return sorted(images)
+
 
 def main():
-    app = QApplication(sys.argv)
-    keyboard.hook(lambda event: testkey(event))
-    sys.exit(app.exec_())
+    # Initialize logger
+    logger = Logger(LOG_FILE)
+    
+    logger.log("=== Strategem Icon Extraction Started ===")
+    logger.log(f"Loading strategems from: {CSV_FILE}")
+    
+    # Load strategems from CSV
+    strategems_dict = load_strategems_csv(CSV_FILE)
+    if not strategems_dict:
+        logger.log("ERROR: Failed to load strategems from CSV")
+        logger.close()
+        return
+    
+    logger.log(f"Loaded {len(strategems_dict)} strategems from CSV")
+    
+    # Get sorted image files
+    image_files = get_sorted_images(SRC_IMG_DIR)
+    if not image_files:
+        logger.log(f"WARNING: No images found in {SRC_IMG_DIR}")
+        logger.close()
+        return
+    
+    logger.log(f"Found {len(image_files)} images to process")
+    logger.log("")
+    
+    # Process each image
+    for img_idx, img_file in enumerate(image_files, 1):
+        img_path = os.path.join(SRC_IMG_DIR, img_file)
+        logger.log(f"[{img_idx}/{len(image_files)}] Processing: {img_file}")
+        
+        try:
+            # Load image
+            frame = cv2.imread(img_path)
+            if frame is None:
+                logger.log(f"  ERROR: Could not read image {img_file}")
+                continue
+            
+            # Extract icons
+            extracted_icons = run_ocr(frame, strategems_dict, logger)
+            
+            # Save icons
+            if extracted_icons:
+                save_extracted_icons(extracted_icons, OUTPUT_DIR, logger)
+                logger.log(f"  ✓ Extracted {len(extracted_icons)} icon(s)")
+            else:
+                logger.log(f"  ℹ No icons detected in {img_file}")
+        
+        except Exception as e:
+            logger.log(f"  ERROR processing {img_file}: {e}")
+        
+        logger.log("")
+    
+    logger.log("=== Processing Complete ===")
+    logger.close()
+    print("\nLog file saved to:", LOG_FILE)
 
-main()
+
+if __name__ == "__main__":
+    main()
