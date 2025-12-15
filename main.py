@@ -13,9 +13,15 @@ from overlay_window import OverlayWindow
 import functools
 
 # Setup directories and CSV
+<<<<<<< HEAD
 IMG_TEMPLATE_DIR = "./img"
 CSV_FILE = "./src/strategems.csv"
 MATCH_THRESHOLD = 0.94
+=======
+IMG_DIR = "./img"
+CSV_FILE = "./src/strategems.csv"
+MATCH_THRESHOLD = 0.7
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
 
 # hotkeys
 exit_keys = "ctrl+c"
@@ -50,25 +56,42 @@ allowkeys = [reinforce_keys, supply_keys, eagleRearm_keys]
 
 
 def load_strategems_csv(csv_path):
+<<<<<<< HEAD
     """Load strategems from CSV file"""
     strategems_by_index = {}
+=======
+    """Load strategems from CSV file and return as dict indexed by index and name"""
+    strategems = {}
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     strategems_by_name = {}
     try:
         with open(csv_path, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
                 if row['Index'] and row['Name']:
+<<<<<<< HEAD
                     idx = row['Index'].strip()
+=======
+                    idx = row['Index']
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
                     name_lower = row['Name'].lower()
                     strategem_entry = {
                         'index': idx,
                         'name': row['Name'],
                         'code': row['Code'],
+<<<<<<< HEAD
                         'key': row['Code']
                     }
                     strategems_by_index[idx] = strategem_entry
                     strategems_by_name[name_lower] = strategem_entry
         return strategems_by_index, strategems_by_name
+=======
+                        'key': row['Code']  # Code is the key sequence
+                    }
+                    strategems[idx] = strategem_entry
+                    strategems_by_name[name_lower] = strategem_entry
+        return strategems, strategems_by_name
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     except Exception as e:
         print(f"Error loading CSV: {e}")
         return {}, {}
@@ -86,6 +109,7 @@ strategem_default_slots = [
 ]
 
 pyautogui.PAUSE = 0.030
+<<<<<<< HEAD
 
 
 def get_sorted_template_images(img_dir):
@@ -181,10 +205,40 @@ def run_template_matching(screenshot, templates):
     2. Detect icon regions
     3. For each icon, match against template library
     4. Look up in CSV by index
+=======
+
+
+def get_sorted_images(img_dir):
+    """Get all image files from directory sorted by filename"""
+    if not os.path.exists(img_dir):
+        return []
+    
+    image_extensions = {'.png', '.jpg', '.jpeg', '.bmp', '.tiff'}
+    images = [f for f in os.listdir(img_dir) 
+              if os.path.splitext(f)[1].lower() in image_extensions]
+    return sorted(images)
+
+
+def match_template_image(haystack_gray, needle_gray, method=cv2.TM_CCOEFF_NORMED):
+    """Match template image and return position and confidence"""
+    try:
+        result = cv2.matchTemplate(haystack_gray, needle_gray, method)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+        return max_loc, max_val
+    except cv2.error as e:
+        return None, 0.0
+
+
+def run_template_matching(screenshot):
+    """
+    Use template matching to detect strategems from screenshot.
+    Screenshots are taken as templates, source images from ./img/* are matched.
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     """
     strategems = []
     
     # Extract HUD area from screenshot
+<<<<<<< HEAD
     hud = screenshot[30:800, 30:600]
     
     # Detect icon regions (same as original OCR)
@@ -216,31 +270,98 @@ def run_template_matching(screenshot, templates):
     # Limit to 4 strategems
     if len(strategems) > 4:
         strategems = strategems[-4:]
+=======
+    screenshot_hud = screenshot[30:800, 30:600]
+    screenshot_gray = cv2.cvtColor(screenshot_hud, cv2.COLOR_BGR2GRAY)
+    
+    # Get sorted image files from ./img
+    image_files = get_sorted_images(IMG_DIR)
+    
+    if not image_files:
+        print(f"No images found in {IMG_DIR}")
+        return strategems
+    
+    # Track matched images to avoid duplicates
+    matched_indices = set()
+    
+    for img_file in image_files:
+        img_path = os.path.join(IMG_DIR, img_file)
+        
+        # Load source image
+        source_img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+        if source_img is None:
+            print(f"Could not load {img_file}")
+            continue
+        
+        # Skip if template is larger than haystack
+        if source_img.shape[0] > screenshot_gray.shape[0] or \
+           source_img.shape[1] > screenshot_gray.shape[1]:
+            continue
+        
+        # Try to match this image in the screenshot
+        top_left, confidence = match_template_image(screenshot_gray, source_img)
+        
+        if top_left and confidence >= MATCH_THRESHOLD:
+            # Extract filename without extension to get index
+            filename_base = os.path.splitext(img_file)[0]
+            try:
+                img_index = filename_base
+                
+                # Look up strategem by index
+                if img_index in strategems_all:
+                    strategem_info = strategems_all[img_index]
+                    if img_index not in matched_indices:
+                        matched_indices.add(img_index)
+                        strategem_info_copy = strategem_info.copy()
+                        strategem_info_copy['confidence'] = confidence
+                        strategems.append(strategem_info_copy)
+                        print(f"Match: {strategem_info['name']} (Index: {img_index}, Confidence: {confidence:.4f})")
+            except Exception as e:
+                print(f"Error processing {img_file}: {e}")
+    
+    # Limit to 4 strategems (top 4 by confidence)
+    if len(strategems) > 4:
+        strategems = sorted(strategems, key=lambda x: x.get('confidence', 0), reverse=True)[:4]
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     
     return strategems
 
 
+<<<<<<< HEAD
 # Load template library once at startup
 template_library = load_template_library(IMG_TEMPLATE_DIR)
 print(f"Loaded {len(template_library)} template images")
 
+=======
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
 strategems_current = []
 
 
 def on_screenshot(overlay_window):
     """Take screenshot and detect strategems"""
     global strategems_current
+<<<<<<< HEAD
     
+=======
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     # Show loading state
     QTimer.singleShot(0, functools.partial(overlay_window.update_labels, loading=True))
     QApplication.processEvents()
     
+<<<<<<< HEAD
     # Take screenshot
+=======
+    # Take screenshotUpdating labels
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     screenshot = pyautogui.screenshot()
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     
     # Run template matching detection
+<<<<<<< HEAD
     stg_inSlot = run_template_matching(frame, template_library)
+=======
+    stg_inSlot = run_template_matching(frame)
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     strategems_current = stg_inSlot
     
     # Update overlay with detected strategems
@@ -250,29 +371,52 @@ def on_screenshot(overlay_window):
 
 def strategem_operator(key_sequence):
     """Execute key sequence for strategem input"""
+<<<<<<< HEAD
     print(f"Executing key sequence: {key_sequence}")
+=======
+    if not key_sequence:
+        print("No key sequence provided.")
+        return
+    print(f"\tExecuting key sequence: {key_sequence}")
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
     for key in str(key_sequence):
         match key:
             case '1':
                 pyautogui.keyDown("left")
                 pyautogui.keyUp("left")
                 pyautogui.sleep(0.1)
+<<<<<<< HEAD
                 print("Left")
+=======
+                print("←", end="")
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
             case '2':
                 pyautogui.keyDown("up")
                 pyautogui.keyUp("up")
                 pyautogui.sleep(0.1)
+<<<<<<< HEAD
                 print("Up")
+=======
+                print("↑", end="")
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
             case '3':
                 pyautogui.keyDown("right")
                 pyautogui.keyUp("right")
                 pyautogui.sleep(0.1)
+<<<<<<< HEAD
                 print("Right")
+=======
+                print("→", end="")
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
             case '4':
                 pyautogui.keyDown("down")
                 pyautogui.keyUp("down")
                 pyautogui.sleep(0.1)
+<<<<<<< HEAD
                 print("Down")
+=======
+                print("↓", end="")
+>>>>>>> a724b947cc0933cae862cd3d89d925d369e5c07b
             case _:
                 print(f"Unknown key: {key}")
 
