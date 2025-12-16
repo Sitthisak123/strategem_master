@@ -11,16 +11,18 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
 from overlay_window import OverlayWindow
 from icon_regions_overlay import IconRegionsOverlay
+from src.utils.cannyEdgeImplement import cannyEdgeDetection
 import functools
 
 # Setup directories and CSV
 IMG_DIR = "./img"
 CSV_FILE = "./src/strategems.csv"
-MATCH_THRESHOLD = 0.91
+MATCH_THRESHOLD = 0.4
 
 # Icon size constraints (in pixels)
 MIN_ICON_SIZE = 30
 MAX_ICON_SIZE = 150
+ICON_PADDING = 20  # Padding in pixels around detected icons
 
 # hotkeys
 exit_keys = "ctrl+c"
@@ -115,12 +117,18 @@ def detect_strategem_icons(hud_img):
         # Apply size constraints and ensure icon is on left HUD area
         if (0.7 < aspect < 1.3 and area > 1800 and x < hud_img.shape[1] * 0.3 and
                 MIN_ICON_SIZE <= w <= MAX_ICON_SIZE and MIN_ICON_SIZE <= h <= MAX_ICON_SIZE):
-            # crop icon region and store grayscale version
-            icon_region = hud_img[y:y + h, x:x + w]
+            # Apply padding with bounds checking
+            y_start = max(0, y - ICON_PADDING)
+            x_start = max(0, x - ICON_PADDING)
+            y_end = min(hud_img.shape[0], y + h + ICON_PADDING)
+            x_end = min(hud_img.shape[1], x + w + ICON_PADDING)
+            
+            # crop icon region with padding and store grayscale version
+            icon_region = hud_img[y_start:y_end, x_start:x_end]
             if icon_region.size == 0:
                 continue
             icon_gray = cv2.cvtColor(icon_region, cv2.COLOR_BGR2GRAY)
-            boxes.append((y, x, w, h, icon_gray))
+            boxes.append((y_start, x_start, x_end - x_start, y_end - y_start, icon_gray))
     # sort by vertical position (y)
     return sorted(boxes, key=lambda b: b[0])
 
@@ -162,7 +170,7 @@ def match_template_image(icon_region_gray, needle_gray, method=cv2.TM_CCOEFF_NOR
 
 # Duplicate helper definitions removed (single implementations exist above)
 
-def run_template_matching(screenshot):
+def run_cannyEdgeDetection(screenshot):
     """
     Use template matching to detect strategems from screenshot.
     1. Detect icon regions using contour detection
@@ -220,9 +228,10 @@ def run_template_matching(screenshot):
             #     continue
             
             # Try to match this image in the icon region
-            top_left, confidence = match_template_image(icon_region, source_img)
-            
-            if top_left and confidence > best_confidence:
+            # top_left, confidence = match_template_image(icon_region, source_img)
+            confidence = cannyEdgeDetection(icon_region, source_img)['score']
+            print(f"Box {box_idx+1}, trying {img_file}: confidence={confidence:.4f}")
+            if confidence > best_confidence:
                 # Extract filename without extension to get index
                 filename_base = os.path.splitext(img_file)[0]
                 try:
@@ -267,7 +276,7 @@ def on_screenshot(overlay_window):
     frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     
     # Run template matching detection
-    stg_inSlot = run_template_matching(frame)
+    stg_inSlot = run_cannyEdgeDetection(frame)
     strategems_current = stg_inSlot
     
     # Update overlay with detected strategems

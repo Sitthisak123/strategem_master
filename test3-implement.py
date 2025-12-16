@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
 import functools
 from overlay_window import OverlayWindow
-from src.utils.matchTemplate import match_template
+from utils.cannyEdgeImplement import match_template
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
