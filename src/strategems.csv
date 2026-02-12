@@ -1,95 +1,101 @@
-Index,Icon,Name,Code
-1,,MG-43 Machine Gun,41423
-2,,APW-1 Anti-Materiel Rifle,41324
-3,,M-105 Stalwart,414221
-4,,EAT-17 Expendable Anti-Tank,44123
-5,,GR-8 Recoilless Rifle,41331
-6,,FLAM-40 Flamethrower,41242
-7,,AC-8 Autocannon,414223
-8,,MG-206 Heavy Machine Gun,41244
-9,,RL-77 Airburst Rocket Launcher,42213
-10,,MLS-4X Commando,41243
-11,,RS-422 Railgun,434213
-12,,FAF-14 Spear,44244
-13,,StA-X3 W.A.S.P. Launcher,44243
-14,,Orbital Gatling Barrage,34122
-15,,Orbital Airburst Strike,333
-16,,Orbital 120mm HE Barrage,334134
-17,,Orbital 380mm HE Barrage,3422144
-18,,Orbital Walking Barrage,343434
-19,,Orbital Laser,34234
-20,,Orbital Napalm Barrage,334132
-21,,Orbital Railcannon Strike,32443
-22,,Eagle Strafing Run,233
-23,,Eagle Airstrike,2343
-24,,Eagle Cluster Bomb,23443
-25,,Eagle Napalm Airstrike,2342
-26,,LIFT-850 Jump Pack,42242
-27,,Eagle Smoke Strike,2324
-28,,Eagle 110mm Rocket Pods,2321
-29,,Eagle 500kg Bomb,23444
-30,,M-102 Fast Recon Vehicle,1434342
-31,,Orbital Precision Strike,332
-32,,Orbital Gas Strike,3343
-33,,Orbital EMS Strike,3314
-34,,Orbital Smoke Strike,3342
-35,,E/MG-101 HMG Emplacement,421331
-36,,FX-12 Shield Generator Relay,441313
-37,,A/ARC-3 Tesla Tower,423213
-38,,E/GL-21 Grenadier Battlement,43413
-39,,MD-6 Anti-Personnel Minefield,4123
-40,,B-1 Supply Pack,414224
-41,,GL-21 Grenade Launcher,41214
-42,,LAS-98 Laser Cannon,41421
-43,,MD-I4 Incendiary Mines,4114
-44,,"AX/LAS-5 ""Guard Dog"" Rover",421233
-45,,SH-20 Ballistic Shield Backpack,414421
-46,,ARC-3 Arc Thrower,434211
-47,,MD-17 Anti-Tank Mines,4122
-48,,LAS-99 Quasar Cannon,44213
-49,,SH-32 Shield Generator Pack,421313
-50,,MD-8 Gas Mines,4113
-51,,A/MG-43 Machine Gun Sentry,42332
-52,,A/G-16 Gatling Sentry,4231
-53,,A/M-12 Mortar Sentry,42334
-54,,"AX/AR-23 ""Guard Dog""",421234
-55,,A/AC-8 Autocannon Sentry,423212
-56,,A/MLS-4X Rocket Sentry,42331
-57,,A/M-23 EMS Mortar Sentry,42343
-58,,EXO-45 Patriot Exosuit,1432144
-59,,EXO-49 Emancipator Exosuit,1432142
-60,,TX-41 Sterilizer,41241
-61,,"AX/TX-13 ""Guard Dog"" Dog Breath",421232
-62,,SH-51 Directional Shield,421322
-63,,E/AT-12 Anti-Tank Emplacement,421333
-64,,A/FLAM-40 Flame Sentry,423422
-65,,B-100 Portable Hellbomb,43222
-66,,LIFT-860 Hover Pack,422413
-67,,CQC-1 One True Flag,41332
-68,,GL-52 De-Escalator,43213
-69,,"AX/ARC-3 ""Guard Dog"" K-9",421231
-70,,PLAS-45 Epoch,41213
-71,,A/LAS-98 Laser Sentry,423423
-72,,LIFT-182 Warp Pack,413413
-73,,S-11 Speargun,434123
-74,,EAT-700 Expendable Napalm,44121
-75,,MS-11 Solo Silo,42344
-76,,M-1000 Maxigun,413422
-77,,CQC-9 Defoliation Tool,41334
-78,,"AX/FLAM-75 ""Guard Dog"" Hot Dog",421211
-79,,Reinforce,24312
-80,,SoS Beacon,2432
-81,,Resupply,4423
-82,,Eagle Rearm,22123
-83,,SSSD Delivery,44422
-84,,Prospecting Drill,441344
-85,,Super Earth Flag,4242
-86,,Hellbomb,42142342
-87,,Upload Data,13222
-88,,Seismic Probe,221344
-89,,Orbital Illumination Flare,3311
-90,,SEAF Artillery,3224
-91,,Dark Fluid Vessel,213422
-92,,Tectonic Drill,242424
-93,,Hive Breaker Drill,124344
-94,,Cargo Container,224434
+Index,Name,Code
+1,MG-43 Machine Gun,41423
+2,APW-1 Anti-Materiel Rifle,41324
+3,M-105 Stalwart,414221
+4,EAT-17 Expendable Anti-Tank,44123
+5,GR-8 Recoilless Rifle,41331
+6,FLAM-40 Flamethrower,41242
+7,AC-8 Autocannon,414223
+8,MG-206 Heavy Machine Gun,41244
+9,RL-77 Airburst Rocket Launcher,42213
+10,MLS-4X Commando,41243
+11,RS-422 Railgun,434213
+12,FAF-14 Spear,44244
+13,StA-X3 W.A.S.P. Launcher,44243
+14,Orbital Gatling Barrage,34122
+15,Orbital Airburst Strike,333
+16,Orbital 120mm HE Barrage,334134
+17,Orbital 380mm HE Barrage,3422144
+18,Orbital Walking Barrage,343434
+19,Orbital Laser,34234
+20,Orbital Napalm Barrage,334132
+21,Orbital Railcannon Strike,32443
+22,Eagle Strafing Run,233
+23,Eagle Airstrike,2343
+24,Eagle Cluster Bomb,23443
+25,Eagle Napalm Airstrike,2342
+26,LIFT-850 Jump Pack,42242
+27,Eagle Smoke Strike,2324
+28,Eagle 110mm Rocket Pods,2321
+29,Eagle 500kg Bomb,23444
+30,M-102 Fast Recon Vehicle,1434342
+31,TD-220 Bastion,143414242
+32,Orbital Precision Strike,332
+33,Orbital Gas Strike,3343
+34,Orbital EMS Strike,3314
+35,Orbital Smoke Strike,3342
+36,E/MG-101 HMG Emplacement,421331
+37,FX-12 Shield Generator Relay,441313
+38,A/ARC-3 Tesla Tower,423213
+39,E/GL-21 Grenadier Battlement,43413
+40,MD-6 Anti-Personnel Minefield,4123
+41,B-1 Supply Pack,414224
+42,GL-21 Grenade Launcher,41214
+43,LAS-98 Laser Cannon,41421
+44,MD-I4 Incendiary Mines,4114
+45,"AX/LAS-5 ""Guard Dog"" Rover",421233
+46,SH-20 Ballistic Shield Backpack,414421
+47,ARC-3 Arc Thrower,434211
+48,MD-17 Anti-Tank Mines,4122
+49,LAS-99 Quasar Cannon,44213
+50,SH-32 Shield Generator Pack,421313
+51,MD-8 Gas Mines,4113
+52,A/MG-43 Machine Gun Sentry,42332
+53,A/G-16 Gatling Sentry,4231
+54,A/M-12 Mortar Sentry,42334
+55,"AX/AR-23 ""Guard Dog""",421234
+56,A/AC-8 Autocannon Sentry,423212
+57,A/MLS-4X Rocket Sentry,42331
+58,A/M-23 EMS Mortar Sentry,42343
+59,EXO-45 Patriot Exosuit,1432144
+60,EXO-49 Emancipator Exosuit,1432142
+61,TX-41 Sterilizer,41241
+62,"AX/TX-13 ""Guard Dog"" Dog Breath",421232
+63,SH-51 Directional Shield,421322
+64,E/AT-12 Anti-Tank Emplacement,421333
+65,A/FLAM-40 Flame Sentry,423422
+66,B-100 Portable Hellbomb,43222
+67,LIFT-860 Hover Pack,422413
+68,CQC-1 One True Flag,41332
+69,GL-52 De-Escalator,43213
+70,"AX/ARC-3 ""Guard Dog"" K-9",421231
+71,PLAS-45 Epoch,41213
+72,A/LAS-98 Laser Sentry,423423
+73,LIFT-182 Warp Pack,413413
+74,S-11 Speargun,434123
+75,EAT-700 Expendable Napalm,44121
+76,MS-11 Solo Silo,42344
+77,M-1000 Maxigun,413422
+78,CQC-9 Defoliation Tool,41334
+79,"AX/FLAM-75 ""Guard Dog"" Hot Dog",421211
+80,B/MD C4 Pack,432232
+81,CQC-20 Breaching Hammer,41312
+82,EAT-411 Leveller,44124
+83,GL-28 Belt-Fed Grenade Launcher,412122
+84,Reinforce,24312
+85,SoS Beacon,2432
+86,Resupply,4423
+87,Eagle Rearm,22123
+88,SSSD Delivery,44422
+89,Prospecting Drill,441344
+90,Super Earth Flag,4242
+91,Hellbomb,42142342
+92,Upload Data,13222
+93,Seismic Probe,221344
+94,Dark Fluid Vessel,213422
+95,Tectonic Drill,242424
+96,Hive Breaker Drill,124344
+97,Cargo Container,224434
+98,Orbital Illumination Flare,3311
+99,SEAF Artillery,3224
+100,Call In Super Destroyer,22441313

@@ -26,7 +26,7 @@ def apply_sobel_feldman(img, ksize=3):
     return magnitude
 
 
-def cannyEdgeDetection(icon_region, source_img, threshold_low=50, threshold_high=150, confidence_threshold=0.4):
+def canny_edge_detection(icon_region, source_img, threshold_low=50, threshold_high=150, confidence_threshold=0.4):
     """
     Detect and find an icon using Canny edge detection combined with Sobel-Feldman method.
     
