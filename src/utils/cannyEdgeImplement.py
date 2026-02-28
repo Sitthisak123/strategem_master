@@ -56,13 +56,16 @@ def canny_edge_detection(icon_region, source_img, threshold_low=50, threshold_hi
     region_canny = cv2.Canny(icon_region, threshold_low, threshold_high)
     screen_edges = cv2.bitwise_or(region_sobel, region_canny)
 
-    # --- MULTI-SCALE MATCHING ---
+    # --- MULTI-SCALE MATCHING (OPTIMIZED) ---
     best_val = -1
     best_loc = None
     best_scale = None
     best_size = None
 
-    for scale in np.linspace(0.5, 2.5, 40):
+    # Reduced from 40 to 12 scales with focus on realistic matching range
+    scales = np.linspace(0.7, 1.8, 12)
+    
+    for scale in scales:
         resized = cv2.resize(
             icon_edges,
             None,
@@ -89,6 +92,10 @@ def canny_edge_detection(icon_region, source_img, threshold_low=50, threshold_hi
             best_loc = max_loc
             best_scale = scale
             best_size = (w, h)
+            
+            # Early termination for very good matches
+            if best_val > 0.85:
+                break
 
     # --- RETURN RESULT ---
     return {

@@ -14,6 +14,8 @@ from overlay_window import OverlayWindow
 from icon_regions_overlay import IconRegionsOverlay
 from src.utils.cannyEdgeImplement import canny_edge_detection
 import functools
+from threading import Thread
+from queue import Queue, Empty as QueueEmpty
 
 # Setup directories and CSV
 IMG_DIR = "./img"
@@ -23,21 +25,24 @@ pyautogui.PAUSE = 0.03  # Reduced delay between PyAutoGUI actions
 # Icon size constraints (in pixels)
 MIN_ICON_SIZE = 30
 MAX_ICON_SIZE = 150
-ICON_PADDING = 20  # Padding in pixels around detected icons
+ICON_PADDING = 1  # Padding in pixels around detected icons
 
 # hotkeys
 EXIT_KEYS = "ctrl+c"
 REINFORCE_KEYS = {
     "name": "reinforce",
-    "key": "g"
+    "key": "g",
+    "sequence": "13222"  # Reinforcement Pods
 }
 SUPPLY_KEYS = {
     "name": "resupply",
-    "key": "v"
+    "key": "v",
+    "sequence": "4423"  # Resupply
 }
 EAGLE_REARM_KEYS = {
     "name": "eagle rearm",
-    "key": "q"
+    "key": "q",
+    "sequence": "22123"  # Eagle Rearm
 }
 
 TOP_ROW_KEYS = {
@@ -57,6 +62,9 @@ TOP_ROW_KEYS = {
 ALLOW_KEYS = [REINFORCE_KEYS, SUPPLY_KEYS, EAGLE_REARM_KEYS]
 
 TEMPLATES = {} 
+SCREENSHOT_QUEUE = Queue(maxsize=2)  # Cache last 2 screenshots
+LAST_SCREENSHOT_TIME = 0
+SCREENSHOT_CACHE_TIMEOUT = 0.5  # Cache for 500ms 
 
 def load_strategems_and_templates():
     """โหลดข้อมูลจาก CSV และโหลดรูปภาพ Template เข้า Memory"""
@@ -218,33 +226,54 @@ def run_canny_edge_detection(screenshot):
     """
     Detects strategems from a screenshot by matching detected icon regions
     against pre-loaded templates using Canny edge detection.
+    
+    Optimized with early termination and score-based prioritization.
     """
     detected_stgs = []
     # Crop the screenshot to the HUD area where strategem icons appear.
     screenshot_hud = screenshot[30:800, 30:600]
     icon_boxes = detect_strategem_icons(screenshot_hud)
     
+    # Debug: Report what we found
+    if not icon_boxes:
+        print(f"[DEBUG] No icon boxes detected in HUD region. Frame shape: {screenshot.shape}")
+    if not TEMPLATES:
+        print(f"[DEBUG] No templates loaded. TEMPLATES size: {len(TEMPLATES)}")
+    
     if not icon_boxes or not TEMPLATES:
         return detected_stgs
 
+    print(f"[DEBUG] Found {len(icon_boxes)} icon boxes, checking against {len(TEMPLATES)} templates")
     matched_codes = set()
 
-    # Iterate through each detected icon box.
-    for y, x, w, h, icon_region in icon_boxes:
+    # Skip first 3 icons (default slots 0-2), start from index 3 onwards (custom slot 4)
+    custom_slot_icons = icon_boxes[3:] if len(icon_boxes) > 3 else []
+    
+    # Iterate through each detected icon box (skip default slots).
+    for idx, (y, x, w, h, icon_region) in enumerate(custom_slot_icons, start=3):
         best_score = MATCH_THRESHOLD
         best_entry = None
+        
+        # Pre-filter templates by code to avoid re-matching already detected strategems
+        available_templates = {code: tmpl for code, tmpl in TEMPLATES.items() 
+                              if code not in matched_codes}
+        
+        if not available_templates:
+            print(f"[DEBUG] No more available templates at icon {idx}")
+            break
 
-        # Compare the icon region against all loaded strategem templates.
-        for code, template_img in TEMPLATES.items():
-            if code in matched_codes:
-                continue
-            
+        # Compare the icon region against available strategem templates.
+        for code, template_img in available_templates.items():
             # Use Canny edge detection to get a similarity score.
             res = canny_edge_detection(icon_region, template_img)
             
             if res['score'] > best_score:
                 best_score = res['score']
                 best_entry = strategems_all[code]
+                
+                # Early termination for very confident matches (>0.80 confidence)
+                if best_score > 0.80:
+                    break
 
         # If a match is found, add it to the list of detected strategems.
         if best_entry:
@@ -252,34 +281,67 @@ def run_canny_edge_detection(screenshot):
             entry_copy = best_entry.copy()
             entry_copy['confidence'] = best_score
             detected_stgs.append(entry_copy)
+            print(f"[DEBUG] Icon {idx}: Matched {best_entry['name']} (confidence: {best_score:.3f})")
+        else:
+            print(f"[DEBUG] Icon {idx}: No match found (best score: {best_score:.3f})")
 
     # Return the last 4 detected strategems, as that's the max in the game.
-    return detected_stgs[-4:] if len(detected_stgs) > 4 else detected_stgs
+    result = detected_stgs[-4:] if len(detected_stgs) > 4 else detected_stgs
+    return result
 
 
 strategems_current = []
 
+def screenshot_worker_thread(overlay_window):
+    """Background thread for screenshot capture and detection"""
+    global strategems_current
+    
+    while True:
+        try:
+            frame = SCREENSHOT_QUEUE.get(timeout=0.1)
+            if frame is None:
+                break
+                
+            # Run template matching detection
+            stg_in_slot = run_canny_edge_detection(frame)
+            
+            # Update global variable (thread-safe: atomic list replacement)
+            strategems_current = stg_in_slot
+            
+            # Update UI on main thread
+            QTimer.singleShot(0, functools.partial(
+                overlay_window.update_labels, stg_in_slot))
+            
+            print(f"\nDetected {len(stg_in_slot)} strategems:")
+            for s in stg_in_slot:
+                print(f"  - {s['name']}")
+        except QueueEmpty:
+            # This is normal - queue is empty, wait for next frame
+            continue
+        except Exception as e:
+            print(f"[Worker Thread ERROR] {type(e).__name__}: {e}")
+            import traceback
+            traceback.print_exc()
 
 def on_screenshot(overlay_window):
     global strategems_current
+    
     # Show loading state
     QTimer.singleShot(0, functools.partial(overlay_window.update_labels, loading=True))
     QApplication.processEvents()
     
-    # Capture Helldivers 2 window
+    # Capture Helldivers 2 window asynchronously
     frame = capture_helldivers_window()
     if frame is None:
         print("Failed to capture window. Falling back to full screen.")
         screenshot = pyautogui.screenshot()
         frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     
-    # Run template matching detection
-    stg_in_slot = run_canny_edge_detection(frame)
-    strategems_current = stg_in_slot
-    
-    # Update overlay with detected strategems
-    QTimer.singleShot(0, functools.partial(overlay_window.update_labels, stg_in_slot))
-    print(f"Detected {len(strategems_current)} strategems")
+    # Queue for background processing
+    try:
+        SCREENSHOT_QUEUE.put_nowait(frame)
+    except:
+        pass  # Queue full, skip frame
 
 
 def strategem_operator(key_sequence):
@@ -361,12 +423,15 @@ def handle_debug_overlay_hotkey(icon_overlay):
     return False
 
 def handle_quick_access_hotkeys():
-    """Handles the quick-access strategem hotkeys."""
+    """Handles the quick-access strategem hotkeys using hardcoded sequences."""
     for ckey in ALLOW_KEYS:
         if keyboard.is_pressed(f'ctrl+{ckey["key"]}'):
-            strategem_name = ckey["name"].lower()
-            if strategem_name in strategems_by_name:
-                strategem_operator(strategems_by_name[strategem_name]['key'])
+            sequence = ckey.get("sequence")
+            if sequence:
+                print(f"[Hotkey] Activating {ckey['name'].title()} → {sequence}")
+                strategem_operator(sequence)
+            else:
+                print(f"[Hotkey] Error: No sequence defined for '{ckey['name']}'")
             return True
     return False
 
@@ -434,6 +499,10 @@ def main():
     overlay_window.show()
     icon_overlay = IconRegionsOverlay()
     icon_overlay.hide()
+    
+    # Start background worker thread for detection
+    worker_thread = Thread(target=screenshot_worker_thread, args=(overlay_window,), daemon=True)
+    worker_thread.start()
     
     keyboard.hook(lambda event: check_hotkey(overlay_window, icon_overlay, event))
     sys.exit(app.exec_())

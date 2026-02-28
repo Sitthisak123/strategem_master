@@ -62,64 +62,78 @@ def setup_environment(logger):
     os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
 
 def fetch_strategem_data(logger):
-    """2. Scrape data from Wiki - MORE ROBUST"""
+    """2. Scrape data from Wiki - MORE ROBUST with retry logic"""
     logger.info(f"Fetching data from {WIKI_URL}...")
     direction_map = {'LEFT': '1', 'UP': '2', 'RIGHT': '3', 'DOWN': '4'}
     extracted_data = []
     
-    try:
-        response = requests.get(WIKI_URL, timeout=15)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        tables = soup.find_all('table', class_='wikitable')
-        
-        if not tables:
-            logger.error("[!] Critical Error: No tables with class 'wikitable' found on the page.")
-            logger.error("    The website's HTML structure may have changed, preventing data scraping.")
-            return {}
+    max_retries = 3
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            response = requests.get(WIKI_URL, timeout=20)  # Increased timeout from 15 to 20
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+            tables = soup.find_all('table', class_='wikitable')
+            
+            if not tables:
+                logger.error("[!] Critical Error: No tables with class 'wikitable' found on the page.")
+                logger.error("    The website's HTML structure may have changed, preventing data scraping.")
+                return {}
 
-        global_index = 1
-        for table in tables:
-            for row in table.find_all('tr'):
-                cells = row.find_all(['td', 'th'])
-                if len(cells) < 2: continue
+            global_index = 1
+            for table in tables:
+                for row in table.find_all('tr'):
+                    cells = row.find_all(['td', 'th'])
+                    if len(cells) < 2: continue
 
-                code_cell, name_cell = None, None
-                for i, cell in enumerate(cells):
-                    if cell.find('span', class_='Stratagemcodeicon'):
-                        code_cell = cell
-                        if i > 0: name_cell = cells[i-1]
-                        break
+                    code_cell, name_cell = None, None
+                    for i, cell in enumerate(cells):
+                        if cell.find('span', class_='Stratagemcodeicon'):
+                            code_cell = cell
+                            if i > 0: name_cell = cells[i-1]
+                            break
+                    
+                    if code_cell and name_cell:
+                        name = name_cell.get_text(strip=True)
+                        arrow_imgs = code_cell.find_all('img')
+                        if not name or not arrow_imgs or len(name) > 40 or any(x in name for x in ['Cooldown', 'Cost', 'Uses']):
+                            continue
+
+                        code = "".join([direction_map[re.search(r'Arrow\s(\w+)', img.get('alt', ''), re.I).group(1).upper()] 
+                                       for img in arrow_imgs if re.search(r'Arrow\s(\w+)', img.get('alt', ''), re.I)])
+                        if name and code:
+                            extracted_data.append({"Index": global_index, "Name": name, "Code": code})
+                            global_index += 1
+            
+            if not extracted_data:
+                logger.warning("[!] Warning: Found tables but could not extract any strategem data.")
+                logger.warning("    The internal structure of the tables may have changed.")
+                return {}
+
+            with open(CSV_PATH, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=["Index", "Name", "Code"])
+                writer.writeheader()
+                writer.writerows(extracted_data)
+            logger.info(f"[✓] Saved {len(extracted_data)} items to CSV.")
+            return {d['Name'].lower().replace(' ', ''): d for d in extracted_data}
+            
+        except requests.Timeout:
+            retry_count += 1
+            if retry_count < max_retries:
+                logger.warning(f"[!] Request timeout. Retrying ({retry_count}/{max_retries})...")
+                time.sleep(2)  # Wait 2 seconds before retrying
+            else:
+                logger.error(f"[!] Network Timeout: Failed to fetch data after {max_retries} attempts.")
+                return {}
                 
-                if code_cell and name_cell:
-                    name = name_cell.get_text(strip=True)
-                    arrow_imgs = code_cell.find_all('img')
-                    if not name or not arrow_imgs or len(name) > 40 or any(x in name for x in ['Cooldown', 'Cost', 'Uses']):
-                        continue
-
-                    code = "".join([direction_map[re.search(r'Arrow\s(\w+)', img.get('alt', ''), re.I).group(1).upper()] 
-                                   for img in arrow_imgs if re.search(r'Arrow\s(\w+)', img.get('alt', ''), re.I)])
-                    if name and code:
-                        extracted_data.append({"Index": global_index, "Name": name, "Code": code})
-                        global_index += 1
-        
-        if not extracted_data:
-            logger.warning("[!] Warning: Found tables but could not extract any strategem data.")
-            logger.warning("    The internal structure of the tables may have changed.")
+        except requests.RequestException as e:
+            logger.error(f"[!] Network Error: Failed to fetch data from {WIKI_URL}. Reason: {e}")
             return {}
-
-        with open(CSV_PATH, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=["Index", "Name", "Code"])
-            writer.writeheader()
-            writer.writerows(extracted_data)
-        logger.info(f"[✓] Saved {len(extracted_data)} items to CSV.")
-        return {d['Name'].lower().replace(' ', ''): d for d in extracted_data}
-    except requests.RequestException as e:
-        logger.error(f"[!] Network Error: Failed to fetch data from {WIKI_URL}. Reason: {e}")
-        return {}
-    except Exception as e:
-        logger.error(f"[!] Unknown Error during web scraping: {e}", exc_info=True)
-        return {}
+        except Exception as e:
+            logger.error(f"[!] Unknown Error during web scraping: {e}", exc_info=True)
+            return {}
 
 def extract_and_save_icons(logger, all_strategems):
     """3. OCR and Extract Icons, then log missing ones"""
