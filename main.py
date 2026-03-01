@@ -32,17 +32,17 @@ EXIT_KEYS = "ctrl+c"
 REINFORCE_KEYS = {
     "name": "reinforce",
     "key": "g",
-    "sequence": "13222"  # Reinforcement Pods
+    "sequence": "13222"
 }
 SUPPLY_KEYS = {
     "name": "resupply",
     "key": "v",
-    "sequence": "4423"  # Resupply
+    "sequence": "4423"
 }
 EAGLE_REARM_KEYS = {
     "name": "eagle rearm",
     "key": "q",
-    "sequence": "22123"  # Eagle Rearm
+    "sequence": "22123"
 }
 
 TOP_ROW_KEYS = {
