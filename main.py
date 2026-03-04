@@ -246,8 +246,8 @@ def run_canny_edge_detection(screenshot):
     print(f"[DEBUG] Found {len(icon_boxes)} icon boxes, checking against {len(TEMPLATES)} templates")
     matched_codes = set()
 
-    # Skip first 3 icons (default slots 0-2), start from index 3 onwards (custom slot 4)
-    custom_slot_icons = icon_boxes[1:] if len(icon_boxes) > 2 else []
+    # Skip first 2 icons (default slots 0-1), start from index 2 onwards (custom slot 4)
+    custom_slot_icons = icon_boxes[2:] if len(icon_boxes) > 2 else []
     
     # Iterate through each detected icon box (skip default slots).
     for idx, (y, x, w, h, icon_region) in enumerate(custom_slot_icons, start=3):
