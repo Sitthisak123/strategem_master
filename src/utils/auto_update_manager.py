@@ -7,7 +7,7 @@ from automation_pipeline import main_pipeline
 
 # Configuration
 WIKI_URL = "https://helldivers.wiki.gg/wiki/Stratagems"
-VERSION_FILE = "../../version.txt"
+VERSION_FILE = "./version.txt"
 
 def get_remote_last_modified(url):
     """ตรวจสอบเวลาอัปเดตล่าสุดจาก Header ของเว็บไซต์"""

@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 
 # Setup pytesseract (change path if needed)
-pytesseract.pytesseract.tesseract_cmd = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r":\My Programs\Tesseract-OCR\tesseract.exe"
 gap = 0.22  # gap from left edge to start of text area
 
 # Directories

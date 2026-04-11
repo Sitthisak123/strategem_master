@@ -19,39 +19,39 @@ Index,Name,Code
 18,CQC-20 Breaching Hammer,41312
 19,PLAS-45 Epoch,41213
 20,S-11 Speargun,434123
-21,CQC-9 Defoliation Tool,41334
+21,EAT-700 Expendable Napalm,44121
 22,EAT-411 Leveller,44124
-23,TX-41 Sterilizer,41241
-24,GL-52 De-Escalator,43213
-25,EAT-700 Expendable Napalm,44121
+23,GL-52 De-Escalator,43213
+24,CQC-9 Defoliation Tool,41334
+25,TX-41 Sterilizer,41241
 26,GL-28 Belt-Fed Grenade Launcher,412122
-27,M-1000 Maxigun,413422
-28,MS-11 Solo Silo,42344
-29,CQC-1 One True Flag,41332
+27,MS-11 Solo Silo,42344
+28,B/FLAM-80 Cremator,443422
+29,M-1000 Maxigun,413422
 30,B/MD C4 Pack,432232
-31,Orbital Precision Strike,332
-32,Orbital Gatling Barrage,34122
-33,Orbital Gas Strike,3343
-34,Orbital 120mm HE Barrage,334134
-35,Orbital Airburst Strike,333
-36,Orbital Smoke Strike,3342
-37,Orbital EMS Strike,3314
-38,Orbital 380mm HE Barrage,3422144
-39,Orbital Walking Barrage,343434
-40,Orbital Laser,34234
-41,Orbital Napalm Barrage,334132
-42,Orbital Railcannon Strike,32443
-43,Eagle Strafing Run,233
-44,Eagle Airstrike,2343
-45,Eagle Cluster Bomb,23443
-46,Eagle Smoke Strike,2324
-47,Eagle Napalm Airstrike,2342
-48,Eagle 110mm Rocket Pods,2321
-49,Eagle 500kg Bomb,23444
-50,MD-6 Anti-Personnel Minefield,4123
-51,MD-I4 Incendiary Mines,4114
-52,MD-17 Anti-Tank Mines,4122
-53,A/ARC-3 Tesla Tower,423213
+31,CQC-1 One True Flag,41332
+32,Orbital Precision Strike,332
+33,Orbital Gatling Barrage,34122
+34,Orbital Gas Strike,3343
+35,Orbital 120mm HE Barrage,334134
+36,Orbital Airburst Strike,333
+37,Orbital Smoke Strike,3342
+38,Orbital EMS Strike,3314
+39,Orbital 380mm HE Barrage,3422144
+40,Orbital Walking Barrage,343434
+41,Orbital Laser,34234
+42,Orbital Napalm Barrage,334132
+43,Orbital Railcannon Strike,32443
+44,Eagle Strafing Run,233
+45,Eagle Airstrike,2343
+46,Eagle Cluster Bomb,23443
+47,Eagle Smoke Strike,2324
+48,Eagle Napalm Airstrike,2342
+49,Eagle 110mm Rocket Pods,2321
+50,Eagle 500kg Bomb,23444
+51,MD-6 Anti-Personnel Minefield,4123
+52,MD-I4 Incendiary Mines,4114
+53,MD-17 Anti-Tank Mines,4122
 54,FX-12 Shield Generator Relay,441313
 55,E/MG-101 HMG Emplacement,421331
 56,E/GL-21 Grenadier Battlement,43413
@@ -62,40 +62,43 @@ Index,Name,Code
 61,A/AC-8 Autocannon Sentry,423212
 62,A/M-12 Mortar Sentry,42334
 63,A/MLS-4X Rocket Sentry,42331
-64,A/M-23 EMS Mortar Sentry,42343
-65,A/LAS-98 Laser Sentry,423423
-66,A/FLAM-40 Flame Sentry,423422
-67,B-1 Supply Pack,414224
-68,LIFT-850 Jump Pack,42242
-69,SH-20 Ballistic Shield Backpack,414421
-70,AX/AR-23 Guard Dog,421234
-71,AX/LAS-5 Rover,421233
-72,SH-32 Shield Generator Pack,421313
-73,SH-51 Directional Shield,421322
-74,AX/FLAM-75 Hot Dog,421211
-75,B-100 Portable Hellbomb,43222
-76,AX/ARC-3 K-9,421231
-77,LIFT-860 Hover Pack,422413
-78,AX/TX-13 Dog Breath,421232
-79,LIFT-182 Warp Pack,413413
-80,EXO-45 Patriot Exosuit,1432144
-81,EXO-49 Emancipator Exosuit,1432142
-82,M-102 Fast Recon Vehicle,1434342
-83,TD-220 Bastion MK XVI,143414242
-84,SoS Beacon,2432
-85,Eagle Rearm,22123
-86,Call In Super Destroyer,22441313
-87,NUX-223 Hellbomb,42142342
-88,Dark Fluid Vessel,213422
-89,Tectonic Drill,242424
-90,Hive Breaker Drill,124344
-91,Seismic Probe,221344
-92,Super Earth Flag,4242
-93,Prospecting Drill,441344
-94,SSSD Delivery,4444422
-95,SEAF Artillery,3224
-96,Upload Data,13222
-97,Reinforcement Pods,13222
-98,Cargo Container,224434
-99,Orbital Illumination Flare,3311
-100,Resupply,4423
+64,A/ARC-3 Tesla Tower,423213
+65,A/M-23 EMS Mortar Sentry,42343
+66,A/LAS-98 Laser Sentry,423423
+67,A/FLAM-40 Flame Sentry,423422
+68,A/GM-17 Gas Mortar Sentry,42341
+69,B-1 Supply Pack,414224
+70,LIFT-850 Jump Pack,42242
+71,SH-20 Ballistic Shield Backpack,414421
+72,AX/AR-23 Guard Dog,421234
+73,AX/LAS-5 Rover,421233
+74,SH-32 Shield Generator Pack,421313
+75,SH-51 Directional Shield,421322
+76,AX/FLAM-75 Hot Dog,421211
+77,B-100 Portable Hellbomb,43222
+78,AX/ARC-3 K-9,421231
+79,LIFT-860 Hover Pack,422413
+80,AX/TX-13 Dog Breath,421232
+81,LIFT-182 Warp Pack,413413
+82,EXO-45 Patriot Exosuit,1432144
+83,EXO-49 Emancipator Exosuit,1432142
+84,M-102 Fast Recon Vehicle,1434342
+85,TD-220 Bastion MK XVI,143414242
+86,SoS Beacon,2432
+87,Eagle Rearm,22123
+88,Call In Super Destroyer,22441313
+89,Reinforce,24312
+90,Resupply,4423
+91,Dark Fluid Vessel,213422
+92,Tectonic Drill,242424
+93,Hive Breaker Drill,124344
+94,Seismic Probe,221344
+95,Super Earth Flag,4242
+96,Prospecting Drill,441344
+97,SSSD Delivery,4444422
+98,SEAF Artillery,3224
+99,Upload Data,13222
+100,Cargo Container,224434
+101,NUX-223 Hellbomb,42142342
+102,Reinforcement Pods,13222
+103,Orbital Illumination Flare,3311

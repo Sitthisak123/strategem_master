@@ -1,284 +1,291 @@
-[2026-03-01 01:27:47] === Helldivers 2 Asset Pipeline Starting ===
-[2026-03-01 01:27:47] Cleaning up directory: ./img
-[2026-03-01 01:27:47] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
-[2026-03-01 01:27:48] [✓] Saved 99 items to CSV.
-[2026-03-01 01:27:48] 
+[2026-03-20 19:41:24] === Helldivers 2 Asset Pipeline Starting ===
+[2026-03-20 19:41:24] Cleaning up directory: ./img
+[2026-03-20 19:41:24] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
+[2026-03-20 19:41:25] [✓] Saved 103 items to CSV.
+[2026-03-20 19:41:25] 
 [*] Starting icon extraction process...
-[2026-03-01 01:27:48] 
+[2026-03-20 19:41:25] 
 [1/20] Processing: 1-0.png
-[2026-03-01 01:27:49]   Detected: 'ORBITALLASER1H,' → Orbital Laser (Index: 40)
-[2026-03-01 01:27:49]   Detected: 'ROCHETSENTRY_' → A/MLS-4X Rocket Sentry (Index: 63)
-[2026-03-01 01:27:50]   Detected: 'SOLOSILOASORD' → MS-11 Solo Silo (Index: 28)
-[2026-03-01 01:27:50]   Detected: 'EAGLE500KGBOMBNS' → Eagle 500kg Bomb (Index: 49)
-[2026-03-01 01:27:50]   Detected: 'EAGLEREARM' → Eagle Rearm (Index: 85)
-[2026-03-01 01:27:50]   Detected: 'EAGLENAPALMAIRSTRIRE|' → Eagle Napalm Airstrike (Index: 47)
-[2026-03-01 01:27:51]   Detected: 'RESUPPLYA' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:27:51]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:27:51]   Detected: 'REINFORCEMANA' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:27:51]   Saved: 34234.png
-[2026-03-01 01:27:51]   Saved: 42331.png
-[2026-03-01 01:27:51]   Saved: 42344.png
-[2026-03-01 01:27:51]   Saved: 23444.png
-[2026-03-01 01:27:51]   Saved: 22123.png
-[2026-03-01 01:27:51]   Saved: 2342.png
-[2026-03-01 01:27:51]   Saved: 414224.png
-[2026-03-01 01:27:51]   Saved: 2432.png
-[2026-03-01 01:27:51]   Saved: 13222.png
-[2026-03-01 01:27:51]   ✓ Extracted 9 new icon(s)
-[2026-03-01 01:27:51] 
+[2026-03-20 19:41:26]   Detected: 'ORBITALLASER1H,' → Orbital Laser (Index: 41)
+[2026-03-20 19:41:27]   Detected: 'ROCHETSENTRY_' → A/MLS-4X Rocket Sentry (Index: 63)
+[2026-03-20 19:41:27]   Detected: 'SOLOSILOASORD' → MS-11 Solo Silo (Index: 27)
+[2026-03-20 19:41:28]   Detected: 'EAGLE500KGBOMBNS' → Eagle 500kg Bomb (Index: 50)
+[2026-03-20 19:41:28]   Detected: 'EAGLEREARM' → Eagle Rearm (Index: 87)
+[2026-03-20 19:41:28]   Detected: 'EAGLENAPALMAIRSTRIRE|' → Eagle Napalm Airstrike (Index: 48)
+[2026-03-20 19:41:29]   Detected: 'RESUPPLYA' → Resupply (Index: 90)
+[2026-03-20 19:41:29]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:30]   Detected: 'REINFORCEMANA' → Reinforce (Index: 89)
+[2026-03-20 19:41:30]   Saved: 34234.png
+[2026-03-20 19:41:30]   Saved: 42331.png
+[2026-03-20 19:41:30]   Saved: 42344.png
+[2026-03-20 19:41:30]   Saved: 23444.png
+[2026-03-20 19:41:30]   Saved: 22123.png
+[2026-03-20 19:41:30]   Saved: 2342.png
+[2026-03-20 19:41:30]   Saved: 4423.png
+[2026-03-20 19:41:30]   Saved: 2432.png
+[2026-03-20 19:41:30]   Saved: 24312.png
+[2026-03-20 19:41:30]   ✓ Extracted 9 new icon(s)
+[2026-03-20 19:41:30] 
 [2/20] Processing: 1-1.png
-[2026-03-01 01:27:52]   Detected: 'ORBITALNAPALMBARRAGE' → Orbital Napalm Barrage (Index: 41)
-[2026-03-01 01:27:52]   Detected: 'ORBITALAIRBURSTSTRIKE9)=' → Orbital Airburst Strike (Index: 35)
-[2026-03-01 01:27:52]   Detected: 'ORBITALGATLINGBARRAGE/|2)')&' → Orbital Gatling Barrage (Index: 32)
-[2026-03-01 01:27:52]   Detected: 'ORBITALPRECISIONSTRIKE5.=5' → Orbital Precision Strike (Index: 31)
-[2026-03-01 01:27:53]   Detected: 'SOSBEACONEE”' → SoS Beacon (Index: 84)
-[2026-03-01 01:27:53]   Detected: 'REINFORCE»EE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:27:53]   Saved: 334132.png
-[2026-03-01 01:27:53]   Saved: 333.png
-[2026-03-01 01:27:53]   Saved: 34122.png
-[2026-03-01 01:27:53]   Saved: 332.png
-[2026-03-01 01:27:53]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:27:53] 
+[2026-03-20 19:41:30]   Detected: 'ORBITALNAPALMBARRAGE' → Orbital Napalm Barrage (Index: 42)
+[2026-03-20 19:41:31]   Detected: 'ORBITALAIRBURSTSTRIKE9)=' → Orbital Airburst Strike (Index: 36)
+[2026-03-20 19:41:31]   Detected: 'ORBITALGATLINGBARRAGE/|2)')&' → Orbital Gatling Barrage (Index: 33)
+[2026-03-20 19:41:31]   Detected: 'ORBITALPRECISIONSTRIKE5.=5' → Orbital Precision Strike (Index: 32)
+[2026-03-20 19:41:32]   Detected: 'RESUPPLYOE' → Resupply (Index: 90)
+[2026-03-20 19:41:32]   Detected: 'SOSBEACONEE”' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:32]   Detected: 'REINFORCE»EE' → Reinforce (Index: 89)
+[2026-03-20 19:41:32]   Saved: 334132.png
+[2026-03-20 19:41:32]   Saved: 333.png
+[2026-03-20 19:41:32]   Saved: 34122.png
+[2026-03-20 19:41:32]   Saved: 332.png
+[2026-03-20 19:41:32]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:41:32] 
 [3/20] Processing: 1-2.png
-[2026-03-01 01:27:54]   Detected: 'ORBITALRAILCANNONSTRIRE' → Orbital Railcannon Strike (Index: 42)
-[2026-03-01 01:27:54]   Detected: 'ORBITAL380MMHEBARRAGE' → Orbital 380mm HE Barrage (Index: 38)
-[2026-03-01 01:27:54]   Detected: 'ORBITALWALKINGBARRAGE' → Orbital Walking Barrage (Index: 39)
-[2026-03-01 01:27:54]   Detected: 'ORBITAL120MMHEBARRAGE' → Orbital 120mm HE Barrage (Index: 34)
-[2026-03-01 01:27:55]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:27:55]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:27:55]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:27:55]   Saved: 32443.png
-[2026-03-01 01:27:55]   Saved: 3422144.png
-[2026-03-01 01:27:55]   Saved: 343434.png
-[2026-03-01 01:27:55]   Saved: 334134.png
-[2026-03-01 01:27:55]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:27:55] 
+[2026-03-20 19:41:33]   Detected: 'ORBITALRAILCANNONSTRIRE' → Orbital Railcannon Strike (Index: 43)
+[2026-03-20 19:41:33]   Detected: 'ORBITAL380MMHEBARRAGE' → Orbital 380mm HE Barrage (Index: 39)
+[2026-03-20 19:41:34]   Detected: 'ORBITALWALKINGBARRAGE' → Orbital Walking Barrage (Index: 40)
+[2026-03-20 19:41:34]   Detected: 'ORBITAL120MMHEBARRAGE' → Orbital 120mm HE Barrage (Index: 35)
+[2026-03-20 19:41:34]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:41:35]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:35]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:41:35]   Saved: 32443.png
+[2026-03-20 19:41:35]   Saved: 3422144.png
+[2026-03-20 19:41:35]   Saved: 343434.png
+[2026-03-20 19:41:35]   Saved: 334134.png
+[2026-03-20 19:41:35]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:41:35] 
 [4/20] Processing: 1-3.png
-[2026-03-01 01:27:56]   Detected: 'EAGLESTRAFINGRUN' → Eagle Strafing Run (Index: 43)
-[2026-03-01 01:27:56]   Detected: 'EAGLESTRAFINGRUN' → Eagle Strafing Run (Index: 43)
-[2026-03-01 01:27:56]   Detected: 'ORBITALSMOHESTRIKE' → Orbital Smoke Strike (Index: 36)
-[2026-03-01 01:27:57]   Detected: 'ORBITALGASSTRIKE' → Orbital Gas Strike (Index: 33)
-[2026-03-01 01:27:57]   Detected: 'ORBITALEMSSTRIKE' → Orbital EMS Strike (Index: 37)
-[2026-03-01 01:27:57]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:27:57]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:27:58]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:27:58]   Saved: 233.png
-[2026-03-01 01:27:58]   Saved: 3342.png
-[2026-03-01 01:27:58]   Saved: 3343.png
-[2026-03-01 01:27:58]   Saved: 3314.png
-[2026-03-01 01:27:58]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:27:58] 
+[2026-03-20 19:41:35]   Detected: 'EAGLESTRAFINGRUN' → Eagle Strafing Run (Index: 44)
+[2026-03-20 19:41:36]   Detected: 'EAGLESTRAFINGRUN' → Eagle Strafing Run (Index: 44)
+[2026-03-20 19:41:36]   Detected: 'ORBITALSMOHESTRIKE' → Orbital Smoke Strike (Index: 37)
+[2026-03-20 19:41:36]   Detected: 'ORBITALGASSTRIKE' → Orbital Gas Strike (Index: 34)
+[2026-03-20 19:41:37]   Detected: 'ORBITALEMSSTRIKE' → Orbital EMS Strike (Index: 38)
+[2026-03-20 19:41:37]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:41:37]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:37]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:41:37]   Saved: 233.png
+[2026-03-20 19:41:37]   Saved: 3342.png
+[2026-03-20 19:41:37]   Saved: 3343.png
+[2026-03-20 19:41:37]   Saved: 3314.png
+[2026-03-20 19:41:37]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:41:37] 
 [5/20] Processing: 1-4.png
-[2026-03-01 01:27:58]   Detected: 'EAGLESMORESTRIKE"' → Eagle Smoke Strike (Index: 46)
-[2026-03-01 01:27:58]   Detected: 'EAGLESMORESTRIKE“4' → Eagle Smoke Strike (Index: 46)
-[2026-03-01 01:27:59]   Detected: 'EAGLECLUSTERBOMB' → Eagle Cluster Bomb (Index: 45)
-[2026-03-01 01:27:59]   Detected: 'EAGLECLUSTERBOMB' → Eagle Cluster Bomb (Index: 45)
-[2026-03-01 01:28:00]   Detected: 'EAGLEAIRSTRIKE' → Eagle Airstrike (Index: 44)
-[2026-03-01 01:28:00]   Detected: 'EAGLEAIRSTRIKE' → Eagle Airstrike (Index: 44)
-[2026-03-01 01:28:01]   Detected: 'EAGLE110MMROCHETPODS' → Eagle 110mm Rocket Pods (Index: 48)
-[2026-03-01 01:28:01]   Detected: 'EAGLE110MMROCHETPODS' → Eagle 110mm Rocket Pods (Index: 48)
-[2026-03-01 01:28:02]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:02]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:02]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:02]   Saved: 2324.png
-[2026-03-01 01:28:02]   Saved: 23443.png
-[2026-03-01 01:28:02]   Saved: 2343.png
-[2026-03-01 01:28:02]   Saved: 2321.png
-[2026-03-01 01:28:02]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:02] 
+[2026-03-20 19:41:38]   Detected: 'EAGLESMORESTRIKE"' → Eagle Smoke Strike (Index: 47)
+[2026-03-20 19:41:38]   Detected: 'EAGLESMORESTRIKE“4' → Eagle Smoke Strike (Index: 47)
+[2026-03-20 19:41:39]   Detected: 'EAGLECLUSTERBOMB' → Eagle Cluster Bomb (Index: 46)
+[2026-03-20 19:41:39]   Detected: 'EAGLECLUSTERBOMB' → Eagle Cluster Bomb (Index: 46)
+[2026-03-20 19:41:39]   Detected: 'EAGLEAIRSTRIKE' → Eagle Airstrike (Index: 45)
+[2026-03-20 19:41:40]   Detected: 'EAGLEAIRSTRIKE' → Eagle Airstrike (Index: 45)
+[2026-03-20 19:41:40]   Detected: 'EAGLE110MMROCHETPODS' → Eagle 110mm Rocket Pods (Index: 49)
+[2026-03-20 19:41:40]   Detected: 'EAGLE110MMROCHETPODS' → Eagle 110mm Rocket Pods (Index: 49)
+[2026-03-20 19:41:41]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:41:41]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:41]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:41:41]   Saved: 2324.png
+[2026-03-20 19:41:41]   Saved: 23443.png
+[2026-03-20 19:41:41]   Saved: 2343.png
+[2026-03-20 19:41:41]   Saved: 2321.png
+[2026-03-20 19:41:41]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:41:41] 
 [6/20] Processing: 2-1.png
-[2026-03-01 01:28:03]   Detected: 'HEAVYMACHINEGUN' → MG-206 Heavy Machine Gun (Index: 9)
-[2026-03-01 01:28:03]   Detected: 'STALWARTO>.' → M-105 Stalwart (Index: 3)
-[2026-03-01 01:28:03]   Detected: 'MACHINEGUN' → MG-43 Machine Gun (Index: 1)
-[2026-03-01 01:28:03]   Detected: 'DEFOLIATIONTOOLSS' → CQC-9 Defoliation Tool (Index: 21)
-[2026-03-01 01:28:04]   Detected: 'SOSBEACON5' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:04]   Detected: 'REINFORCE"AE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:04]   Saved: 41244.png
-[2026-03-01 01:28:04]   Saved: 414221.png
-[2026-03-01 01:28:04]   Saved: 41423.png
-[2026-03-01 01:28:04]   Saved: 41334.png
-[2026-03-01 01:28:04]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:04] 
+[2026-03-20 19:41:42]   Detected: 'HEAVYMACHINEGUN' → MG-206 Heavy Machine Gun (Index: 9)
+[2026-03-20 19:41:42]   Detected: 'STALWARTO>.' → M-105 Stalwart (Index: 3)
+[2026-03-20 19:41:43]   Detected: 'MACHINEGUN' → MG-43 Machine Gun (Index: 1)
+[2026-03-20 19:41:43]   Detected: 'DEFOLIATIONTOOLSS' → CQC-9 Defoliation Tool (Index: 24)
+[2026-03-20 19:41:43]   Detected: 'RESUPPLY<' → Resupply (Index: 90)
+[2026-03-20 19:41:44]   Detected: 'SOSBEACON5' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:44]   Detected: 'REINFORCE"AE' → Reinforce (Index: 89)
+[2026-03-20 19:41:44]   Saved: 41244.png
+[2026-03-20 19:41:44]   Saved: 414221.png
+[2026-03-20 19:41:44]   Saved: 41423.png
+[2026-03-20 19:41:44]   Saved: 41334.png
+[2026-03-20 19:41:44]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:41:44] 
 [7/20] Processing: 2-10.png
-[2026-03-01 01:28:04]   Detected: 'GATLINGSENTRYPANEAE' → A/G-16 Gatling Sentry (Index: 60)
-[2026-03-01 01:28:05]   Detected: 'EMANCIPATOREXOSUIT.' → EXO-49 Emancipator Exosuit (Index: 81)
-[2026-03-01 01:28:05]   Detected: 'FASTRECONVEHICLE' → M-102 Fast Recon Vehicle (Index: 82)
-[2026-03-01 01:28:06]   Detected: 'SOSBEACONHEATMIC' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:06]   Detected: 'REINFORCEWAE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:06]   Saved: 4231.png
-[2026-03-01 01:28:06]   Saved: 1432142.png
-[2026-03-01 01:28:06]   Saved: 1434342.png
-[2026-03-01 01:28:06]   ✓ Extracted 3 new icon(s)
-[2026-03-01 01:28:06] 
+[2026-03-20 19:41:45]   Detected: 'GATLINGSENTRYPANEAE' → A/G-16 Gatling Sentry (Index: 60)
+[2026-03-20 19:41:45]   Detected: 'EMANCIPATOREXOSUIT.' → EXO-49 Emancipator Exosuit (Index: 83)
+[2026-03-20 19:41:45]   Detected: 'FASTRECONVEHICLE' → M-102 Fast Recon Vehicle (Index: 84)
+[2026-03-20 19:41:46]   Detected: 'RESUPPLY—E,A)|' → Resupply (Index: 90)
+[2026-03-20 19:41:46]   Detected: 'SOSBEACONHEATMIC' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:47]   Detected: 'REINFORCEWAE' → Reinforce (Index: 89)
+[2026-03-20 19:41:47]   Saved: 4231.png
+[2026-03-20 19:41:47]   Saved: 1432142.png
+[2026-03-20 19:41:47]   Saved: 1434342.png
+[2026-03-20 19:41:47]   ✓ Extracted 3 new icon(s)
+[2026-03-20 19:41:47] 
 [8/20] Processing: 2-2.png
-[2026-03-01 01:28:07]   Detected: 'ANTI-MATERIELRIFLE©' → APW-1 Anti-Materiel Rifle (Index: 5)
-[2026-03-01 01:28:07]   Detected: 'RAILGUNX,SA' → RS-422 Railgun (Index: 16)
-[2026-03-01 01:28:08]   Detected: 'SOSBEACONEATSOSATA' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:08]   Detected: 'REINFORCEPTISGAY)S' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:08]   Saved: 41324.png
-[2026-03-01 01:28:08]   Saved: 434213.png
-[2026-03-01 01:28:08]   ✓ Extracted 2 new icon(s)
-[2026-03-01 01:28:08] 
+[2026-03-20 19:41:48]   Detected: 'ANTI-MATERIELRIFLE©' → APW-1 Anti-Materiel Rifle (Index: 5)
+[2026-03-20 19:41:48]   Detected: 'RAILGUNX,SA' → RS-422 Railgun (Index: 16)
+[2026-03-20 19:41:49]   Detected: 'RESUPPLY<<2SIIVE' → Resupply (Index: 90)
+[2026-03-20 19:41:49]   Detected: 'SOSBEACONEATSOSATA' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:49]   Detected: 'REINFORCEPTISGAY)S' → Reinforce (Index: 89)
+[2026-03-20 19:41:49]   Saved: 41324.png
+[2026-03-20 19:41:49]   Saved: 434213.png
+[2026-03-20 19:41:49]   ✓ Extracted 2 new icon(s)
+[2026-03-20 19:41:49] 
 [9/20] Processing: 2-3.png
-[2026-03-01 01:28:09]   Detected: 'QUASARCANNONANE' → LAS-99 Quasar Cannon (Index: 12)
-[2026-03-01 01:28:09]   Detected: 'LASERCANNONFOBEETI' → LAS-98 Laser Cannon (Index: 4)
-[2026-03-01 01:28:09]   Detected: 'FLAMETHROWER“EE' → FLAM-40 Flamethrower (Index: 8)
-[2026-03-01 01:28:09]   Detected: 'GRENADELAUNCHER—5' → GL-21 Grenade Launcher (Index: 7)
-[2026-03-01 01:28:09]   Detected: 'RESUPPLY3A' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:10]   Detected: 'SOSBEACON‘EE' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:10]   Detected: 'REINFORCEBYGAS' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:10]   Saved: 44213.png
-[2026-03-01 01:28:10]   Saved: 41421.png
-[2026-03-01 01:28:10]   Saved: 41242.png
-[2026-03-01 01:28:10]   Saved: 41214.png
-[2026-03-01 01:28:10]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:10] 
+[2026-03-20 19:41:50]   Detected: 'QUASARCANNONANE' → LAS-99 Quasar Cannon (Index: 12)
+[2026-03-20 19:41:51]   Detected: 'LASERCANNONFOBEETI' → LAS-98 Laser Cannon (Index: 4)
+[2026-03-20 19:41:51]   Detected: 'FLAMETHROWER“EE' → FLAM-40 Flamethrower (Index: 8)
+[2026-03-20 19:41:51]   Detected: 'GRENADELAUNCHER—5' → GL-21 Grenade Launcher (Index: 7)
+[2026-03-20 19:41:52]   Detected: 'RESUPPLY3A' → Resupply (Index: 90)
+[2026-03-20 19:41:52]   Detected: 'SOSBEACON‘EE' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:53]   Detected: 'REINFORCEBYGAS' → Reinforce (Index: 89)
+[2026-03-20 19:41:53]   Saved: 44213.png
+[2026-03-20 19:41:53]   Saved: 41421.png
+[2026-03-20 19:41:53]   Saved: 41242.png
+[2026-03-20 19:41:53]   Saved: 41214.png
+[2026-03-20 19:41:53]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:41:53] 
 [10/20] Processing: 2-4.png
-[2026-03-01 01:28:10]   Detected: 'SOLOSILO' → MS-11 Solo Silo (Index: 28)
-[2026-03-01 01:28:10]   Detected: 'EXPENDABLENAPALM' → EAT-700 Expendable Napalm (Index: 25)
-[2026-03-01 01:28:11]   Detected: 'COMMANDO' → MLS-4X Commando (Index: 14)
-[2026-03-01 01:28:11]   Detected: 'ARCTHROWER' → ARC-3 Arc Thrower (Index: 11)
-[2026-03-01 01:28:11]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:11]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:12]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:12]   Saved: 44121.png
-[2026-03-01 01:28:12]   Saved: 41243.png
-[2026-03-01 01:28:12]   Saved: 434211.png
-[2026-03-01 01:28:12]   ✓ Extracted 3 new icon(s)
-[2026-03-01 01:28:12] 
+[2026-03-20 19:41:53]   Detected: 'SOLOSILO' → MS-11 Solo Silo (Index: 27)
+[2026-03-20 19:41:53]   Detected: 'EXPENDABLENAPALM' → EAT-700 Expendable Napalm (Index: 21)
+[2026-03-20 19:41:54]   Detected: 'COMMANDO' → MLS-4X Commando (Index: 14)
+[2026-03-20 19:41:54]   Detected: 'ARCTHROWER' → ARC-3 Arc Thrower (Index: 11)
+[2026-03-20 19:41:54]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:41:55]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:55]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:41:55]   Saved: 44121.png
+[2026-03-20 19:41:55]   Saved: 41243.png
+[2026-03-20 19:41:55]   Saved: 434211.png
+[2026-03-20 19:41:55]   ✓ Extracted 3 new icon(s)
+[2026-03-20 19:41:55] 
 [11/20] Processing: 2-5.png
-[2026-03-01 01:28:12]   Detected: 'SPEAR=' → FAF-14 Spear (Index: 15)
-[2026-03-01 01:28:12]   Detected: 'AIRBURSTROCKETLAUNCHER' → RL-77 Airburst Rocket Launcher (Index: 13)
-[2026-03-01 01:28:13]   Detected: 'AUTOCANNON' → AC-8 Autocannon (Index: 10)
-[2026-03-01 01:28:13]   Detected: 'EXPENDABLEANTI-TANR' → EAT-17 Expendable Anti-Tank (Index: 2)
-[2026-03-01 01:28:13]   Detected: 'SOSBEACON.' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:13]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:13]   Saved: 44244.png
-[2026-03-01 01:28:13]   Saved: 42213.png
-[2026-03-01 01:28:13]   Saved: 414223.png
-[2026-03-01 01:28:13]   Saved: 44123.png
-[2026-03-01 01:28:13]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:13] 
+[2026-03-20 19:41:56]   Detected: 'SPEAR=' → FAF-14 Spear (Index: 15)
+[2026-03-20 19:41:56]   Detected: 'AIRBURSTROCKETLAUNCHER' → RL-77 Airburst Rocket Launcher (Index: 13)
+[2026-03-20 19:41:56]   Detected: 'AUTOCANNON' → AC-8 Autocannon (Index: 10)
+[2026-03-20 19:41:57]   Detected: 'EXPENDABLEANTI-TANR' → EAT-17 Expendable Anti-Tank (Index: 2)
+[2026-03-20 19:41:57]   Detected: 'RESUPPLYR' → Resupply (Index: 90)
+[2026-03-20 19:41:57]   Detected: 'SOSBEACON.' → SoS Beacon (Index: 86)
+[2026-03-20 19:41:58]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:41:58]   Saved: 44244.png
+[2026-03-20 19:41:58]   Saved: 42213.png
+[2026-03-20 19:41:58]   Saved: 414223.png
+[2026-03-20 19:41:58]   Saved: 44123.png
+[2026-03-20 19:41:58]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:41:58] 
 [12/20] Processing: 2-6.png
-[2026-03-01 01:28:14]   Detected: 'SUPPLYPACHA' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:14]   Detected: 'RECOILLESSRIFLE|' → GR-8 Recoilless Rifle (Index: 6)
-[2026-03-01 01:28:14]   Detected: 'MAXIGUNS' → M-1000 Maxigun (Index: 27)
-[2026-03-01 01:28:14]   Detected: 'W.A.S.P.LAUNCHER' → StA-X3 W.A.S.P. Launcher (Index: 17)
-[2026-03-01 01:28:15]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:15]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:15]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:15]   Saved: 41331.png
-[2026-03-01 01:28:15]   Saved: 413422.png
-[2026-03-01 01:28:15]   Saved: 44243.png
-[2026-03-01 01:28:15]   ✓ Extracted 3 new icon(s)
-[2026-03-01 01:28:15] 
+[2026-03-20 19:41:58]   Detected: 'SUPPLYPACHA' → B-1 Supply Pack (Index: 69)
+[2026-03-20 19:41:59]   Detected: 'RECOILLESSRIFLE|' → GR-8 Recoilless Rifle (Index: 6)
+[2026-03-20 19:41:59]   Detected: 'MAXIGUNS' → M-1000 Maxigun (Index: 29)
+[2026-03-20 19:41:59]   Detected: 'W.A.S.P.LAUNCHER' → StA-X3 W.A.S.P. Launcher (Index: 17)
+[2026-03-20 19:42:00]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:00]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:00]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:00]   Saved: 414224.png
+[2026-03-20 19:42:00]   Saved: 41331.png
+[2026-03-20 19:42:00]   Saved: 413422.png
+[2026-03-20 19:42:00]   Saved: 44243.png
+[2026-03-20 19:42:00]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:42:00] 
 [13/20] Processing: 2-7.png
-[2026-03-01 01:28:15]   Detected: 'SHIELDGENERATORPACR' → SH-32 Shield Generator Pack (Index: 72)
-[2026-03-01 01:28:16]   Detected: 'JUMPPACK' → LIFT-850 Jump Pack (Index: 68)
-[2026-03-01 01:28:16]   Detected: 'WARPPACK' → LIFT-182 Warp Pack (Index: 79)
-[2026-03-01 01:28:16]   Detected: 'PORTABLEHELLBOMB' → B-100 Portable Hellbomb (Index: 75)
-[2026-03-01 01:28:17]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:17]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:17]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:17]   Saved: 421313.png
-[2026-03-01 01:28:17]   Saved: 42242.png
-[2026-03-01 01:28:17]   Saved: 413413.png
-[2026-03-01 01:28:17]   Saved: 43222.png
-[2026-03-01 01:28:17]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:17] 
+[2026-03-20 19:42:01]   Detected: 'SHIELDGENERATORPACR' → SH-32 Shield Generator Pack (Index: 74)
+[2026-03-20 19:42:02]   Detected: 'JUMPPACK' → LIFT-850 Jump Pack (Index: 70)
+[2026-03-20 19:42:02]   Detected: 'WARPPACK' → LIFT-182 Warp Pack (Index: 81)
+[2026-03-20 19:42:02]   Detected: 'PORTABLEHELLBOMB' → B-100 Portable Hellbomb (Index: 77)
+[2026-03-20 19:42:03]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:03]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:03]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:03]   Saved: 421313.png
+[2026-03-20 19:42:03]   Saved: 42242.png
+[2026-03-20 19:42:03]   Saved: 413413.png
+[2026-03-20 19:42:03]   Saved: 43222.png
+[2026-03-20 19:42:03]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:42:03] 
 [14/20] Processing: 2-8.png
-[2026-03-01 01:28:17]   Detected: '"GUARDDOG"' → AX/AR-23 Guard Dog (Index: 70)
-[2026-03-01 01:28:18]   Detected: 'BALLISTICSHIELDBACKPACK' → SH-20 Ballistic Shield Backpack (Index: 69)
-[2026-03-01 01:28:18]   Detected: 'DIRECTIONALSHIELD' → SH-51 Directional Shield (Index: 73)
-[2026-03-01 01:28:18]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:18]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:19]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:19]   Saved: 421234.png
-[2026-03-01 01:28:19]   Saved: 414421.png
-[2026-03-01 01:28:19]   Saved: 421322.png
-[2026-03-01 01:28:19]   ✓ Extracted 3 new icon(s)
-[2026-03-01 01:28:19] 
+[2026-03-20 19:42:04]   Detected: '"GUARDDOG"' → AX/AR-23 Guard Dog (Index: 72)
+[2026-03-20 19:42:05]   Detected: 'BALLISTICSHIELDBACKPACK' → SH-20 Ballistic Shield Backpack (Index: 71)
+[2026-03-20 19:42:05]   Detected: 'DIRECTIONALSHIELD' → SH-51 Directional Shield (Index: 75)
+[2026-03-20 19:42:05]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:06]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:06]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:06]   Saved: 421234.png
+[2026-03-20 19:42:06]   Saved: 414421.png
+[2026-03-20 19:42:06]   Saved: 421322.png
+[2026-03-20 19:42:06]   ✓ Extracted 3 new icon(s)
+[2026-03-20 19:42:06] 
 [15/20] Processing: 3-1.png
-[2026-03-01 01:28:19]   Detected: 'AUTOCANNONSENTRY' → A/AC-8 Autocannon Sentry (Index: 61)
-[2026-03-01 01:28:19]   Detected: 'ROCRETSENTRY' → A/MLS-4X Rocket Sentry (Index: 63)
-[2026-03-01 01:28:19]   Detected: 'LASERSENTRY' → A/LAS-98 Laser Sentry (Index: 65)
-[2026-03-01 01:28:20]   Detected: 'MACHINEGUNSENTRY' → A/MG-43 Machine Gun Sentry (Index: 59)
-[2026-03-01 01:28:20]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:20]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:20]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:20]   Saved: 423212.png
-[2026-03-01 01:28:20]   Saved: 423423.png
-[2026-03-01 01:28:20]   Saved: 42332.png
-[2026-03-01 01:28:20]   ✓ Extracted 3 new icon(s)
-[2026-03-01 01:28:20] 
+[2026-03-20 19:42:06]   Detected: 'AUTOCANNONSENTRY' → A/AC-8 Autocannon Sentry (Index: 61)
+[2026-03-20 19:42:07]   Detected: 'ROCRETSENTRY' → A/MLS-4X Rocket Sentry (Index: 63)
+[2026-03-20 19:42:07]   Detected: 'LASERSENTRY' → A/LAS-98 Laser Sentry (Index: 66)
+[2026-03-20 19:42:07]   Detected: 'MACHINEGUNSENTRY' → A/MG-43 Machine Gun Sentry (Index: 59)
+[2026-03-20 19:42:08]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:08]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:08]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:08]   Saved: 423212.png
+[2026-03-20 19:42:08]   Saved: 423423.png
+[2026-03-20 19:42:08]   Saved: 42332.png
+[2026-03-20 19:42:08]   ✓ Extracted 3 new icon(s)
+[2026-03-20 19:42:08] 
 [16/20] Processing: 3-2.png
-[2026-03-01 01:28:21]   Detected: 'GRENADIERBATTLEMENT' → E/GL-21 Grenadier Battlement (Index: 56)
-[2026-03-01 01:28:21]   Detected: 'SHIELDGENERATORRELAY' → FX-12 Shield Generator Relay (Index: 54)
-[2026-03-01 01:28:21]   Detected: 'MORTARSENTRY' → A/M-12 Mortar Sentry (Index: 62)
-[2026-03-01 01:28:22]   Detected: 'EMSMORTARSENTRY' → A/M-23 EMS Mortar Sentry (Index: 64)
-[2026-03-01 01:28:22]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:22]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:22]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:22]   Saved: 43413.png
-[2026-03-01 01:28:22]   Saved: 441313.png
-[2026-03-01 01:28:22]   Saved: 42334.png
-[2026-03-01 01:28:22]   Saved: 42343.png
-[2026-03-01 01:28:22]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:22] 
+[2026-03-20 19:42:09]   Detected: 'GRENADIERBATTLEMENT' → E/GL-21 Grenadier Battlement (Index: 56)
+[2026-03-20 19:42:09]   Detected: 'SHIELDGENERATORRELAY' → FX-12 Shield Generator Relay (Index: 54)
+[2026-03-20 19:42:10]   Detected: 'MORTARSENTRY' → A/M-12 Mortar Sentry (Index: 62)
+[2026-03-20 19:42:10]   Detected: 'EMSMORTARSENTRY' → A/M-23 EMS Mortar Sentry (Index: 65)
+[2026-03-20 19:42:10]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:11]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:11]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:11]   Saved: 43413.png
+[2026-03-20 19:42:11]   Saved: 441313.png
+[2026-03-20 19:42:11]   Saved: 42334.png
+[2026-03-20 19:42:11]   Saved: 42343.png
+[2026-03-20 19:42:11]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:42:11] 
 [17/20] Processing: 3-3.png
-[2026-03-01 01:28:23]   Detected: 'ANTI-TANRKMINES' → MD-17 Anti-Tank Mines (Index: 52)
-[2026-03-01 01:28:23]   Detected: 'TESLATOWER' → A/ARC-3 Tesla Tower (Index: 53)
-[2026-03-01 01:28:23]   Detected: 'HMGEMPLACEMENT' → E/MG-101 HMG Emplacement (Index: 55)
-[2026-03-01 01:28:23]   Detected: 'ANTI-TANRKEMPLACEMENT' → E/AT-12 Anti-Tank Emplacement (Index: 58)
-[2026-03-01 01:28:24]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:24]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:24]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:24]   Saved: 4122.png
-[2026-03-01 01:28:24]   Saved: 423213.png
-[2026-03-01 01:28:24]   Saved: 421331.png
-[2026-03-01 01:28:24]   Saved: 421333.png
-[2026-03-01 01:28:24]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:24] 
+[2026-03-20 19:42:11]   Detected: 'ANTI-TANRKMINES' → MD-17 Anti-Tank Mines (Index: 53)
+[2026-03-20 19:42:12]   Detected: 'TESLATOWER' → A/ARC-3 Tesla Tower (Index: 64)
+[2026-03-20 19:42:12]   Detected: 'HMGEMPLACEMENT' → E/MG-101 HMG Emplacement (Index: 55)
+[2026-03-20 19:42:12]   Detected: 'ANTI-TANRKEMPLACEMENT' → E/AT-12 Anti-Tank Emplacement (Index: 58)
+[2026-03-20 19:42:13]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:13]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:13]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:13]   Saved: 4122.png
+[2026-03-20 19:42:13]   Saved: 423213.png
+[2026-03-20 19:42:13]   Saved: 421331.png
+[2026-03-20 19:42:13]   Saved: 421333.png
+[2026-03-20 19:42:13]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:42:13] 
 [18/20] Processing: 3-4.png
-[2026-03-01 01:28:24]   Detected: 'ORBITALPRECISIONSTRIKE' → Orbital Precision Strike (Index: 31)
-[2026-03-01 01:28:25]   Detected: 'INCENDIARYMINES' → MD-I4 Incendiary Mines (Index: 51)
-[2026-03-01 01:28:25]   Detected: 'ANTI-PERSONNELMINEFIELD' → MD-6 Anti-Personnel Minefield (Index: 50)
-[2026-03-01 01:28:25]   Detected: 'GASMINES' → MD-8 Gas Mines (Index: 57)
-[2026-03-01 01:28:25]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:26]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:26]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:26]   Saved: 4114.png
-[2026-03-01 01:28:26]   Saved: 4123.png
-[2026-03-01 01:28:26]   Saved: 4113.png
-[2026-03-01 01:28:26]   ✓ Extracted 3 new icon(s)
-[2026-03-01 01:28:26] 
+[2026-03-20 19:42:14]   Detected: 'ORBITALPRECISIONSTRIKE' → Orbital Precision Strike (Index: 32)
+[2026-03-20 19:42:14]   Detected: 'INCENDIARYMINES' → MD-I4 Incendiary Mines (Index: 52)
+[2026-03-20 19:42:14]   Detected: 'ANTI-PERSONNELMINEFIELD' → MD-6 Anti-Personnel Minefield (Index: 51)
+[2026-03-20 19:42:15]   Detected: 'GASMINES' → MD-8 Gas Mines (Index: 57)
+[2026-03-20 19:42:15]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:15]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:16]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:16]   Saved: 4114.png
+[2026-03-20 19:42:16]   Saved: 4123.png
+[2026-03-20 19:42:16]   Saved: 4113.png
+[2026-03-20 19:42:16]   ✓ Extracted 3 new icon(s)
+[2026-03-20 19:42:16] 
 [19/20] Processing: rd-sbk.png
-[2026-03-01 01:28:26]   Detected: 'LEVELLER—' → EAT-411 Leveller (Index: 22)
-[2026-03-01 01:28:27]   Detected: 'BELT-FEDGRENADELAUNCHER' → GL-28 Belt-Fed Grenade Launcher (Index: 26)
-[2026-03-01 01:28:27]   Detected: 'BASTIONMKXUITAS' → TD-220 Bastion MK XVI (Index: 83)
-[2026-03-01 01:28:27]   Detected: 'BREACHINGHAMMERLS' → CQC-20 Breaching Hammer (Index: 18)
-[2026-03-01 01:28:27]   Detected: 'SOSBEACON=' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:28]   Detected: 'REINFORCEBO' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:28]   Saved: 44124.png
-[2026-03-01 01:28:28]   Saved: 412122.png
-[2026-03-01 01:28:28]   Saved: 143414242.png
-[2026-03-01 01:28:28]   Saved: 41312.png
-[2026-03-01 01:28:28]   ✓ Extracted 4 new icon(s)
-[2026-03-01 01:28:28] 
+[2026-03-20 19:42:16]   Detected: 'LEVELLER—' → EAT-411 Leveller (Index: 22)
+[2026-03-20 19:42:16]   Detected: 'BELT-FEDGRENADELAUNCHER' → GL-28 Belt-Fed Grenade Launcher (Index: 26)
+[2026-03-20 19:42:17]   Detected: 'BASTIONMKXUITAS' → TD-220 Bastion MK XVI (Index: 85)
+[2026-03-20 19:42:17]   Detected: 'BREACHINGHAMMERLS' → CQC-20 Breaching Hammer (Index: 18)
+[2026-03-20 19:42:17]   Detected: 'RESUPPLYI:' → Resupply (Index: 90)
+[2026-03-20 19:42:18]   Detected: 'SOSBEACON=' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:18]   Detected: 'REINFORCEBO' → Reinforce (Index: 89)
+[2026-03-20 19:42:18]   Saved: 44124.png
+[2026-03-20 19:42:18]   Saved: 412122.png
+[2026-03-20 19:42:18]   Saved: 143414242.png
+[2026-03-20 19:42:18]   Saved: 41312.png
+[2026-03-20 19:42:18]   ✓ Extracted 4 new icon(s)
+[2026-03-20 19:42:18] 
 [20/20] Processing: rd-sbk2.png
-[2026-03-01 01:28:28]   Detected: 'GRENADELAUNCHER' → GL-21 Grenade Launcher (Index: 7)
-[2026-03-01 01:28:28]   Detected: 'DE-ESCALATOR' → GL-52 De-Escalator (Index: 24)
-[2026-03-01 01:28:29]   Detected: 'C4PACK' → B/MD C4 Pack (Index: 30)
-[2026-03-01 01:28:29]   Detected: 'RESUPPLY' → B-1 Supply Pack (Index: 67)
-[2026-03-01 01:28:29]   Detected: 'SOSBEACON' → SoS Beacon (Index: 84)
-[2026-03-01 01:28:29]   Detected: 'REINFORCE' → Reinforcement Pods (Index: 97)
-[2026-03-01 01:28:29]   Saved: 43213.png
-[2026-03-01 01:28:29]   Saved: 432232.png
-[2026-03-01 01:28:29]   ✓ Extracted 2 new icon(s)
-[2026-03-01 01:28:29] 
+[2026-03-20 19:42:18]   Detected: 'GRENADELAUNCHER' → GL-21 Grenade Launcher (Index: 7)
+[2026-03-20 19:42:19]   Detected: 'DE-ESCALATOR' → GL-52 De-Escalator (Index: 23)
+[2026-03-20 19:42:20]   Detected: 'C4PACK' → B/MD C4 Pack (Index: 30)
+[2026-03-20 19:42:20]   Detected: 'RESUPPLY' → Resupply (Index: 90)
+[2026-03-20 19:42:20]   Detected: 'SOSBEACON' → SoS Beacon (Index: 86)
+[2026-03-20 19:42:21]   Detected: 'REINFORCE' → Reinforce (Index: 89)
+[2026-03-20 19:42:21]   Saved: 43213.png
+[2026-03-20 19:42:21]   Saved: 432232.png
+[2026-03-20 19:42:21]   ✓ Extracted 2 new icon(s)
+[2026-03-20 19:42:21] 
 
 === Processing Complete ===
-[2026-03-01 01:28:29] Icon extraction summary: Found 75/98 unique icons.
-[2026-03-01 01:28:29] Found 23 missing icons. Writing details to 'missing_icons.log'.
-[2026-03-01 01:28:29] 
-=== Pipeline Finished in 41.83s ===
+[2026-03-20 19:42:21] Icon extraction summary: Found 76/102 unique icons.
+[2026-03-20 19:42:21] Found 26 missing icons. Writing details to 'missing_icons.log'.
+[2026-03-20 19:42:21] 
+=== Pipeline Finished in 56.25s ===

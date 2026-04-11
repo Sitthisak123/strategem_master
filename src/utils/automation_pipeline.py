@@ -19,7 +19,9 @@ CSV_PATH = "./src/strategems.csv"
 LOG_DIR = "./output"
 LOG_FILE = os.path.join(LOG_DIR, "pipeline.log")
 TESSERACT_PATH = r"C:\My Programs\Tesseract-OCR\tesseract.exe"
-
+MIN_ICON_SIZE = 30
+MAX_ICON_SIZE = 150
+ICON_PADDING = 0
 # --- Tesseract Setup ---
 try:
     pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
@@ -163,16 +165,22 @@ def extract_and_save_icons(logger, all_strategems):
         detected_in_file = []
         for c in cnts:
             x, y, w, h = cv2.boundingRect(c)
-            if 0.65 < (w/float(h)) < 1.35 and w*h > 1800 and x < hud.shape[1] * 0.3:
+            if (0.65 < (w/float(h)) < 1.35 and w*h > 1800 and x < hud.shape[1] * 0.3 and
+                MIN_ICON_SIZE <= w <= MAX_ICON_SIZE and MIN_ICON_SIZE <= h <= MAX_ICON_SIZE):
                 name_roi = hud[y:y+h, int(hud.shape[1]*0.22):]
                 top_half = name_roi[:name_roi.shape[0]//2, :]
                 raw_text = pytesseract.image_to_string(top_half, config='--psm 6').strip().replace(' ', '')
+                
+                y_start = max(0, y - ICON_PADDING)
+                x_start = max(0, x - ICON_PADDING)
+                y_end = min(hud.shape[0], y + h + ICON_PADDING)
+                x_end = min(hud.shape[1], x + w + ICON_PADDING)
                 
                 match = get_close_matches(raw_text.lower(), all_strategems.keys(), n=1, cutoff=0.55)
                 if match:
                     stg_info = all_strategems[match[0]]
                     logger.info(f"  Detected: '{raw_text.upper()}' → {stg_info['Name']} (Index: {stg_info['Index']})")
-                    icon_img = hud[y:y+h, x:x+w]
+                    icon_img = hud[y_start:y_end, x_start:x_end]
                     detected_in_file.append({'info': stg_info, 'icon': icon_img})
 
         icons_saved_count = 0
