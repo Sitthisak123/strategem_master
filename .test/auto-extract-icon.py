@@ -4,12 +4,22 @@ import pytesseract
 from difflib import get_close_matches
 import csv
 import os
+import sys
 from pathlib import Path
 import time
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.utils.screen_regions import get_hud_region, scale_pixels
 
 # Setup pytesseract (change path if needed)
 pytesseract.pytesseract.tesseract_cmd = r":\My Programs\Tesseract-OCR\tesseract.exe"
 gap = 0.22  # gap from left edge to start of text area
+MIN_ICON_SIZE = 30
+MAX_ICON_SIZE = 150
+MIN_ICON_AREA = 1800
 
 # Directories
 SRC_IMG_DIR = "./src/img/group"
@@ -71,17 +81,22 @@ def preprocess_for_contours(img):
     return edges
 
 
-def detect_strategem_icons(hud_img):
+def detect_strategem_icons(hud_img, scale=1.0):
     """Detect strategem icons from HUD image"""
     edges = preprocess_for_contours(hud_img)
     cnts, _ = cv2.findContours(
         edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     boxes = []
+    min_icon_size = scale_pixels(MIN_ICON_SIZE, scale, minimum=12)
+    max_icon_size = scale_pixels(MAX_ICON_SIZE, scale, minimum=min_icon_size + 1)
+    min_icon_area = max(250, int(round(MIN_ICON_AREA * scale * scale)))
+
     for c in cnts:
         x, y, w, h = cv2.boundingRect(c)
-        aspect = w / float(h)
+        aspect = w / float(h) if h != 0 else 0
         area = w * h
-        if 0.7 < aspect < 1.3 and area > 1800 and x < hud_img.shape[1] * 0.3:
+        if (0.7 < aspect < 1.3 and area > min_icon_area and x < hud_img.shape[1] * 0.3 and
+                min_icon_size <= w <= max_icon_size and min_icon_size <= h <= max_icon_size):
             boxes.append((y, x, w, h))
     return sorted(boxes, key=lambda b: b[0])
 
@@ -100,8 +115,8 @@ def extract_icon_region(hud_img, y, x, w, h):
 
 def run_ocr(img, strategems_dict, logger):
     """Run OCR on image to detect and extract strategem icons"""
-    hud = img[30:800, 30:600]
-    icons = detect_strategem_icons(hud)
+    hud, hud_region = get_hud_region(img)
+    icons = detect_strategem_icons(hud, hud_region.scale)
     extracted_icons = []
     
     for (y, x, w, h) in icons:

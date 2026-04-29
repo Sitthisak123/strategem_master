@@ -62,8 +62,10 @@ def canny_edge_detection(icon_region, source_img, threshold_low=50, threshold_hi
     best_scale = None
     best_size = None
 
-    # Reduced from 40 to 12 scales with focus on realistic matching range
-    scales = np.linspace(0.7, 1.8, 12)
+    fit_scale = min(screen_edges.shape[0] / ih, screen_edges.shape[1] / iw)
+    min_scale = max(0.25, fit_scale * 0.65)
+    max_scale = min(2.5, max(fit_scale * 1.35, min_scale + 0.05))
+    scales = np.linspace(min_scale, max_scale, 14)
     
     for scale in scales:
         resized = cv2.resize(

@@ -13,6 +13,7 @@ from PyQt5.QtCore import QTimer
 from overlay_window import OverlayWindow
 from icon_regions_overlay import IconRegionsOverlay
 from src.utils.cannyEdgeImplement import canny_edge_detection
+from src.utils.screen_regions import get_hud_region, scale_pixels
 import functools
 from threading import Thread
 from queue import Queue, Empty as QueueEmpty
@@ -25,6 +26,7 @@ pyautogui.PAUSE = 0.03  # Reduced delay between PyAutoGUI actions
 # Icon size constraints (in pixels)
 MIN_ICON_SIZE = 30
 MAX_ICON_SIZE = 150
+MIN_ICON_AREA = 1800
 ICON_PADDING = 1  # Padding in pixels around detected icons
 
 # hotkeys
@@ -93,7 +95,7 @@ def load_strategems_and_templates():
                     if template_img is not None:
                         TEMPLATES[code] = template_img
                         
-        print(f"[✓] Loaded {len(stg_by_code)} strategems and {len(TEMPLATES)} templates.")
+        print(f"[OK] Loaded {len(stg_by_code)} strategems and {len(TEMPLATES)} templates.")
         return stg_by_code, stg_by_name
     except Exception as e:
         print(f"[!] Error loading data: {e}")
@@ -104,12 +106,16 @@ strategems_all, strategems_by_name = load_strategems_and_templates()
 
 
 # Default strategems that appear in default slots
-strategem_default_slots = [
+strategem_default_slots = {
     "resupply",
     "reinforce",
     "sos beacon",
     "eagle rearm",
-]
+}
+
+
+def is_default_strategem(strategem):
+    return strategem.get("name", "").casefold() in strategem_default_slots
 
 
 def capture_helldivers_window():
@@ -156,7 +162,7 @@ def preprocess_for_contours(img):
     return edges
 
 
-def detect_strategem_icons(hud_img):
+def detect_strategem_icons(hud_img, scale=1.0):
     """
     Detect square-like icon regions and return list of tuples:
     (y, x, w, h, icon_region_gray)
@@ -164,18 +170,23 @@ def detect_strategem_icons(hud_img):
     edges = preprocess_for_contours(hud_img)
     cnts, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     boxes = []
+    min_icon_size = scale_pixels(MIN_ICON_SIZE, scale, minimum=12)
+    max_icon_size = scale_pixels(MAX_ICON_SIZE, scale, minimum=min_icon_size + 1)
+    min_icon_area = max(250, int(round(MIN_ICON_AREA * scale * scale)))
+    icon_padding = scale_pixels(ICON_PADDING, scale, minimum=1)
+
     for c in cnts:
         x, y, w, h = cv2.boundingRect(c)
         aspect = w / float(h) if h != 0 else 0
         area = w * h
         # Apply size constraints and ensure icon is on left HUD area
-        if (0.7 < aspect < 1.3 and area > 1800 and x < hud_img.shape[1] * 0.3 and
-                MIN_ICON_SIZE <= w <= MAX_ICON_SIZE and MIN_ICON_SIZE <= h <= MAX_ICON_SIZE):
+        if (0.7 < aspect < 1.3 and area > min_icon_area and x < hud_img.shape[1] * 0.3 and
+                min_icon_size <= w <= max_icon_size and min_icon_size <= h <= max_icon_size):
             # Apply padding with bounds checking
-            y_start = max(0, y - ICON_PADDING)
-            x_start = max(0, x - ICON_PADDING)
-            y_end = min(hud_img.shape[0], y + h + ICON_PADDING)
-            x_end = min(hud_img.shape[1], x + w + ICON_PADDING)
+            y_start = max(0, y - icon_padding)
+            x_start = max(0, x - icon_padding)
+            y_end = min(hud_img.shape[0], y + h + icon_padding)
+            x_end = min(hud_img.shape[1], x + w + icon_padding)
             
             # crop icon region with padding and store grayscale version
             icon_region = hud_img[y_start:y_end, x_start:x_end]
@@ -231,12 +242,12 @@ def run_canny_edge_detection(screenshot):
     """
     detected_stgs = []
     # Crop the screenshot to the HUD area where strategem icons appear.
-    screenshot_hud = screenshot[30:800, 30:600]
-    icon_boxes = detect_strategem_icons(screenshot_hud)
+    screenshot_hud, hud_region = get_hud_region(screenshot)
+    icon_boxes = detect_strategem_icons(screenshot_hud, hud_region.scale)
     
     # Debug: Report what we found
     if not icon_boxes:
-        print(f"[DEBUG] No icon boxes detected in HUD region. Frame shape: {screenshot.shape}")
+        print(f"[DEBUG] No icon boxes detected in HUD region. Frame shape: {screenshot.shape}, HUD: {hud_region}")
     if not TEMPLATES:
         print(f"[DEBUG] No templates loaded. TEMPLATES size: {len(TEMPLATES)}")
     
@@ -275,9 +286,13 @@ def run_canny_edge_detection(screenshot):
                 if best_score > 0.80:
                     break
 
-        # If a match is found, add it to the list of detected strategems.
+        # If a match is found, add only non-default strategems to detected slots.
         if best_entry:
             matched_codes.add(best_entry['code'])
+            if is_default_strategem(best_entry):
+                print(f"[DEBUG] Icon {idx}: Skipped default {best_entry['name']} (confidence: {best_score:.3f})")
+                continue
+
             entry_copy = best_entry.copy()
             entry_copy['confidence'] = best_score
             detected_stgs.append(entry_copy)
@@ -356,19 +371,19 @@ def strategem_operator(key_sequence):
             case '1':
                 pyautogui.keyDown("left")
                 pyautogui.keyUp("left")
-                print("←", end="")
+                print("<", end="")
             case '2':
                 pyautogui.keyDown("up")
                 pyautogui.keyUp("up")
-                print("↑", end="")
+                print("^", end="")
             case '3':
                 pyautogui.keyDown("right")
                 pyautogui.keyUp("right")
-                print("→", end="")
+                print(">", end="")
             case '4':
                 pyautogui.keyDown("down")
                 pyautogui.keyUp("down")
-                print("↓", end="")
+                print("v", end="")
             case _:
                 print(f"Unknown key: {key}")
 
@@ -405,19 +420,19 @@ def handle_screenshot_hotkey(overlay_window):
 
 def handle_debug_overlay_hotkey(icon_overlay):
     """Handles the debug overlay hotkey."""
-    if keyboard.is_pressed('['):
+    if keyboard.is_pressed('ctrl+['):
         frame = capture_helldivers_window()
         if frame is None:
             print("Failed to capture window for debug overlay.")
             screenshot = pyautogui.screenshot()
             frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
         
-        screenshot_hud = frame[30:800, 30:600]
-        icon_boxes = detect_strategem_icons(screenshot_hud)
+        screenshot_hud, hud_region = get_hud_region(frame)
+        icon_boxes = detect_strategem_icons(screenshot_hud, hud_region.scale)
         simple_boxes = [(y, x, w, h) for (y, x, w, h, *rest) in icon_boxes]
         
         QTimer.singleShot(0, functools.partial(icon_overlay.display_icon_regions, frame, simple_boxes))
-        while keyboard.is_pressed('['):
+        while keyboard.is_pressed('ctrl+['):
             time.sleep(0.005)
         return True
     return False
@@ -428,7 +443,7 @@ def handle_quick_access_hotkeys():
         if keyboard.is_pressed(f'ctrl+{ckey["key"]}'):
             sequence = ckey.get("sequence")
             if sequence:
-                print(f"[Hotkey] Activating {ckey['name'].title()} → {sequence}")
+                print(f"[Hotkey] Activating {ckey['name'].title()} -> {sequence}")
                 strategem_operator(sequence)
             else:
                 print(f"[Hotkey] Error: No sequence defined for '{ckey['name']}'")
@@ -487,7 +502,7 @@ def check_required_assets():
         print("    Exiting.")
         sys.exit(1)
     
-    print("[✓] All required assets found.")
+    print("[OK] All required assets found.")
 
 
 def main():

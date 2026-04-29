@@ -4,6 +4,7 @@ import numpy as np
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
 from PyQt5.QtGui import QPixmap, QPalette, QColor, QImage
+from src.utils.screen_regions import get_hud_region
 
 class IconRegionsOverlay(QWidget):
     overlayTimeout = 3000  # Hide timeout (3 seconds)
@@ -53,7 +54,7 @@ class IconRegionsOverlay(QWidget):
             icon_boxes: list of (y, x, w, h) tuples for detected regions
         """
         # Extract HUD area (same as in main.py)
-        hud = screenshot[30:800, 30:600]
+        hud, _ = get_hud_region(screenshot)
         
         # Create a copy to draw on
         display_img = hud.copy()
