@@ -1,0 +1,28 @@
+{
+  "samples": [
+    {
+      "name": "Test Sample 1",
+      "image": "1-1.png",
+      "expected_codes": ["24312", "2432", "4423", "414321", "4231", "42332", "423423"],
+      "screenResolution": "2560x1440"
+    },
+    {
+      "name": "Test Sample 2",
+      "image": "1-2.png",
+      "expected_codes": ["24312", "2432", "4423", "414321", "4231", "42332", "423423"],
+      "screenResolution": "2560x1440"
+    },
+    {
+      "name": "Test Sample 3",
+      "image": "1-3.png",
+      "expected_codes": ["24312", "2432", "4423", "414321", "4231", "42332", "423423"],
+      "screenResolution": "2560x1440"
+    },
+    {
+      "name": "Test Sample 4",
+      "image": "1-4.png",
+      "expected_codes": ["24312", "2432", "4423", "414321", "4231", "42332", "423423"],
+      "screenResolution": "2560x1440"
+    }
+  ]
+}

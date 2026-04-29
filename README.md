@@ -1,95 +1,220 @@
 # Strategem Master
 
-Strategem Master is a Python desktop overlay tool for Helldivers 2 players. It uses OCR to detect strategem icons from your screen, displays them in a transparent overlay, and lets you trigger strategem key sequences with hotkeys.
+Strategem Master is a Windows desktop overlay for Helldivers 2. It captures the
+game HUD, detects equipped stratagem icons, shows them in a transparent overlay,
+and can send the selected stratagem key sequence through hotkeys.
 
----
+The runtime detector uses icon template matching. OCR is used only by the asset
+pipeline to extract and name icon templates from source screenshots.
 
 ## Features
 
-- **Overlay Window:** Transparent PyQt5 overlay showing strategem slots and names.
-- **OCR Detection:** Uses OpenCV and Tesseract to read strategem names from screenshots.
-- **Hotkey Control:** Activate strategems or overlay actions using customizable hotkeys.
-- **Automated Input:** Sends key sequences for strategems using PyAutoGUI.
+- Transparent PyQt5 overlay for detected stratagem slots.
+- Dynamic HUD crop that adapts better to different screen sizes.
+- Icon detection with OpenCV, Canny/Sobel edge features, CLAHE, auto Canny, and
+  optional pHash shortlist in the accuracy test tool.
+- OCR-only asset extraction pipeline for generating `img/<code>.png` templates.
+- No OCR manifest, override, or alias mapping in the extraction flow.
+- Hotkeys for rescanning, slot activation, default stratagems, and debug boxes.
+- Accuracy test runner for comparing old and new detection against samples.
 
----
+## Project Layout
+
+```text
+main.py                         Runtime overlay app
+overlay_window.py               Overlay UI
+icon_regions_overlay.py         Debug overlay for detected icon boxes
+img/                            Runtime icon templates named by stratagem code
+src/strategems.csv              Only CSV source for stratagem metadata
+src/img/group/                  Source screenshots used by the asset pipeline
+src/utils/automation_pipeline.py OCR-only asset update/extraction pipeline
+src/utils/strategem_detection.py Shared old/new detection logic for tests
+src/utils/screen_regions.py     Dynamic HUD crop helpers
+.test/accuracy_test.py          Accuracy comparison runner
+.test/sample/                   Test images and samples.json
+output/pipeline.log             Runtime pipeline log
+```
+
+## Data And Assets
+
+The project uses one CSV file only:
+
+```text
+src/strategems.csv
+```
+
+Each row must contain:
+
+```csv
+Index,Name,Code
+20,MGX-42 Bullet Storm,414321
+```
+
+Runtime icon templates are stored in:
+
+```text
+img/<Code>.png
+```
+
+Example:
+
+```text
+img/414321.png
+```
+
+If `src/strategems.csv` or `img/*.png` is missing, `main.py` will stop and ask
+you to run the asset pipeline.
 
 ## Installation
 
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/yourusername/strategem_master.git
-   cd strategem_master
-   ```
+1. Create and activate a virtual environment:
 
-2. **Install dependencies:**
-   ```sh
-   pip install -r requirements.txt
-   ```
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-3. **Install Tesseract OCR:**
-   - Download and install [Tesseract OCR](https://github.com/tesseract-ocr/tesseract).
-   - Update the path in `main.py` if needed:
-     ```python
-     pytesseract.pytesseract.tesseract_cmd = r"C:\Path\To\Tesseract-OCR\tesseract.exe"
-     ```
+2. Install Python dependencies:
 
----
+```powershell
+pip install -r requirements.txt
+```
 
-## Usage
+3. Install Tesseract OCR for the asset pipeline.
 
-1. **Run the program:**
-   ```sh
-   python main.py
-   ```
+Default path expected by the pipeline:
 
-2. **Hotkeys:**
-   - `Ctrl + ]` — Take a screenshot and update overlay with detected strategems.
-   - `Ctrl + 1-4` — Activate strategem in slot 1-4.
-   - `Ctrl + g` — Trigger "reinforce" strategem.
-   - `Ctrl + v` — Trigger "resupply" strategem.
-   - `Ctrl + Esc` — Exit the program.
+```text
+C:\My Programs\Tesseract-OCR\tesseract.exe
+```
 
-3. **Overlay:**
-   - The overlay window stays on top and displays detected strategems.
-   - Selected strategem is highlighted when activated.
+If your Tesseract path is different, update `TESSERACT_PATH` in:
 
----
+```text
+src/utils/automation_pipeline.py
+```
 
-## Configuration
+## Generate Or Update Assets
 
-- **Strategem Data:** All strategem key sequences and names are in `main.py` (`strategems_all` dictionary).
-- **Overlay Appearance:** Edit styles in `overlay_window.PY` for custom colors and font sizes.
-- **Hotkeys:** Change hotkey mappings in `main.py` as needed.
+Put source screenshots in:
 
----
+```text
+src/img/group/
+```
+
+Then run:
+
+```powershell
+.\.venv\Scripts\python.exe src\utils\automation_pipeline.py
+```
+
+The pipeline will:
+
+- Fetch/update `src/strategems.csv`.
+- OCR stratagem names from screenshots in `src/img/group/`.
+- Save extracted icons into `img/` as `<code>.png`.
+- Skip icon files that already exist.
+- Write logs to `output/pipeline.log`.
+
+The OCR extractor is intentionally OCR-only. It does not use manifest files,
+aliases, or manual code overrides.
+
+## Run The Overlay
+
+```powershell
+.\.venv\Scripts\python.exe main.py
+```
+
+Run the terminal as administrator if global hotkeys or simulated key input do
+not work in game.
+
+## Hotkeys
+
+| Hotkey | Action |
+| --- | --- |
+| `Ctrl+]` | Capture the Helldivers 2 window and update detected stratagem slots |
+| `Ctrl+[` | Show debug overlay for detected icon boxes |
+| `Ctrl+1` to `Ctrl+0` | Activate detected stratagem by slot |
+| `Ctrl+g` | Activate Reinforce (`24312`) |
+| `Ctrl+v` | Activate Resupply (`4423`) |
+| `Ctrl+q` | Activate Eagle Rearm (`22123`) |
+| `Ctrl+c` | Exit |
+
+Default stratagems such as Reinforce, Resupply, SoS Beacon, and Eagle Rearm are
+filtered out of normal detected slots.
+
+## Accuracy Test
+
+Keep test samples in:
+
+```text
+.test/sample/
+```
+
+Expected codes are defined in:
+
+```text
+.test/sample/samples.json
+```
+
+Run the default accuracy comparison:
+
+```powershell
+.\.venv\Scripts\python.exe .test\accuracy_test.py
+```
+
+Verbose output:
+
+```powershell
+.\.venv\Scripts\python.exe .test\accuracy_test.py --verbose
+```
+
+Include default stratagems in the comparison:
+
+```powershell
+.\.venv\Scripts\python.exe .test\accuracy_test.py --include-defaults --skip-first 0
+```
+
+Save a JSON report:
+
+```powershell
+.\.venv\Scripts\python.exe .test\accuracy_test.py --report output\accuracy_report.json
+```
+
+Save debug overlay images:
+
+```powershell
+.\.venv\Scripts\python.exe .test\accuracy_test.py --debug-dir output\accuracy_debug --verbose
+```
+
+## OCR Notes
+
+The asset pipeline improves OCR by generating multiple text variants:
+
+- CLAHE for local contrast balancing.
+- Bilateral filtering to reduce noise while preserving text edges.
+- Dynamic white-text masks for white HUD text on translucent black backgrounds.
+- Otsu and adaptive threshold variants.
+- Multiple Tesseract page segmentation modes.
+- Fuzzy matching against names from `src/strategems.csv`.
+
+This helps with glare and uneven illumination, but OCR can still fail if the
+text is heavily washed out or cropped. The current flow still stays OCR-only and
+does not use manual aliases or manifest overrides.
 
 ## Troubleshooting
 
-- **No strategems detected:** Make sure Tesseract OCR is installed and the path is correct.
-- **Overlay not showing:** Check PyQt5 installation and run as administrator if needed.
-- **Key input not working:** Some games may block simulated input; run as administrator.
-
----
+- `File not found: ./src/strategems.csv`: run the asset pipeline or restore the
+  CSV at `src/strategems.csv`.
+- `No icon images (.png) found in ./img/`: run the asset pipeline or add
+  templates named by code, for example `img/414321.png`.
+- Hotkeys do nothing: run PowerShell or the app as administrator.
+- Helldivers window is not found: make sure the game is running and visible.
+- OCR extraction misses an icon: add a clearer source screenshot to
+  `src/img/group/` and rerun the pipeline.
+- Low accuracy at small/windowed resolutions: add samples to `.test/sample/`,
+  update `samples.json`, and run the accuracy test to compare changes.
 
 ## License
 
-MIT License
-
----
-
-## Credits
-
-- [PyQt5](https://riverbankcomputing.com/software/pyqt/intro)
-- [OpenCV](https://opencv.org/)
-- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
-- [PyAutoGUI](https://pyautogui.readthedocs.io/en/latest/)
-
----
-
-## Contributing
-
-Pull requests and issues are welcome! Please open an issue for bugs or feature requests.
-
----
-
-**Enjoy automated strategem mastery!**
+MIT License. See `LICENSE.txt`.
