@@ -12,17 +12,22 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
 from overlay_window import OverlayWindow
 from icon_regions_overlay import IconRegionsOverlay
-from src.utils.cannyEdgeImplement import canny_edge_detection
+from src.utils.cannyEdgeImplement import enhanced_canny_template_match
 from src.utils.screen_regions import get_hud_region, scale_pixels
 import functools
 from threading import Thread
-from queue import Queue, Empty as QueueEmpty
+from queue import Queue, Empty as QueueEmpty, Full as QueueFull
 
 # Setup directories and CSV
 IMG_DIR = "./img"
 CSV_FILE = "./src/strategems.csv"
 MATCH_THRESHOLD = 0.4
+
+HOTKEY_DEBOUNCE_DELAY = 0.2  # 200ms debounce delay for hotkeys
+last_hotkey_time = {}
 pyautogui.PAUSE = 0.03  # Reduced delay between PyAutoGUI actions
+
+
 # Icon size constraints (in pixels)
 MIN_ICON_SIZE = 30
 MAX_ICON_SIZE = 150
@@ -233,7 +238,7 @@ def match_template_image(icon_region_gray, needle_gray, method=cv2.TM_CCOEFF_NOR
     except cv2.error as e:
         return None, 0.0
 
-def run_canny_edge_detection(screenshot):
+def run_enhanced_canny_template_match(screenshot):
     """
     Detects strategems from a screenshot by matching detected icon regions
     against pre-loaded templates using Canny edge detection.
@@ -275,8 +280,8 @@ def run_canny_edge_detection(screenshot):
 
         # Compare the icon region against available strategem templates.
         for code, template_img in available_templates.items():
-            # Use Canny edge detection to get a similarity score.
-            res = canny_edge_detection(icon_region, template_img)
+            # Use enhanced Canny edge detection to get a similarity score.
+            res = enhanced_canny_template_match(icon_region, template_img)
             
             if res['score'] > best_score:
                 best_score = res['score']
@@ -318,7 +323,7 @@ def screenshot_worker_thread(overlay_window):
                 break
                 
             # Run template matching detection
-            stg_in_slot = run_canny_edge_detection(frame)
+            stg_in_slot = run_enhanced_canny_template_match(frame)
             
             # Update global variable (thread-safe: atomic list replacement)
             strategems_current = stg_in_slot
@@ -352,11 +357,17 @@ def on_screenshot(overlay_window):
         screenshot = pyautogui.screenshot()
         frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     
-    # Queue for background processing
+    # Queue for background processing (Update: Keep latest frame)
     try:
         SCREENSHOT_QUEUE.put_nowait(frame)
-    except:
-        pass  # Queue full, skip frame
+    except QueueFull:
+        try:
+            # หากคิวเต็ม ให้ดึงภาพเก่าสุดทิ้งไปก่อน
+            SCREENSHOT_QUEUE.get_nowait()
+            # แล้วจึงยัดภาพใหม่ล่าสุดเข้าไปแทน
+            SCREENSHOT_QUEUE.put_nowait(frame)
+        except Exception as e:
+            print(f"[Queue Error] Could not manage full queue: {e}")
 
 
 def strategem_operator(key_sequence):
@@ -412,29 +423,46 @@ def handle_exit_hotkey():
 def handle_screenshot_hotkey(overlay_window):
     """Handles the manual screenshot hotkey."""
     if keyboard.is_pressed('ctrl+]'):
-        on_screenshot(overlay_window)
-        while keyboard.is_pressed('ctrl+]'):
-            time.sleep(0.005)
+        now = time.time()
+        # เช็คว่าเลยระยะเวลา Debounce หรือยัง
+        if now - last_hotkey_time.get('screenshot', 0) > HOTKEY_DEBOUNCE_DELAY:
+            on_screenshot(overlay_window)
+            last_hotkey_time['screenshot'] = now
         return True
     return False
 
 def handle_debug_overlay_hotkey(icon_overlay):
     """Handles the debug overlay hotkey."""
     if keyboard.is_pressed('ctrl+['):
-        frame = capture_helldivers_window()
-        if frame is None:
-            print("Failed to capture window for debug overlay.")
-            screenshot = pyautogui.screenshot()
-            frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-        
-        screenshot_hud, hud_region = get_hud_region(frame)
-        icon_boxes = detect_strategem_icons(screenshot_hud, hud_region.scale)
-        simple_boxes = [(y, x, w, h) for (y, x, w, h, *rest) in icon_boxes]
-        
-        QTimer.singleShot(0, functools.partial(icon_overlay.display_icon_regions, frame, simple_boxes))
-        while keyboard.is_pressed('ctrl+['):
-            time.sleep(0.005)
+        now = time.time()
+        if now - last_hotkey_time.get('debug', 0) > HOTKEY_DEBOUNCE_DELAY:
+            frame = capture_helldivers_window()
+            if frame is None:
+                print("Failed to capture window for debug overlay.")
+                screenshot = pyautogui.screenshot()
+                frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+            
+            screenshot_hud, hud_region = get_hud_region(frame)
+            icon_boxes = detect_strategem_icons(screenshot_hud, hud_region.scale)
+            simple_boxes = [(y, x, w, h) for (y, x, w, h, *rest) in icon_boxes]
+            
+            QTimer.singleShot(0, functools.partial(icon_overlay.display_icon_regions, frame, simple_boxes))
+            last_hotkey_time['debug'] = now
         return True
+    return False
+
+def handle_slot_activation_hotkeys(event, overlay_window):
+    """Handles the strategem slot activation hotkeys."""
+    if event.event_type == 'down' and event.scan_code in TOP_ROW_KEYS:
+        key = TOP_ROW_KEYS[event.scan_code]
+        if keyboard.is_pressed(f'ctrl+{key}'):
+            now = time.time()
+            action_name = f'slot_{key}'
+            if now - last_hotkey_time.get(action_name, 0) > HOTKEY_DEBOUNCE_DELAY:
+                strategem_controller(key)
+                QTimer.singleShot(0, functools.partial(overlay_window.stg_Selected, key))
+                last_hotkey_time[action_name] = now
+            return True
     return False
 
 def handle_quick_access_hotkeys():
@@ -447,18 +475,6 @@ def handle_quick_access_hotkeys():
                 strategem_operator(sequence)
             else:
                 print(f"[Hotkey] Error: No sequence defined for '{ckey['name']}'")
-            return True
-    return False
-
-def handle_slot_activation_hotkeys(event, overlay_window):
-    """Handles the strategem slot activation hotkeys."""
-    if event.event_type == 'down' and event.scan_code in TOP_ROW_KEYS:
-        key = TOP_ROW_KEYS[event.scan_code]
-        if keyboard.is_pressed(f'ctrl+{key}'):
-            strategem_controller(key)
-            QTimer.singleShot(0, functools.partial(overlay_window.stg_Selected, key))
-            while keyboard.is_pressed(f'ctrl+{key}'):
-                time.sleep(0.005)
             return True
     return False
 
