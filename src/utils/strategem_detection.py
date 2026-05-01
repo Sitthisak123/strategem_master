@@ -5,7 +5,7 @@ from collections import namedtuple
 import cv2
 import numpy as np
 
-from src.utils.cannyEdgeImplement import apply_sobel_feldman
+from src.utils.cannyEdgeImplement import apply_scharr_operator
 from src.utils.screen_regions import get_hud_region, scale_pixels
 
 
@@ -39,9 +39,12 @@ def load_detection_assets(csv_file="./src/strategems.csv", img_dir="./img"):
         reader = csv.DictReader(f)
         for row in reader:
             code = row["Code"]
+            display_name = (row.get("Name") or row.get("OriginalName") or "").strip()
+            original_name = (row.get("OriginalName") or display_name).strip()
             strategems_by_code[code] = {
                 "index": row["Index"],
-                "name": row["Name"],
+                "name": display_name,
+                "original_name": original_name,
                 "code": code,
                 "key": code,
             }
@@ -102,7 +105,7 @@ def preprocess_contours_new(img):
 
 def old_edge_features(img):
     gray = ensure_gray(img)
-    sobel = ensure_uint8(apply_sobel_feldman(gray))
+    sobel = ensure_uint8(apply_scharr_operator(gray))
     canny = cv2.Canny(gray, 50, 150)
     return cv2.bitwise_or(sobel, canny)
 
@@ -110,7 +113,7 @@ def old_edge_features(img):
 def new_edge_features(img):
     normalized = normalize_lightness(img)
     canny = auto_canny(normalized)
-    sobel = ensure_uint8(apply_sobel_feldman(normalized))
+    sobel = ensure_uint8(apply_scharr_operator(normalized))
     _, sobel_binary = cv2.threshold(
         sobel,
         0,

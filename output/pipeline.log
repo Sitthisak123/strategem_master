@@ -1,23 +1,313 @@
-[2026-05-01 17:59:46] === Helldivers 2 Asset Pipeline Starting ===
-[2026-05-01 17:59:46] Preparing directory: ./img
-[2026-05-01 17:59:46] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
-[2026-05-01 17:59:46] [OK] Saved 106 items to CSV via requests.
-[2026-05-01 17:59:46] 
+[2026-05-01 18:28:41] === Helldivers 2 Asset Pipeline Starting ===
+[2026-05-01 18:28:41] Preparing directory: ./img
+[2026-05-01 18:28:41] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
+[2026-05-01 18:28:41] [OK] Saved 106 items to CSV via requests.
+[2026-05-01 18:28:41] 
 [*] Starting icon extraction process...
-[2026-05-01 17:59:46] Found 82 existing icon(s) in './img'. They will be skipped.
-[2026-05-01 17:59:46] 
-[1/1] Processing: 4-2.png
-[2026-05-01 17:59:51]   Skipped OCR text: 'Ce i ae Dee' (best score: 0.455)
-[2026-05-01 17:59:55]   Skipped OCR text: 'oa arr Yoana' (best score: 0.435)
-[2026-05-01 17:59:59]   Detected: 'RESIIppiv' -> Resupply (Index: 90, OCR score: 0.588)
-[2026-05-01 18:00:03]   Skipped OCR text: 'LUMREpDepD' (best score: 0.444)
-[2026-05-01 18:00:07]   Detected: 'STERILIZED' -> TX-41 Sterilizer (Index: 23, OCR score: 0.750)
-[2026-05-01 18:00:11]   Detected: 'HOTDOG' -> AX/FLAM-75 Hot Dog (Index: 77, OCR score: 0.680)
-[2026-05-01 18:00:15]   Skipped OCR text: 'K-9' (best score: 0.480)
-[2026-05-01 18:00:15] 
+[2026-05-01 18:28:41] Found 82 existing icon(s) in './img'. They will be skipped.
+[2026-05-01 18:28:41] 
+[1/22] Processing: 1-0.png
+[2026-05-01 18:28:42]   Skipped first/default icon slot 1
+[2026-05-01 18:28:42]   Skipped first/default icon slot 2
+[2026-05-01 18:28:42]   Skipped first/default icon slot 3
+[2026-05-01 18:28:45]   Detected: 'EAGLENAPALMAIRSTRIKEBi' -> Eagle Napalm Airstrike (Index: 49, OCR score: 1.032)
+[2026-05-01 18:28:48]   Detected: 'EAGLEREARM' -> Eagle Rearm (Index: 92, OCR score: 1.080)
+[2026-05-01 18:28:51]   Detected: 'EAGLE500KGBOMB LN' -> Eagle 500kg Bomb (Index: 51, OCR score: 1.013)
+[2026-05-01 18:28:54]   Detected: 'SOLOSILO Set' -> MS-11 Solo Silo (Index: 29, OCR score: 0.922)
+[2026-05-01 18:28:57]   Detected: 'ROCKETSENTRY' -> A/MLS-4X Rocket Sentry (Index: 64, OCR score: 1.080)
+[2026-05-01 18:29:00]   Detected: 'ORBITALLASER' -> Orbital Laser (Index: 42, OCR score: 1.080)
+[2026-05-01 18:29:00] 
+[2/22] Processing: 1-1.png
+[2026-05-01 18:29:00]   Skipped first/default icon slot 1
+[2026-05-01 18:29:00]   Skipped first/default icon slot 2
+[2026-05-01 18:29:00]   Skipped first/default icon slot 3
+[2026-05-01 18:29:04]   Detected: 'ORBITALPRECISIONSTRIKE--S' -> Orbital Precision Strike (Index: 33, OCR score: 1.058)
+[2026-05-01 18:29:07]   Detected: 'ORBITALGATLINGBARRAGE' -> Orbital Gatling Barrage (Index: 34, OCR score: 1.080)
+[2026-05-01 18:29:10]   Detected: 'ORBITALAIRBURSTSTRIKE' -> Orbital Airburst Strike (Index: 37, OCR score: 1.080)
+[2026-05-01 18:29:14]   Detected: 'ORBITALNAPALMBARRAGE' -> Orbital Napalm Barrage (Index: 43, OCR score: 1.080)
+[2026-05-01 18:29:14] 
+[3/22] Processing: 1-2.png
+[2026-05-01 18:29:14]   Skipped first/default icon slot 1
+[2026-05-01 18:29:14]   Skipped first/default icon slot 2
+[2026-05-01 18:29:14]   Skipped first/default icon slot 3
+[2026-05-01 18:29:17]   Detected: 'ORBITAL120MMHEBARRAGE' -> Orbital 120mm HE Barrage (Index: 36, OCR score: 1.080)
+[2026-05-01 18:29:20]   Detected: 'ORBITALWALKINGBARRAGE' -> Orbital Walking Barrage (Index: 41, OCR score: 1.080)
+[2026-05-01 18:29:24]   Detected: 'ORBITAL380MMHEBARRAGE' -> Orbital 380mm HE Barrage (Index: 40, OCR score: 1.080)
+[2026-05-01 18:29:27]   Detected: 'ORBITALRAILCANNONSTRIKE' -> Orbital Railcannon Strike (Index: 44, OCR score: 1.080)
+[2026-05-01 18:29:27] 
+[4/22] Processing: 1-3.png
+[2026-05-01 18:29:27]   Skipped first/default icon slot 1
+[2026-05-01 18:29:27]   Skipped first/default icon slot 2
+[2026-05-01 18:29:27]   Skipped first/default icon slot 3
+[2026-05-01 18:29:30]   Detected: 'ORBITALEMSSTRIKE' -> Orbital EMS Strike (Index: 39, OCR score: 1.080)
+[2026-05-01 18:29:34]   Detected: 'ORBITALGASSTRIKE' -> Orbital Gas Strike (Index: 35, OCR score: 1.080)
+[2026-05-01 18:29:37]   Detected: 'ORBITALSMOKESTRIKE' -> Orbital Smoke Strike (Index: 38, OCR score: 1.080)
+[2026-05-01 18:29:40]   Detected: 'EAGLESTRAFINGRUN' -> Eagle Strafing Run (Index: 45, OCR score: 1.080)
+[2026-05-01 18:29:43]   Detected: 'EAGLESTRAFINGRUN' -> Eagle Strafing Run (Index: 45, OCR score: 1.080)
+[2026-05-01 18:29:43]   Candidate kept: Eagle Strafing Run existing score 1.080 >= 1.080
+[2026-05-01 18:29:43] 
+[5/22] Processing: 1-4.png
+[2026-05-01 18:29:43]   Skipped first/default icon slot 1
+[2026-05-01 18:29:43]   Skipped first/default icon slot 2
+[2026-05-01 18:29:43]   Skipped first/default icon slot 3
+[2026-05-01 18:29:46]   Detected: 'EAGLE110MMROCRETPODS' -> Eagle 110mm Rocket Pods (Index: 50, OCR score: 0.950)
+[2026-05-01 18:29:50]   Detected: 'EAGLE110MMROCKETPODS' -> Eagle 110mm Rocket Pods (Index: 50, OCR score: 1.080)
+[2026-05-01 18:29:53]   Detected: 'EAGLEAIRSTRIKE' -> Eagle Airstrike (Index: 46, OCR score: 1.080)
+[2026-05-01 18:29:56]   Detected: 'EAGLEAIRSTRIKE' -> Eagle Airstrike (Index: 46, OCR score: 1.080)
+[2026-05-01 18:29:56]   Candidate kept: Eagle Airstrike existing score 1.080 >= 1.080
+[2026-05-01 18:29:59]   Detected: 'EAGLECLUSTERBOMB' -> Eagle Cluster Bomb (Index: 47, OCR score: 1.080)
+[2026-05-01 18:30:02]   Detected: 'EAGLECLUSTERBOMB' -> Eagle Cluster Bomb (Index: 47, OCR score: 1.080)
+[2026-05-01 18:30:02]   Candidate kept: Eagle Cluster Bomb existing score 1.080 >= 1.080
+[2026-05-01 18:30:05]   Detected: 'EAGLESMORESTRIKE' -> Eagle Smoke Strike (Index: 48, OCR score: 0.938)
+[2026-05-01 18:30:08]   Detected: 'EAGLESMORESTRIKE' -> Eagle Smoke Strike (Index: 48, OCR score: 0.938)
+[2026-05-01 18:30:08]   Candidate kept: Eagle Smoke Strike existing score 0.938 >= 0.938
+[2026-05-01 18:30:08] 
+[6/22] Processing: 2-1.png
+[2026-05-01 18:30:08]   Skipped first/default icon slot 1
+[2026-05-01 18:30:08]   Skipped first/default icon slot 2
+[2026-05-01 18:30:08]   Skipped first/default icon slot 3
+[2026-05-01 18:30:11]   Detected: 'DEFOLIATIONTOOL' -> CQC-9 Defoliation Tool (Index: 22, OCR score: 1.080)
+[2026-05-01 18:30:14]   Detected: 'MACHINEGUN' -> MG-43 Machine Gun (Index: 1, OCR score: 1.080)
+[2026-05-01 18:30:17]   Detected: 'STALWART' -> M-105 Stalwart (Index: 3, OCR score: 1.080)
+[2026-05-01 18:30:20]   Detected: 'HEAVYMACHINEGUN' -> MG-206 Heavy Machine Gun (Index: 9, OCR score: 1.080)
+[2026-05-01 18:30:20] 
+[7/22] Processing: 2-10.png
+[2026-05-01 18:30:20]   Skipped first/default icon slot 1
+[2026-05-01 18:30:20]   Skipped first/default icon slot 2
+[2026-05-01 18:30:20]   Skipped first/default icon slot 3
+[2026-05-01 18:30:23]   Detected: 'GUARDDOGROVER' -> AX/AR-23 Guard Dog (Index: 73, OCR score: 0.842)
+[2026-05-01 18:30:27]   Detected: 'FASTRECONVEHICLE' -> M-102 Fast Recon Vehicle (Index: 85, OCR score: 1.080)
+[2026-05-01 18:30:30]   Detected: 'EMANCIPATOREXOSUIT' -> EXO-49 Emancipator Exosuit (Index: 84, OCR score: 1.080)
+[2026-05-01 18:30:33]   Detected: 'GATLINGSENTRY' -> A/G-16 Gatling Sentry (Index: 61, OCR score: 1.080)
+[2026-05-01 18:30:33] 
+[8/22] Processing: 2-2.png
+[2026-05-01 18:30:33]   Skipped first/default icon slot 1
+[2026-05-01 18:30:33]   Skipped first/default icon slot 2
+[2026-05-01 18:30:33]   Skipped first/default icon slot 3
+[2026-05-01 18:30:36]   Detected: 'RAILGUN' -> RS-422 Railgun (Index: 16, OCR score: 1.080)
+[2026-05-01 18:30:39]   Detected: 'SPEARGUN 2' -> S-11 Speargun (Index: 21, OCR score: 1.021)
+[2026-05-01 18:30:43]   Detected: 'ANTI-MATERIELRIFLE' -> APW-1 Anti-Materiel Rifle (Index: 5, OCR score: 1.080)
+[2026-05-01 18:30:46]   Detected: 'EPOCH' -> PLAS-45 Epoch (Index: 19, OCR score: 1.080)
+[2026-05-01 18:30:46] 
+[9/22] Processing: 2-3.png
+[2026-05-01 18:30:46]   Skipped first/default icon slot 1
+[2026-05-01 18:30:46]   Skipped first/default icon slot 2
+[2026-05-01 18:30:46]   Skipped first/default icon slot 3
+[2026-05-01 18:30:49]   Detected: 'GRENADELAUNCHER' -> GL-21 Grenade Launcher (Index: 6, OCR score: 1.080)
+[2026-05-01 18:30:52]   Detected: 'FLAMETHROWER' -> FLAM-40 Flamethrower (Index: 8, OCR score: 1.080)
+[2026-05-01 18:30:56]   Detected: 'LASERCANNON ON' -> LAS-98 Laser Cannon (Index: 4, OCR score: 0.997)
+[2026-05-01 18:30:59]   Detected: 'QUASARCANNON' -> LAS-99 Quasar Cannon (Index: 12, OCR score: 1.080)
+[2026-05-01 18:31:03]   Detected: 'aes amACAN SD TN oe' -> LAS-99 Quasar Cannon (Index: 12, OCR score: 0.593)
+[2026-05-01 18:31:03]   Candidate kept: LAS-99 Quasar Cannon existing score 1.080 >= 0.593
+[2026-05-01 18:31:03] 
+[10/22] Processing: 2-4.png
+[2026-05-01 18:31:03]   Skipped first/default icon slot 1
+[2026-05-01 18:31:03]   Skipped first/default icon slot 2
+[2026-05-01 18:31:03]   Skipped first/default icon slot 3
+[2026-05-01 18:31:06]   Detected: 'ARCTHROWER' -> ARC-3 Arc Thrower (Index: 11, OCR score: 1.080)
+[2026-05-01 18:31:08]   Detected: 'COMMANDO' -> MLS-4X Commando (Index: 14, OCR score: 1.080)
+[2026-05-01 18:31:11]   Detected: 'EXPENDABLENAPALM' -> EAT-700 Expendable Napalm (Index: 24, OCR score: 1.080)
+[2026-05-01 18:31:14]   Detected: 'SOLOSILO' -> MS-11 Solo Silo (Index: 29, OCR score: 1.080)
+[2026-05-01 18:31:14] 
+[11/22] Processing: 2-5.png
+[2026-05-01 18:31:14]   Skipped first/default icon slot 1
+[2026-05-01 18:31:14]   Skipped first/default icon slot 2
+[2026-05-01 18:31:14]   Skipped first/default icon slot 3
+[2026-05-01 18:31:17]   Detected: 'EXPENDABLEANTI-TANK' -> EAT-17 Expendable Anti-Tank (Index: 2, OCR score: 1.080)
+[2026-05-01 18:31:20]   Detected: 'AUTOCANNON' -> AC-8 Autocannon (Index: 10, OCR score: 1.080)
+[2026-05-01 18:31:24]   Detected: 'AIRBURSTROCKETLAUNCHER' -> RL-77 Airburst Rocket Launcher (Index: 13, OCR score: 1.080)
+[2026-05-01 18:31:26]   Detected: 'SPEAR' -> FAF-14 Spear (Index: 15, OCR score: 1.080)
+[2026-05-01 18:31:26] 
+[12/22] Processing: 2-6.png
+[2026-05-01 18:31:26]   Skipped first/default icon slot 1
+[2026-05-01 18:31:26]   Skipped first/default icon slot 2
+[2026-05-01 18:31:26]   Skipped first/default icon slot 3
+[2026-05-01 18:31:29]   Detected: 'WASPLAUNCHER' -> StA-X3 W.A.S.P. Launcher (Index: 17, OCR score: 1.080)
+[2026-05-01 18:31:32]   Detected: 'MAXIGUN' -> M-1000 Maxigun (Index: 31, OCR score: 1.080)
+[2026-05-01 18:31:35]   Detected: 'RECOILLESSRIFLE' -> GR-8 Recoilless Rifle (Index: 7, OCR score: 1.080)
+[2026-05-01 18:31:38]   Detected: 'SUPPLYPACK' -> B-1 Supply Pack (Index: 70, OCR score: 1.080)
+[2026-05-01 18:31:38] 
+[13/22] Processing: 2-7.png
+[2026-05-01 18:31:38]   Skipped first/default icon slot 1
+[2026-05-01 18:31:38]   Skipped first/default icon slot 2
+[2026-05-01 18:31:38]   Skipped first/default icon slot 3
+[2026-05-01 18:31:41]   Detected: 'PORTABLEHELLBOMB' -> B-100 Portable Hellbomb (Index: 78, OCR score: 1.080)
+[2026-05-01 18:31:44]   Detected: 'WARPPACK' -> LIFT-182 Warp Pack (Index: 82, OCR score: 1.080)
+[2026-05-01 18:31:47]   Detected: 'JUMPPACK' -> LIFT-850 Jump Pack (Index: 71, OCR score: 1.080)
+[2026-05-01 18:31:50]   Detected: 'SHIELDGENERATORPACK' -> SH-32 Shield Generator Pack (Index: 75, OCR score: 1.080)
+[2026-05-01 18:31:50] 
+[14/22] Processing: 2-8.png
+[2026-05-01 18:31:50]   Skipped first/default icon slot 1
+[2026-05-01 18:31:50]   Skipped first/default icon slot 2
+[2026-05-01 18:31:50]   Skipped first/default icon slot 3
+[2026-05-01 18:31:53]   Detected: 'DIRECTIONALSHIELD' -> SH-51 Directional Shield (Index: 76, OCR score: 1.080)
+[2026-05-01 18:31:56]   Detected: 'BALLISTICSHIELDBACKPACK' -> SH-20 Ballistic Shield Backpack (Index: 72, OCR score: 1.080)
+[2026-05-01 18:31:59]   Detected: 'GUARDDOGHOTDOG' -> AX/AR-23 Guard Dog (Index: 73, OCR score: 0.807)
+[2026-05-01 18:31:59]   Candidate kept: AX/AR-23 Guard Dog existing score 0.842 >= 0.807
+[2026-05-01 18:32:02]   Detected: 'GUARDDOG' -> AX/AR-23 Guard Dog (Index: 73, OCR score: 1.080)
+[2026-05-01 18:32:02] 
+[15/22] Processing: 3-1.png
+[2026-05-01 18:32:02]   Skipped first/default icon slot 1
+[2026-05-01 18:32:02]   Skipped first/default icon slot 2
+[2026-05-01 18:32:02]   Skipped first/default icon slot 3
+[2026-05-01 18:32:05]   Detected: 'MACHINEGUNSENTRY' -> A/MG-43 Machine Gun Sentry (Index: 60, OCR score: 1.080)
+[2026-05-01 18:32:08]   Detected: 'LASERSENTRY' -> A/LAS-98 Laser Sentry (Index: 67, OCR score: 1.080)
+[2026-05-01 18:32:11]   Detected: 'ROCKETSENTRY' -> A/MLS-4X Rocket Sentry (Index: 64, OCR score: 1.080)
+[2026-05-01 18:32:11]   Candidate kept: A/MLS-4X Rocket Sentry existing score 1.080 >= 1.080
+[2026-05-01 18:32:14]   Detected: 'AUTOCANNONSENTRY' -> A/AC-8 Autocannon Sentry (Index: 62, OCR score: 1.080)
+[2026-05-01 18:32:14] 
+[16/22] Processing: 3-2.png
+[2026-05-01 18:32:15]   Skipped first/default icon slot 1
+[2026-05-01 18:32:15]   Skipped first/default icon slot 2
+[2026-05-01 18:32:15]   Skipped first/default icon slot 3
+[2026-05-01 18:32:18]   Detected: 'EMSMORTARSENTRY' -> A/M-23 EMS Mortar Sentry (Index: 66, OCR score: 1.080)
+[2026-05-01 18:32:21]   Detected: 'MORTARSENTRY' -> A/M-12 Mortar Sentry (Index: 63, OCR score: 1.080)
+[2026-05-01 18:32:24]   Detected: 'SHIELDGENERATORRELAY' -> FX-12 Shield Generator Relay (Index: 55, OCR score: 1.080)
+[2026-05-01 18:32:28]   Detected: 'GRENADIERBATTLEMENT' -> E/GL-21 Grenadier Battlement (Index: 57, OCR score: 1.080)
+[2026-05-01 18:32:28] 
+[17/22] Processing: 3-3.png
+[2026-05-01 18:32:28]   Skipped first/default icon slot 1
+[2026-05-01 18:32:28]   Skipped first/default icon slot 2
+[2026-05-01 18:32:28]   Skipped first/default icon slot 3
+[2026-05-01 18:32:31]   Detected: 'ANTI-TANKEMPLACEMENT' -> E/AT-12 Anti-Tank Emplacement (Index: 59, OCR score: 1.080)
+[2026-05-01 18:32:35]   Detected: 'HMGEMPLACEMENT' -> E/MG-101 HMG Emplacement (Index: 56, OCR score: 1.080)
+[2026-05-01 18:32:38]   Detected: 'TESLATOWER' -> A/ARC-3 Tesla Tower (Index: 65, OCR score: 1.080)
+[2026-05-01 18:32:42]   Detected: 'ANTI-TANKMINES' -> MD-17 Anti-Tank Mines (Index: 54, OCR score: 1.080)
+[2026-05-01 18:32:42] 
+[18/22] Processing: 3-4.png
+[2026-05-01 18:32:42]   Skipped first/default icon slot 1
+[2026-05-01 18:32:42]   Skipped first/default icon slot 2
+[2026-05-01 18:32:42]   Skipped first/default icon slot 3
+[2026-05-01 18:32:44]   Detected: 'GASMINES' -> MD-8 Gas Mines (Index: 58, OCR score: 1.080)
+[2026-05-01 18:32:48]   Detected: 'ANTI-PERSONNELMINEFIELD' -> MD-6 Anti-Personnel Minefield (Index: 52, OCR score: 1.080)
+[2026-05-01 18:32:51]   Detected: 'INCENDIARYMINES' -> MD-I4 Incendiary Mines (Index: 53, OCR score: 1.080)
+[2026-05-01 18:32:54]   Detected: 'ORBITALPRECISIONSTRIKE' -> Orbital Precision Strike (Index: 33, OCR score: 1.080)
+[2026-05-01 18:32:54] 
+[19/22] Processing: 4-1.png
+[2026-05-01 18:32:54]   Skipped first/default icon slot 1
+[2026-05-01 18:32:54]   Skipped first/default icon slot 2
+[2026-05-01 18:32:54]   Skipped first/default icon slot 3
+[2026-05-01 18:32:57]   Detected: 'BULLETctnon' -> MGX-42 Bullet Storm (Index: 20, OCR score: 0.727)
+[2026-05-01 18:33:00]   Detected: 'SPEARGIIN' -> S-11 Speargun (Index: 21, OCR score: 0.824)
+[2026-05-01 18:33:00]   Candidate kept: S-11 Speargun existing score 1.021 >= 0.824
+[2026-05-01 18:33:03]   Detected: 'GASMORTARSEnNTDYV' -> A/GM-17 Gas Mortar Sentry (Index: 69, OCR score: 0.875)
+[2026-05-01 18:33:06]   Detected: 'PORTABLEHELLBOMB' -> B-100 Portable Hellbomb (Index: 78, OCR score: 1.080)
+[2026-05-01 18:33:06]   Candidate kept: B-100 Portable Hellbomb existing score 1.080 >= 1.080
+[2026-05-01 18:33:06] 
+[20/22] Processing: 4-2.png
+[2026-05-01 18:33:06]   Skipped first/default icon slot 1
+[2026-05-01 18:33:06]   Skipped first/default icon slot 2
+[2026-05-01 18:33:06]   Skipped first/default icon slot 3
+[2026-05-01 18:33:09]   Detected: 'LUMREDrn' -> EXO-51 Lumberer Exosuit (Index: 88, OCR score: 0.750)
+[2026-05-01 18:33:12]   Detected: 'STERILIZED' -> TX-41 Sterilizer (Index: 23, OCR score: 0.900)
+[2026-05-01 18:33:15]   Detected: 'HOTDOG' -> AX/FLAM-75 Hot Dog (Index: 77, OCR score: 1.080)
+[2026-05-01 18:33:18]   Detected: 'K-9' -> AX/ARC-3 K-9 (Index: 79, OCR score: 1.080)
+[2026-05-01 18:33:18] 
+[21/22] Processing: rd-sbk.png
+[2026-05-01 18:33:18]   Skipped first/default icon slot 1
+[2026-05-01 18:33:18]   Skipped first/default icon slot 2
+[2026-05-01 18:33:18]   Skipped first/default icon slot 3
+[2026-05-01 18:33:21]   Detected: 'BREACHINGHAMMER' -> CQC-20 Breaching Hammer (Index: 18, OCR score: 1.080)
+[2026-05-01 18:33:24]   Detected: 'BASTIONMKXVI' -> TD-220 Bastion MK XVI (Index: 86, OCR score: 1.080)
+[2026-05-01 18:33:27]   Detected: 'BELT-FEDGRENADELAUNCHER' -> GL-28 Belt-Fed Grenade Launcher (Index: 27, OCR score: 1.080)
+[2026-05-01 18:33:30]   Detected: 'LEVELLER' -> EAT-411 Leveller (Index: 25, OCR score: 1.080)
+[2026-05-01 18:33:30] 
+[22/22] Processing: rd-sbk2.png
+[2026-05-01 18:33:30]   Skipped first/default icon slot 1
+[2026-05-01 18:33:30]   Skipped first/default icon slot 2
+[2026-05-01 18:33:30]   Skipped first/default icon slot 3
+[2026-05-01 18:33:33]   Detected: 'C4PACK' -> B/MD C4 Pack (Index: 28, OCR score: 1.080)
+[2026-05-01 18:33:35]   Detected: 'K-9' -> AX/ARC-3 K-9 (Index: 79, OCR score: 1.080)
+[2026-05-01 18:33:35]   Candidate kept: AX/ARC-3 K-9 existing score 1.080 >= 1.080
+[2026-05-01 18:33:38]   Detected: 'DE-ESCALATOR' -> GL-52 De-Escalator (Index: 26, OCR score: 1.080)
+[2026-05-01 18:33:41]   Detected: 'GRENADELAUNCHER' -> GL-21 Grenade Launcher (Index: 6, OCR score: 1.080)
+[2026-05-01 18:33:41]   Candidate kept: GL-21 Grenade Launcher existing score 1.080 >= 1.080
+[2026-05-01 18:33:41]   Replaced: 1432142.png (score: 1.080, text: 'EMANCIPATOREXOSUIT', source: 2-10.png)
+[2026-05-01 18:33:41]   Saved: 1432312.png (score: 0.750, text: 'LUMREDrn', source: 4-2.png)
+[2026-05-01 18:33:41]   Replaced: 143414242.png (score: 1.080, text: 'BASTIONMKXVI', source: rd-sbk.png)
+[2026-05-01 18:33:41]   Replaced: 1434342.png (score: 1.080, text: 'FASTRECONVEHICLE', source: 2-10.png)
+[2026-05-01 18:33:41]   Replaced: 22123.png (score: 1.080, text: 'EAGLEREARM', source: 1-0.png)
+[2026-05-01 18:33:41]   Replaced: 2321.png (score: 1.080, text: 'EAGLE110MMROCKETPODS', source: 1-4.png)
+[2026-05-01 18:33:41]   Replaced: 2324.png (score: 0.938, text: 'EAGLESMORESTRIKE', source: 1-4.png)
+[2026-05-01 18:33:41]   Replaced: 233.png (score: 1.080, text: 'EAGLESTRAFINGRUN', source: 1-3.png)
+[2026-05-01 18:33:41]   Replaced: 2342.png (score: 1.032, text: 'EAGLENAPALMAIRSTRIKEBi', source: 1-0.png)
+[2026-05-01 18:33:41]   Replaced: 2343.png (score: 1.080, text: 'EAGLEAIRSTRIKE', source: 1-4.png)
+[2026-05-01 18:33:41]   Replaced: 23443.png (score: 1.080, text: 'EAGLECLUSTERBOMB', source: 1-4.png)
+[2026-05-01 18:33:41]   Replaced: 23444.png (score: 1.013, text: 'EAGLE500KGBOMB LN', source: 1-0.png)
+[2026-05-01 18:33:41]   Replaced: 32443.png (score: 1.080, text: 'ORBITALRAILCANNONSTRIKE', source: 1-2.png)
+[2026-05-01 18:33:41]   Replaced: 3314.png (score: 1.080, text: 'ORBITALEMSSTRIKE', source: 1-3.png)
+[2026-05-01 18:33:41]   Replaced: 332.png (score: 1.080, text: 'ORBITALPRECISIONSTRIKE', source: 3-4.png)
+[2026-05-01 18:33:41]   Replaced: 333.png (score: 1.080, text: 'ORBITALAIRBURSTSTRIKE', source: 1-1.png)
+[2026-05-01 18:33:41]   Replaced: 334132.png (score: 1.080, text: 'ORBITALNAPALMBARRAGE', source: 1-1.png)
+[2026-05-01 18:33:41]   Replaced: 334134.png (score: 1.080, text: 'ORBITAL120MMHEBARRAGE', source: 1-2.png)
+[2026-05-01 18:33:41]   Replaced: 3342.png (score: 1.080, text: 'ORBITALSMOKESTRIKE', source: 1-3.png)
+[2026-05-01 18:33:41]   Replaced: 3343.png (score: 1.080, text: 'ORBITALGASSTRIKE', source: 1-3.png)
+[2026-05-01 18:33:41]   Replaced: 34122.png (score: 1.080, text: 'ORBITALGATLINGBARRAGE', source: 1-1.png)
+[2026-05-01 18:33:41]   Replaced: 3422144.png (score: 1.080, text: 'ORBITAL380MMHEBARRAGE', source: 1-2.png)
+[2026-05-01 18:33:41]   Replaced: 34234.png (score: 1.080, text: 'ORBITALLASER', source: 1-0.png)
+[2026-05-01 18:33:41]   Replaced: 343434.png (score: 1.080, text: 'ORBITALWALKINGBARRAGE', source: 1-2.png)
+[2026-05-01 18:33:41]   Replaced: 4113.png (score: 1.080, text: 'GASMINES', source: 3-4.png)
+[2026-05-01 18:33:41]   Replaced: 4114.png (score: 1.080, text: 'INCENDIARYMINES', source: 3-4.png)
+[2026-05-01 18:33:41]   Replaced: 412122.png (score: 1.080, text: 'BELT-FEDGRENADELAUNCHER', source: rd-sbk.png)
+[2026-05-01 18:33:41]   Replaced: 41213.png (score: 1.080, text: 'EPOCH', source: 2-2.png)
+[2026-05-01 18:33:41]   Replaced: 41214.png (score: 1.080, text: 'GRENADELAUNCHER', source: 2-3.png)
+[2026-05-01 18:33:41]   Replaced: 4122.png (score: 1.080, text: 'ANTI-TANKMINES', source: 3-3.png)
+[2026-05-01 18:33:41]   Replaced: 4123.png (score: 1.080, text: 'ANTI-PERSONNELMINEFIELD', source: 3-4.png)
+[2026-05-01 18:33:41]   Replaced: 41241.png (score: 0.900, text: 'STERILIZED', source: 4-2.png)
+[2026-05-01 18:33:41]   Replaced: 41242.png (score: 1.080, text: 'FLAMETHROWER', source: 2-3.png)
+[2026-05-01 18:33:41]   Replaced: 41243.png (score: 1.080, text: 'COMMANDO', source: 2-4.png)
+[2026-05-01 18:33:41]   Replaced: 41244.png (score: 1.080, text: 'HEAVYMACHINEGUN', source: 2-1.png)
+[2026-05-01 18:33:41]   Replaced: 41312.png (score: 1.080, text: 'BREACHINGHAMMER', source: rd-sbk.png)
+[2026-05-01 18:33:41]   Replaced: 41324.png (score: 1.080, text: 'ANTI-MATERIELRIFLE', source: 2-2.png)
+[2026-05-01 18:33:41]   Replaced: 41331.png (score: 1.080, text: 'RECOILLESSRIFLE', source: 2-6.png)
+[2026-05-01 18:33:41]   Replaced: 41334.png (score: 1.080, text: 'DEFOLIATIONTOOL', source: 2-1.png)
+[2026-05-01 18:33:41]   Replaced: 413413.png (score: 1.080, text: 'WARPPACK', source: 2-7.png)
+[2026-05-01 18:33:41]   Replaced: 413422.png (score: 1.080, text: 'MAXIGUN', source: 2-6.png)
+[2026-05-01 18:33:41]   Replaced: 41421.png (score: 0.997, text: 'LASERCANNON ON', source: 2-3.png)
+[2026-05-01 18:33:41]   Replaced: 414221.png (score: 1.080, text: 'STALWART', source: 2-1.png)
+[2026-05-01 18:33:41]   Replaced: 414223.png (score: 1.080, text: 'AUTOCANNON', source: 2-5.png)
+[2026-05-01 18:33:41]   Replaced: 414224.png (score: 1.080, text: 'SUPPLYPACK', source: 2-6.png)
+[2026-05-01 18:33:41]   Replaced: 41423.png (score: 1.080, text: 'MACHINEGUN', source: 2-1.png)
+[2026-05-01 18:33:41]   Replaced: 414321.png (score: 0.727, text: 'BULLETctnon', source: 4-1.png)
+[2026-05-01 18:33:41]   Replaced: 414421.png (score: 1.080, text: 'BALLISTICSHIELDBACKPACK', source: 2-8.png)
+[2026-05-01 18:33:41]   Replaced: 421211.png (score: 1.080, text: 'HOTDOG', source: 4-2.png)
+[2026-05-01 18:33:41]   Saved: 421231.png (score: 1.080, text: 'K-9', source: 4-2.png)
+[2026-05-01 18:33:41]   Replaced: 421234.png (score: 1.080, text: 'GUARDDOG', source: 2-8.png)
+[2026-05-01 18:33:41]   Replaced: 421313.png (score: 1.080, text: 'SHIELDGENERATORPACK', source: 2-7.png)
+[2026-05-01 18:33:41]   Replaced: 421322.png (score: 1.080, text: 'DIRECTIONALSHIELD', source: 2-8.png)
+[2026-05-01 18:33:41]   Replaced: 421331.png (score: 1.080, text: 'HMGEMPLACEMENT', source: 3-3.png)
+[2026-05-01 18:33:41]   Replaced: 421333.png (score: 1.080, text: 'ANTI-TANKEMPLACEMENT', source: 3-3.png)
+[2026-05-01 18:33:41]   Replaced: 42213.png (score: 1.080, text: 'AIRBURSTROCKETLAUNCHER', source: 2-5.png)
+[2026-05-01 18:33:41]   Replaced: 42242.png (score: 1.080, text: 'JUMPPACK', source: 2-7.png)
+[2026-05-01 18:33:41]   Replaced: 4231.png (score: 1.080, text: 'GATLINGSENTRY', source: 2-10.png)
+[2026-05-01 18:33:41]   Replaced: 423212.png (score: 1.080, text: 'AUTOCANNONSENTRY', source: 3-1.png)
+[2026-05-01 18:33:41]   Replaced: 423213.png (score: 1.080, text: 'TESLATOWER', source: 3-3.png)
+[2026-05-01 18:33:41]   Replaced: 42331.png (score: 1.080, text: 'ROCKETSENTRY', source: 1-0.png)
+[2026-05-01 18:33:41]   Replaced: 42332.png (score: 1.080, text: 'MACHINEGUNSENTRY', source: 3-1.png)
+[2026-05-01 18:33:41]   Replaced: 42334.png (score: 1.080, text: 'MORTARSENTRY', source: 3-2.png)
+[2026-05-01 18:33:41]   Replaced: 42341.png (score: 0.875, text: 'GASMORTARSEnNTDYV', source: 4-1.png)
+[2026-05-01 18:33:41]   Replaced: 423423.png (score: 1.080, text: 'LASERSENTRY', source: 3-1.png)
+[2026-05-01 18:33:41]   Replaced: 42343.png (score: 1.080, text: 'EMSMORTARSENTRY', source: 3-2.png)
+[2026-05-01 18:33:41]   Replaced: 42344.png (score: 1.080, text: 'SOLOSILO', source: 2-4.png)
+[2026-05-01 18:33:41]   Replaced: 43213.png (score: 1.080, text: 'DE-ESCALATOR', source: rd-sbk2.png)
+[2026-05-01 18:33:41]   Replaced: 43222.png (score: 1.080, text: 'PORTABLEHELLBOMB', source: 2-7.png)
+[2026-05-01 18:33:41]   Replaced: 432232.png (score: 1.080, text: 'C4PACK', source: rd-sbk2.png)
+[2026-05-01 18:33:41]   Replaced: 434123.png (score: 1.021, text: 'SPEARGUN 2', source: 2-2.png)
+[2026-05-01 18:33:41]   Replaced: 43413.png (score: 1.080, text: 'GRENADIERBATTLEMENT', source: 3-2.png)
+[2026-05-01 18:33:41]   Replaced: 434211.png (score: 1.080, text: 'ARCTHROWER', source: 2-4.png)
+[2026-05-01 18:33:41]   Replaced: 434213.png (score: 1.080, text: 'RAILGUN', source: 2-2.png)
+[2026-05-01 18:33:41]   Replaced: 44121.png (score: 1.080, text: 'EXPENDABLENAPALM', source: 2-4.png)
+[2026-05-01 18:33:41]   Replaced: 44123.png (score: 1.080, text: 'EXPENDABLEANTI-TANK', source: 2-5.png)
+[2026-05-01 18:33:41]   Replaced: 44124.png (score: 1.080, text: 'LEVELLER', source: rd-sbk.png)
+[2026-05-01 18:33:41]   Replaced: 441313.png (score: 1.080, text: 'SHIELDGENERATORRELAY', source: 3-2.png)
+[2026-05-01 18:33:41]   Replaced: 44213.png (score: 1.080, text: 'QUASARCANNON', source: 2-3.png)
+[2026-05-01 18:33:41]   Replaced: 44243.png (score: 1.080, text: 'WASPLAUNCHER', source: 2-6.png)
+[2026-05-01 18:33:41]   Replaced: 44244.png (score: 1.080, text: 'SPEAR', source: 2-5.png)
+[2026-05-01 18:33:41]   [OK] Saved 2 new icon(s), replaced 79 icon(s).
+[2026-05-01 18:33:41] 
 
 === Processing Complete ===
-[2026-05-01 18:00:15] Icon extraction summary: Found 82/105 unique icons.
-[2026-05-01 18:00:15] Found 23 missing icons. Writing details to 'missing_icons.log'.
-[2026-05-01 18:00:15] 
-=== Pipeline Finished in 28.73s ===
+[2026-05-01 18:33:41] Icon extraction summary: Found 84/105 unique icons.
+[2026-05-01 18:33:41] Found 21 missing icons. Writing details to 'missing_icons.log'.
+[2026-05-01 18:33:41] 
+=== Pipeline Finished in 300.94s ===

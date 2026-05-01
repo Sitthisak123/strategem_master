@@ -1,107 +1,107 @@
-Index,Name,Code
-1,MG-43 Machine Gun,41423
-2,EAT-17 Expendable Anti-Tank,44123
-3,M-105 Stalwart,414221
-4,LAS-98 Laser Cannon,41421
-5,APW-1 Anti-Materiel Rifle,41324
-6,GL-21 Grenade Launcher,41214
-7,GR-8 Recoilless Rifle,41331
-8,FLAM-40 Flamethrower,41242
-9,MG-206 Heavy Machine Gun,41244
-10,AC-8 Autocannon,414223
-11,ARC-3 Arc Thrower,434211
-12,LAS-99 Quasar Cannon,44213
-13,RL-77 Airburst Rocket Launcher,42213
-14,MLS-4X Commando,41243
-15,FAF-14 Spear,44244
-16,RS-422 Railgun,434213
-17,StA-X3 W.A.S.P. Launcher,44243
-18,CQC-20 Breaching Hammer,41312
-19,PLAS-45 Epoch,41213
-20,MGX-42 Bullet Storm,414321
-21,S-11 Speargun,434123
-22,CQC-9 Defoliation Tool,41334
-23,TX-41 Sterilizer,41241
-24,EAT-700 Expendable Napalm,44121
-25,EAT-411 Leveller,44124
-26,GL-52 De-Escalator,43213
-27,GL-28 Belt-Fed Grenade Launcher,412122
-28,B/MD C4 Pack,432232
-29,MS-11 Solo Silo,42344
-30,B/FLAM-80 Cremator,443422
-31,M-1000 Maxigun,413422
-32,CQC-1 One True Flag,41332
-33,Orbital Precision Strike,332
-34,Orbital Gatling Barrage,34122
-35,Orbital Gas Strike,3343
-36,Orbital 120mm HE Barrage,334134
-37,Orbital Airburst Strike,333
-38,Orbital Smoke Strike,3342
-39,Orbital EMS Strike,3314
-40,Orbital 380mm HE Barrage,3422144
-41,Orbital Walking Barrage,343434
-42,Orbital Laser,34234
-43,Orbital Napalm Barrage,334132
-44,Orbital Railcannon Strike,32443
-45,Eagle Strafing Run,233
-46,Eagle Airstrike,2343
-47,Eagle Cluster Bomb,23443
-48,Eagle Smoke Strike,2324
-49,Eagle Napalm Airstrike,2342
-50,Eagle 110mm Rocket Pods,2321
-51,Eagle 500kg Bomb,23444
-52,MD-6 Anti-Personnel Minefield,4123
-53,MD-I4 Incendiary Mines,4114
-54,MD-17 Anti-Tank Mines,4122
-55,FX-12 Shield Generator Relay,441313
-56,E/MG-101 HMG Emplacement,421331
-57,E/GL-21 Grenadier Battlement,43413
-58,MD-8 Gas Mines,4113
-59,E/AT-12 Anti-Tank Emplacement,421333
-60,A/MG-43 Machine Gun Sentry,42332
-61,A/G-16 Gatling Sentry,4231
-62,A/AC-8 Autocannon Sentry,423212
-63,A/M-12 Mortar Sentry,42334
-64,A/MLS-4X Rocket Sentry,42331
-65,A/ARC-3 Tesla Tower,423213
-66,A/M-23 EMS Mortar Sentry,42343
-67,A/LAS-98 Laser Sentry,423423
-68,A/FLAM-40 Flame Sentry,423422
-69,A/GM-17 Gas Mortar Sentry,42341
-70,B-1 Supply Pack,414224
-71,LIFT-850 Jump Pack,42242
-72,SH-20 Ballistic Shield Backpack,414421
-73,AX/AR-23 Guard Dog,421234
-74,AX/LAS-5 Rover,421233
-75,SH-32 Shield Generator Pack,421313
-76,SH-51 Directional Shield,421322
-77,AX/FLAM-75 Hot Dog,421211
-78,B-100 Portable Hellbomb,43222
-79,AX/ARC-3 K-9,421231
-80,LIFT-860 Hover Pack,422413
-81,AX/TX-13 Dog Breath,421232
-82,LIFT-182 Warp Pack,413413
-83,EXO-45 Patriot Exosuit,1432144
-84,EXO-49 Emancipator Exosuit,1432142
-85,M-102 Fast Recon Vehicle,1434342
-86,TD-220 Bastion MK XVI,143414242
-87,EXO-55 Breakthrough Exosuit,1431342
-88,EXO-51 Lumberer Exosuit,1432312
-89,Reinforce,24312
-90,Resupply,4423
-91,SoS Beacon,2432
-92,Eagle Rearm,22123
-93,Call In Super Destroyer,22441313
-94,NUX-223 Hellbomb,42142342
-95,Upload Data,13222
-96,SSSD Delivery,4444422
-97,Super Earth Flag,4242
-98,Seismic Probe,221344
-99,Prospecting Drill,441344
-100,Dark Fluid Vessel,213422
-101,Tectonic Drill,242424
-102,Hive Breaker Drill,124344
-103,Cargo Container,224434
-104,Reinforcement Pods,13222
-105,SEAF Artillery,3224
-106,Orbital Illumination Flare,3311
+Index,OriginalName,Name,Code
+1,MG-43 Machine Gun,Machine Gun,41423
+2,EAT-17 Expendable Anti-Tank,Expendable Anti-Tank,44123
+3,M-105 Stalwart,Stalwart,414221
+4,LAS-98 Laser Cannon,Laser Cannon,41421
+5,APW-1 Anti-Materiel Rifle,Anti-Materiel Rifle,41324
+6,GL-21 Grenade Launcher,Grenade Launcher,41214
+7,GR-8 Recoilless Rifle,Recoilless Rifle,41331
+8,FLAM-40 Flamethrower,Flamethrower,41242
+9,MG-206 Heavy Machine Gun,Heavy Machine Gun,41244
+10,AC-8 Autocannon,Autocannon,414223
+11,ARC-3 Arc Thrower,Arc Thrower,434211
+12,LAS-99 Quasar Cannon,Quasar Cannon,44213
+13,RL-77 Airburst Rocket Launcher,Airburst Rocket Launcher,42213
+14,MLS-4X Commando,Commando,41243
+15,FAF-14 Spear,Spear,44244
+16,RS-422 Railgun,Railgun,434213
+17,StA-X3 W.A.S.P. Launcher,W.A.S.P. Launcher,44243
+18,CQC-20 Breaching Hammer,Breaching Hammer,41312
+19,PLAS-45 Epoch,Epoch,41213
+20,MGX-42 Bullet Storm,Bullet Storm,414321
+21,S-11 Speargun,Speargun,434123
+22,CQC-9 Defoliation Tool,Defoliation Tool,41334
+23,TX-41 Sterilizer,Sterilizer,41241
+24,EAT-700 Expendable Napalm,Expendable Napalm,44121
+25,EAT-411 Leveller,Leveller,44124
+26,GL-52 De-Escalator,De-Escalator,43213
+27,GL-28 Belt-Fed Grenade Launcher,Belt-Fed Grenade Launcher,412122
+28,B/MD C4 Pack,C4,432232
+29,MS-11 Solo Silo,Solo Silo,42344
+30,B/FLAM-80 Cremator,Cremator,443422
+31,M-1000 Maxigun,Maxigun,413422
+32,CQC-1 One True Flag,One True Flag,41332
+33,Orbital Precision Strike,Orbital Precision Strike,332
+34,Orbital Gatling Barrage,Orbital Gatling Barrage,34122
+35,Orbital Gas Strike,Orbital Gas Strike,3343
+36,Orbital 120mm HE Barrage,Orbital 120mm HE Barrage,334134
+37,Orbital Airburst Strike,Orbital Airburst Strike,333
+38,Orbital Smoke Strike,Orbital Smoke Strike,3342
+39,Orbital EMS Strike,Orbital EMS Strike,3314
+40,Orbital 380mm HE Barrage,Orbital 380mm HE Barrage,3422144
+41,Orbital Walking Barrage,Orbital Walking Barrage,343434
+42,Orbital Laser,Orbital Laser,34234
+43,Orbital Napalm Barrage,Orbital Napalm Barrage,334132
+44,Orbital Railcannon Strike,Orbital Railcannon Strike,32443
+45,Eagle Strafing Run,Eagle Strafing Run,233
+46,Eagle Airstrike,Eagle Airstrike,2343
+47,Eagle Cluster Bomb,Eagle Cluster Bomb,23443
+48,Eagle Smoke Strike,Eagle Smoke Strike,2324
+49,Eagle Napalm Airstrike,Eagle Napalm Airstrike,2342
+50,Eagle 110mm Rocket Pods,Eagle 110mm Rocket Pods,2321
+51,Eagle 500kg Bomb,Eagle 500kg Bomb,23444
+52,MD-6 Anti-Personnel Minefield,Anti-Personnel Minefield,4123
+53,MD-I4 Incendiary Mines,Incendiary Mines,4114
+54,MD-17 Anti-Tank Mines,Anti-Tank Mines,4122
+55,FX-12 Shield Generator Relay,Shield Generator Relay,441313
+56,E/MG-101 HMG Emplacement,HMG,421331
+57,E/GL-21 Grenadier Battlement,Grenadier Battlement,43413
+58,MD-8 Gas Mines,Gas Mines,4113
+59,E/AT-12 Anti-Tank Emplacement,Anti-Tank,421333
+60,A/MG-43 Machine Gun Sentry,Machine Gun,42332
+61,A/G-16 Gatling Sentry,Gatling,4231
+62,A/AC-8 Autocannon Sentry,Autocannon,423212
+63,A/M-12 Mortar Sentry,Mortar,42334
+64,A/MLS-4X Rocket Sentry,Rocket,42331
+65,A/ARC-3 Tesla Tower,Tesla Tower,423213
+66,A/M-23 EMS Mortar Sentry,EMS Mortar,42343
+67,A/LAS-98 Laser Sentry,Laser,423423
+68,A/FLAM-40 Flame Sentry,Flame,423422
+69,A/GM-17 Gas Mortar Sentry,Gas Mortar,42341
+70,B-1 Supply Pack,Supply,414224
+71,LIFT-850 Jump Pack,Jump,42242
+72,SH-20 Ballistic Shield Backpack,Ballistic Shield,414421
+73,AX/AR-23 Guard Dog,Guard Dog,421234
+74,AX/LAS-5 Rover,Rover,421233
+75,SH-32 Shield Generator Pack,Shield Generator,421313
+76,SH-51 Directional Shield,Directional Shield,421322
+77,AX/FLAM-75 Hot Dog,Hot Dog,421211
+78,B-100 Portable Hellbomb,Portable Hellbomb,43222
+79,AX/ARC-3 K-9,K-9,421231
+80,LIFT-860 Hover Pack,Hover,422413
+81,AX/TX-13 Dog Breath,Dog Breath,421232
+82,LIFT-182 Warp Pack,Warp,413413
+83,EXO-45 Patriot Exosuit,Patriot,1432144
+84,EXO-49 Emancipator Exosuit,Emancipator,1432142
+85,M-102 Fast Recon Vehicle,Fast Recon Vehicle,1434342
+86,TD-220 Bastion MK XVI,Bastion MK XVI,143414242
+87,EXO-55 Breakthrough Exosuit,Breakthrough,1431342
+88,EXO-51 Lumberer Exosuit,Lumberer,1432312
+89,Reinforce,Reinforce,24312
+90,Resupply,Resupply,4423
+91,SoS Beacon,SoS Beacon,2432
+92,Eagle Rearm,Eagle Rearm,22123
+93,Call In Super Destroyer,Call In Super Destroyer,22441313
+94,NUX-223 Hellbomb,Hellbomb,42142342
+95,Upload Data,Upload Data,13222
+96,SSSD Delivery,SSSD Delivery,4444422
+97,Super Earth Flag,Super Earth Flag,4242
+98,Seismic Probe,Seismic Probe,221344
+99,Prospecting Drill,Prospecting Drill,441344
+100,Dark Fluid Vessel,Dark Fluid Vessel,213422
+101,Tectonic Drill,Tectonic Drill,242424
+102,Hive Breaker Drill,Hive Breaker Drill,124344
+103,Cargo Container,Cargo Container,224434
+104,Reinforcement Pods,Reinforcement Pods,13222
+105,SEAF Artillery,SEAF Artillery,3224
+106,Orbital Illumination Flare,Orbital Illumination Flare,3311

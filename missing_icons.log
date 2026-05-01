@@ -2,24 +2,102 @@ Strategems with missing icons:
 ===============================
   - Name: Hive Breaker Drill, Code: 124344
   - Name: Reinforcement Pods, Code: 13222
-  - Name: EXO-55 Breakthrough Exosuit, Code: 1431342
-  - Name: EXO-45 Patriot Exosuit, Code: 1432144
-  - Name: EXO-51 Lumberer Exosuit, Code: 1432312
+  - Name: Breakthrough, Code: 1431342
+  - Name: Emancipator, Code: 1432142
+  - Name: Patriot, Code: 1432144
+  - Name: Bastion MK XVI, Code: 143414242
+  - Name: Fast Recon Vehicle, Code: 1434342
   - Name: Dark Fluid Vessel, Code: 213422
+  - Name: Eagle Rearm, Code: 22123
   - Name: Seismic Probe, Code: 221344
   - Name: Call In Super Destroyer, Code: 22441313
   - Name: Cargo Container, Code: 224434
+  - Name: Eagle 110mm Rocket Pods, Code: 2321
+  - Name: Eagle Smoke Strike, Code: 2324
+  - Name: Eagle Strafing Run, Code: 233
+  - Name: Eagle Napalm Airstrike, Code: 2342
+  - Name: Eagle Airstrike, Code: 2343
+  - Name: Eagle Cluster Bomb, Code: 23443
+  - Name: Eagle 500kg Bomb, Code: 23444
   - Name: Tectonic Drill, Code: 242424
+  - Name: Reinforce, Code: 24312
+  - Name: SoS Beacon, Code: 2432
   - Name: SEAF Artillery, Code: 3224
+  - Name: Orbital Railcannon Strike, Code: 32443
   - Name: Orbital Illumination Flare, Code: 3311
-  - Name: CQC-1 One True Flag, Code: 41332
-  - Name: AX/ARC-3 K-9, Code: 421231
-  - Name: AX/TX-13 Dog Breath, Code: 421232
-  - Name: AX/LAS-5 Rover, Code: 421233
-  - Name: NUX-223 Hellbomb, Code: 42142342
-  - Name: LIFT-860 Hover Pack, Code: 422413
-  - Name: A/FLAM-40 Flame Sentry, Code: 423422
+  - Name: Orbital EMS Strike, Code: 3314
+  - Name: Orbital Precision Strike, Code: 332
+  - Name: Orbital Airburst Strike, Code: 333
+  - Name: Orbital Napalm Barrage, Code: 334132
+  - Name: Orbital 120mm HE Barrage, Code: 334134
+  - Name: Orbital Smoke Strike, Code: 3342
+  - Name: Orbital Gas Strike, Code: 3343
+  - Name: Orbital Gatling Barrage, Code: 34122
+  - Name: Orbital 380mm HE Barrage, Code: 3422144
+  - Name: Orbital Laser, Code: 34234
+  - Name: Orbital Walking Barrage, Code: 343434
+  - Name: Gas Mines, Code: 4113
+  - Name: Incendiary Mines, Code: 4114
+  - Name: Belt-Fed Grenade Launcher, Code: 412122
+  - Name: Epoch, Code: 41213
+  - Name: Grenade Launcher, Code: 41214
+  - Name: Anti-Tank Mines, Code: 4122
+  - Name: Anti-Personnel Minefield, Code: 4123
+  - Name: Flamethrower, Code: 41242
+  - Name: Commando, Code: 41243
+  - Name: Heavy Machine Gun, Code: 41244
+  - Name: Breaching Hammer, Code: 41312
+  - Name: Anti-Materiel Rifle, Code: 41324
+  - Name: Recoilless Rifle, Code: 41331
+  - Name: One True Flag, Code: 41332
+  - Name: Defoliation Tool, Code: 41334
+  - Name: Warp, Code: 413413
+  - Name: Maxigun, Code: 413422
+  - Name: Laser Cannon, Code: 41421
+  - Name: Stalwart, Code: 414221
+  - Name: Autocannon, Code: 414223
+  - Name: Supply, Code: 414224
+  - Name: Machine Gun, Code: 41423
+  - Name: Bullet Storm, Code: 414321
+  - Name: Ballistic Shield, Code: 414421
+  - Name: Dog Breath, Code: 421232
+  - Name: Rover, Code: 421233
+  - Name: Guard Dog, Code: 421234
+  - Name: Shield Generator, Code: 421313
+  - Name: Directional Shield, Code: 421322
+  - Name: HMG, Code: 421331
+  - Name: Anti-Tank, Code: 421333
+  - Name: Hellbomb, Code: 42142342
+  - Name: Airburst Rocket Launcher, Code: 42213
+  - Name: Hover, Code: 422413
+  - Name: Jump, Code: 42242
+  - Name: Gatling, Code: 4231
+  - Name: Autocannon, Code: 423212
+  - Name: Tesla Tower, Code: 423213
+  - Name: Rocket, Code: 42331
+  - Name: Machine Gun, Code: 42332
+  - Name: Mortar, Code: 42334
+  - Name: Gas Mortar, Code: 42341
+  - Name: Flame, Code: 423422
+  - Name: Laser, Code: 423423
+  - Name: EMS Mortar, Code: 42343
+  - Name: Solo Silo, Code: 42344
   - Name: Super Earth Flag, Code: 4242
+  - Name: De-Escalator, Code: 43213
+  - Name: Portable Hellbomb, Code: 43222
+  - Name: C4, Code: 432232
+  - Name: Speargun, Code: 434123
+  - Name: Grenadier Battlement, Code: 43413
+  - Name: Arc Thrower, Code: 434211
+  - Name: Railgun, Code: 434213
+  - Name: Expendable Napalm, Code: 44121
+  - Name: Expendable Anti-Tank, Code: 44123
+  - Name: Leveller, Code: 44124
+  - Name: Shield Generator Relay, Code: 441313
   - Name: Prospecting Drill, Code: 441344
-  - Name: B/FLAM-80 Cremator, Code: 443422
+  - Name: Quasar Cannon, Code: 44213
+  - Name: Resupply, Code: 4423
+  - Name: W.A.S.P. Launcher, Code: 44243
+  - Name: Spear, Code: 44244
+  - Name: Cremator, Code: 443422
   - Name: SSSD Delivery, Code: 4444422

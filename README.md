@@ -30,6 +30,7 @@ src/img/group/                  Source screenshots used by the asset pipeline
 src/utils/automation_pipeline.py OCR-only asset update/extraction pipeline
 src/utils/strategem_detection.py Shared old/new detection logic for tests
 src/utils/screen_regions.py     Dynamic HUD crop helpers
+tools/auto_update_manager.py    Auto-update checker/manager
 .test/accuracy_test.py          Accuracy comparison runner
 .test/sample/                   Test images and samples.json
 output/pipeline.log             Runtime pipeline log
@@ -46,9 +47,12 @@ src/strategems.csv
 Each row must contain:
 
 ```csv
-Index,Name,Code
-20,MGX-42 Bullet Storm,414321
+Index,OriginalName,Name,Code
+20,MGX-42 Bullet Storm,Bullet Storm,414321
 ```
+
+`OriginalName` is the full wiki name. `Name` is generated after the project
+rule and is used by the runtime UI, logs, and detection results.
 
 Runtime icon templates are stored in:
 
@@ -111,6 +115,7 @@ Then run:
 The pipeline will:
 
 - Fetch/update `src/strategems.csv`.
+- Generate UI names from wiki names, such as `AX/ARC-3 K-9` -> `K-9`.
 - OCR stratagem names from screenshots in `src/img/group/`.
 - Save extracted icons into `img/` as `<code>.png`.
 - Skip icon files that already exist.
@@ -118,6 +123,12 @@ The pipeline will:
 
 The OCR extractor is intentionally OCR-only. It does not use manifest files,
 aliases, or manual code overrides.
+
+To verify local assets and only run the pipeline when an update is needed:
+
+```powershell
+.\.venv\Scripts\python.exe tools\auto_update_manager.py
+```
 
 ## Run The Overlay
 

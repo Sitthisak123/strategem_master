@@ -83,15 +83,20 @@ def load_strategems_and_templates():
             reader = csv.DictReader(f)
             for row in reader:
                 code = row['Code']
-                name_lower = row['Name'].lower()
+                display_name = (row.get('Name') or row.get('OriginalName') or '').strip()
+                original_name = (row.get('OriginalName') or display_name).strip()
+                name_lower = display_name.lower()
                 entry = {
                     'index': row['Index'],
-                    'name': row['Name'],
+                    'name': display_name,
+                    'original_name': original_name,
                     'code': code,
                     'key': code 
                 }
                 stg_by_code[code] = entry
                 stg_by_name[name_lower] = entry
+                if original_name:
+                    stg_by_name[original_name.lower()] = entry
                 
                 # โหลดภาพ Template (ชื่อไฟล์คือ Code.png)
                 img_path = os.path.join(IMG_DIR, f"{code}.png")

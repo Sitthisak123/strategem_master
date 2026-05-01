@@ -1,4 +1,5 @@
 import csv
+import json
 import logging
 import os
 import re
@@ -37,10 +38,24 @@ MIN_ICON_SIZE = 30
 MAX_ICON_SIZE = 150
 ICON_PADDING = 0
 TEXT_GAP_AFTER_ICON = 10
+TEXT_ROI_WIDTH = 420
 MIN_OCR_MATCH_SCORE = 0.55
-OCR_CONFIGS = [
-    r"--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/ .",
+FAST_ACCEPT_SCORE = 0.70
+HIGH_CONFIDENCE_OCR_SCORE = 0.95
+SKIP_FIRST_ICON_BOXES = 3
+ICON_SCORE_FILE = os.path.join(OUTPUT_DIR, "_scores.json")
+GENERIC_SUFFIX_WORDS = {
+    "backpack",
+    "emplacement",
+    "exosuit",
+    "pack",
+    "sentry",
+}
+FAST_OCR_CONFIGS = [
     r"--oem 3 --psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/ .",
+]
+FALLBACK_OCR_CONFIGS = [
+    r"--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/ .",
     r"--oem 3 --psm 11 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/ .",
 ]
 
@@ -54,7 +69,68 @@ def normalize_key(value):
     return re.sub(r"[^a-z0-9]+", "", value.casefold())
 
 
-def preprocess_ocr_variants(img):
+def make_display_name(name):
+    """Create the short name used by runtime UI from the original wiki name."""
+    cleaned_name = " ".join(str(name).split())
+    if not cleaned_name:
+        return ""
+
+    words = cleaned_name.split()
+    if len(words) > 1 and re.search(r"[-/\d]", words[0]):
+        tail_words = words[1:]
+        if len(tail_words) > 1 and tail_words[-1].casefold() in GENERIC_SUFFIX_WORDS:
+            return " ".join(tail_words[:-1])
+        return " ".join(tail_words)
+
+    return cleaned_name
+
+
+def get_original_name(entry):
+    return (entry.get("OriginalName") or entry.get("Name") or "").strip()
+
+
+def get_display_name(entry):
+    original_name = get_original_name(entry)
+    return (entry.get("Name") or make_display_name(original_name) or original_name).strip()
+
+
+def prepare_strategem_entry(entry):
+    original_name = get_original_name(entry)
+    display_name = make_display_name(original_name) or original_name
+    return {
+        "Index": entry.get("Index", ""),
+        "OriginalName": original_name,
+        "Name": display_name,
+        "Code": entry.get("Code", ""),
+    }
+
+
+def iter_name_match_values(entry):
+    """Yield OCR match names derived from CSV data."""
+    original_name = get_original_name(entry)
+    display_name = get_display_name(entry)
+
+    for value in (display_name, original_name):
+        if value:
+            yield value
+
+
+def build_strategem_lookup(entries):
+    lookup = {}
+    for entry in entries:
+        prepared_entry = prepare_strategem_entry(entry)
+        for match_value in iter_name_match_values(prepared_entry):
+            key = normalize_key(match_value)
+            if key and key not in lookup:
+                lookup[key] = prepared_entry
+    return lookup
+
+
+def unique_strategems_by_code(all_strategems):
+    return {info["Code"]: info for info in all_strategems.values()}
+
+
+def preprocess_ocr_variants(img, fast_only=False):
     """Create OCR-friendly variants for uneven HUD lighting."""
     if img is None or img.size == 0:
         return []
@@ -66,10 +142,17 @@ def preprocess_ocr_variants(img):
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     balanced = clahe.apply(resized)
     denoised = cv2.bilateralFilter(balanced, d=7, sigmaColor=60, sigmaSpace=60)
+    masks = build_white_text_masks(denoised)
+
+    _, otsu = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    if fast_only:
+        variants = [denoised, otsu]
+        if masks:
+            variants.append(masks[0])
+        return variants
 
     variants = [resized, balanced, denoised]
-    variants.extend(build_white_text_masks(denoised))
-    _, otsu = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    variants.extend(masks)
     _, otsu_inv = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     adaptive = cv2.adaptiveThreshold(
         denoised,
@@ -115,13 +198,14 @@ def build_white_text_masks(gray):
     return [mask, cv2.bitwise_not(mask)]
 
 
-def extract_text_candidates(img):
+def extract_text_candidates(img, fast_only=False, seen=None):
     """Extract multiple OCR text candidates from a ROI."""
     candidates = []
-    seen = set()
+    seen = seen if seen is not None else set()
+    configs = FAST_OCR_CONFIGS if fast_only else FALLBACK_OCR_CONFIGS
 
-    for variant in preprocess_ocr_variants(img):
-        for config in OCR_CONFIGS:
+    for variant in preprocess_ocr_variants(img, fast_only=fast_only):
+        for config in configs:
             text = pytesseract.image_to_string(variant, config=config).strip()
             cleaned = re.sub(r"\s+", " ", text).strip()
             if not cleaned:
@@ -134,36 +218,115 @@ def extract_text_candidates(img):
     return candidates
 
 
+def score_ocr_text(text, all_strategems):
+    normalized_text = normalize_key(text)
+    if not normalized_text:
+        return None, 0.0
+
+    if normalized_text in all_strategems:
+        return all_strategems[normalized_text], 1.08
+
+    best_info = None
+    best_score = 0.0
+    for candidate_key in get_close_matches(
+        normalized_text,
+        all_strategems.keys(),
+        n=5,
+        cutoff=0.30,
+    ):
+        score = SequenceMatcher(None, normalized_text, candidate_key).ratio()
+        if normalized_text in candidate_key or candidate_key in normalized_text:
+            score += 0.08
+
+        if score > best_score:
+            best_info = all_strategems[candidate_key]
+            best_score = score
+
+    return best_info, best_score
+
+
 def find_strategem_by_ocr(name_roi, all_strategems):
     """Match OCR candidates to the nearest known stratagem name."""
     best_info = None
     best_text = ""
     best_score = 0.0
+    seen = set()
 
-    for text in extract_text_candidates(name_roi):
-        normalized_text = normalize_key(text)
-        if not normalized_text:
-            continue
+    for text in extract_text_candidates(name_roi, fast_only=True, seen=seen):
+        strategem_info, score = score_ocr_text(text, all_strategems)
+        if score > best_score:
+            best_info = strategem_info
+            best_text = text
+            best_score = score
 
-        for candidate_key in get_close_matches(
-            normalized_text,
-            all_strategems.keys(),
-            n=5,
-            cutoff=0.30,
-        ):
-            score = SequenceMatcher(None, normalized_text, candidate_key).ratio()
-            if normalized_text in candidate_key or candidate_key in normalized_text:
-                score += 0.08
+        if best_info and best_score >= HIGH_CONFIDENCE_OCR_SCORE:
+            return best_info, best_text, best_score
 
-            if score > best_score:
-                best_info = all_strategems[candidate_key]
-                best_text = text
-                best_score = score
+    if best_info and best_score >= FAST_ACCEPT_SCORE:
+        return best_info, best_text, best_score
+
+    for text in extract_text_candidates(name_roi, fast_only=False, seen=seen):
+        strategem_info, score = score_ocr_text(text, all_strategems)
+        if score > best_score:
+            best_info = strategem_info
+            best_text = text
+            best_score = score
+
+        if best_info and best_score >= HIGH_CONFIDENCE_OCR_SCORE:
+            return best_info, best_text, best_score
 
     if best_info and best_score >= MIN_OCR_MATCH_SCORE:
         return best_info, best_text, best_score
 
     return None, best_text, best_score
+
+
+def load_icon_scores():
+    if not os.path.exists(ICON_SCORE_FILE):
+        return {}
+
+    try:
+        with open(ICON_SCORE_FILE, "r", encoding="utf-8") as file_obj:
+            data = json.load(file_obj)
+            return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def save_icon_scores(icon_scores):
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    with open(ICON_SCORE_FILE, "w", encoding="utf-8") as file_obj:
+        json.dump(icon_scores, file_obj, indent=2, sort_keys=True)
+
+
+def get_recorded_score(icon_scores, code):
+    value = icon_scores.get(code)
+    if isinstance(value, dict):
+        value = value.get("score")
+
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return -1.0
+
+
+def remember_best_candidate(best_candidates, strategem_info, icon_img, raw_text, score, source_image, logger):
+    code = strategem_info["Code"]
+    previous = best_candidates.get(code)
+    if previous and previous["score"] >= score:
+        logger.info(
+            f"  Candidate kept: {strategem_info['Name']} "
+            f"existing score {previous['score']:.3f} >= {score:.3f}"
+        )
+        return
+
+    best_candidates[code] = {
+        "info": strategem_info,
+        "icon": icon_img,
+        "text": raw_text,
+        "score": score,
+        "source": source_image,
+    }
 
 
 def setup_logger():
@@ -196,13 +359,14 @@ def setup_environment(logger):
 
 def save_strategem_csv(logger, extracted_data, source_label="wiki"):
     """Persist extracted strategem data and return the lookup dict used by OCR."""
+    prepared_data = [prepare_strategem_entry(entry) for entry in extracted_data]
     with open(CSV_PATH, "w", newline="", encoding="utf-8") as file_obj:
-        writer = csv.DictWriter(file_obj, fieldnames=["Index", "Name", "Code"])
+        writer = csv.DictWriter(file_obj, fieldnames=["Index", "OriginalName", "Name", "Code"])
         writer.writeheader()
-        writer.writerows(extracted_data)
+        writer.writerows(prepared_data)
 
-    logger.info(f"[OK] Saved {len(extracted_data)} items to CSV via {source_label}.")
-    return {normalize_key(entry["Name"]): entry for entry in extracted_data}
+    logger.info(f"[OK] Saved {len(prepared_data)} items to CSV via {source_label}.")
+    return build_strategem_lookup(prepared_data)
 
 
 def fetch_strategem_data_via_browser(logger, reason):
@@ -330,6 +494,9 @@ def extract_and_save_icons(logger, all_strategems):
         return
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+    icon_scores = load_icon_scores()
+    best_candidates = {}
+    unique_strategems = unique_strategems_by_code(all_strategems)
     source_image_files = sorted(
         [
             file_name
@@ -369,7 +536,6 @@ def extract_and_save_icons(logger, all_strategems):
         edges = cv2.Canny(cv2.GaussianBlur(gray, (5, 5), 0), 50, 150)
         contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        detected_in_file = []
         candidate_boxes = []
         for contour in contours:
             x, y, width, height = cv2.boundingRect(contour)
@@ -383,7 +549,11 @@ def extract_and_save_icons(logger, all_strategems):
                 candidate_boxes.append((y, x, width, height))
 
         candidate_boxes.sort(key=lambda box: (box[0], box[1]))
-        for y, x, width, height in candidate_boxes:
+        for box_index, (y, x, width, height) in enumerate(candidate_boxes):
+            if box_index < SKIP_FIRST_ICON_BOXES:
+                logger.info(f"  Skipped first/default icon slot {box_index + 1}")
+                continue
+
             y_start = max(0, y - ICON_PADDING)
             x_start = max(0, x - ICON_PADDING)
             y_end = min(hud.shape[0], y + height + ICON_PADDING)
@@ -391,7 +561,8 @@ def extract_and_save_icons(logger, all_strategems):
             icon_img = hud[y_start:y_end, x_start:x_end]
 
             text_start = min(hud.shape[1] - 1, x + width + TEXT_GAP_AFTER_ICON)
-            name_roi = hud[y:y + height, text_start:]
+            text_end = min(hud.shape[1], text_start + TEXT_ROI_WIDTH)
+            name_roi = hud[y:y + height, text_start:text_end]
             top_half = name_roi[:name_roi.shape[0] // 2, :]
             strategem_info, raw_text, score = find_strategem_by_ocr(top_half, all_strategems)
 
@@ -400,42 +571,66 @@ def extract_and_save_icons(logger, all_strategems):
                     f"  Detected: '{raw_text}' -> "
                     f"{strategem_info['Name']} (Index: {strategem_info['Index']}, OCR score: {score:.3f})"
                 )
-                detected_in_file.append({"info": strategem_info, "icon": icon_img})
+                remember_best_candidate(
+                    best_candidates,
+                    strategem_info,
+                    icon_img,
+                    raw_text,
+                    score,
+                    img_file,
+                    logger,
+                )
             else:
                 logger.info(f"  Skipped OCR text: '{raw_text}' (best score: {score:.3f})")
 
-        icons_saved_count = 0
-        for item in detected_in_file:
-            stg_code = item["info"]["Code"]
-            if stg_code in saved_codes:
-                continue
+    icons_saved_count = 0
+    icons_replaced_count = 0
+    for stg_code, item in sorted(best_candidates.items()):
+        filename = f"{stg_code}.png"
+        output_path = os.path.join(OUTPUT_DIR, filename)
+        icon_img = item["icon"]
+        score = item["score"]
+        previous_score = get_recorded_score(icon_scores, stg_code)
+        output_exists = os.path.exists(output_path)
 
-            filename = f"{stg_code}.png"
-            output_path = os.path.join(OUTPUT_DIR, filename)
-            icon_img = item["icon"]
+        if icon_img is None or icon_img.size == 0:
+            logger.warning(f"  Skipped empty icon for code: {stg_code}")
+            continue
 
-            if icon_img is None or icon_img.size == 0:
-                logger.warning(f"  Skipped empty icon for code: {stg_code}")
-                continue
-
-            if os.path.exists(output_path):
-                logger.info(f"  Skipped existing: {filename}")
-                saved_codes.add(stg_code)
-                continue
-
-            if not cv2.imwrite(output_path, icon_img):
-                logger.error(f"  Failed to save: {filename}")
-                continue
-
-            logger.info(f"  Saved: {filename}")
+        if output_exists and score <= previous_score:
+            logger.info(
+                f"  Skipped existing: {filename} "
+                f"(candidate score {score:.3f} <= saved score {previous_score:.3f})"
+            )
             saved_codes.add(stg_code)
+            continue
+
+        if not cv2.imwrite(output_path, icon_img):
+            logger.error(f"  Failed to save: {filename}")
+            continue
+
+        action = "Replaced" if output_exists else "Saved"
+        logger.info(
+            f"  {action}: {filename} "
+            f"(score: {score:.3f}, text: '{item['text']}', source: {item['source']})"
+        )
+        icon_scores[stg_code] = {
+            "score": score,
+            "text": item["text"],
+            "source": item["source"],
+            "updated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        saved_codes.add(stg_code)
+        if output_exists:
+            icons_replaced_count += 1
+        else:
             icons_saved_count += 1
 
-        if icons_saved_count > 0:
-            logger.info(f"  [OK] Extracted {icons_saved_count} new icon(s)")
+    save_icon_scores(icon_scores)
+    logger.info(f"  [OK] Saved {icons_saved_count} new icon(s), replaced {icons_replaced_count} icon(s).")
 
     logger.info("\n\n=== Processing Complete ===")
-    all_codes = {info["Code"] for info in all_strategems.values()}
+    all_codes = set(unique_strategems.keys())
     missing_codes = all_codes - saved_codes
     logger.info(f"Icon extraction summary: Found {len(saved_codes)}/{len(all_codes)} unique icons.")
 
@@ -443,7 +638,7 @@ def extract_and_save_icons(logger, all_strategems):
         logger.warning(f"Found {len(missing_codes)} missing icons. Writing details to 'missing_icons.log'.")
         with open("missing_icons.log", "w", encoding="utf-8") as file_obj:
             file_obj.write("Strategems with missing icons:\n===============================\n")
-            code_to_name_map = {info["Code"]: info["Name"] for info in all_strategems.values()}
+            code_to_name_map = {code: info["Name"] for code, info in unique_strategems.items()}
             for code in sorted(missing_codes):
                 name = code_to_name_map.get(code, "Unknown Name")
                 file_obj.write(f"  - Name: {name}, Code: {code}\n")

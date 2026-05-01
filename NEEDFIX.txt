@@ -1,22 +1,2 @@
 Extract icon:
-    -skip-fist:
-        [
-            Detected: 'REINFORCE' -> Reinforce (Index: 89, OCR score: 1.080)
-            Detected: 'SOSBEACON' -> SoS Beacon (Index: 91, OCR score: 1.080)
-            Detected: 'RESUPPLY' -> Resupply (Index: 90, OCR score: 1.080)
-        ]
-    -Shorten Name Undetect: "
-            [1/1] Processing: 4-2.png
-            Skipped OCR text: 'Ce i ae Dee' (best score: 0.455)
-            Skipped OCR text: 'oa arr Yoana' (best score: 0.435)
-            Detected: 'RESIIppiv' -> Resupply (Index: 90, OCR score: 0.588)
-            Skipped OCR text: 'LUMREpDepD' (best score: 0.444)
-            Detected: 'STERILIZED' -> TX-41 Sterilizer (Index: 23, OCR score: 0.750)
-            Detected: 'HOTDOG' -> AX/FLAM-75 Hot Dog (Index: 77, OCR score: 0.680)
-            Skipped OCR text: 'K-9' (best score: 0.480)
-        "
-    -on extract temp all icon for candidation with High Matching score OR Record saved Icon score for replace with Higher Matching score
-    -(in stg names) > 
-            (lent(name.split) > 2) >
-                (if name.split[0] has "-" || "/") then (name.split[0].remove) >
-                    (stgName.Matching(name.split[0].remove))
+    -OCR แบบ parallel ต่อ icon ด้วย worker 2-4

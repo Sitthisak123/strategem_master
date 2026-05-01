@@ -1,10 +1,16 @@
 import csv
 import os
 import re
+import sys
 from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
+
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+SRC_UTILS_DIR = os.path.join(PROJECT_ROOT, "src", "utils")
+if SRC_UTILS_DIR not in sys.path:
+    sys.path.insert(0, SRC_UTILS_DIR)
 
 from automation_pipeline import main_pipeline
 from wiki_browser_fallback import fetch_strategems_via_browser
@@ -22,7 +28,6 @@ REQUEST_HEADERS = {
     "Referer": "https://helldivers.wiki.gg/",
     "Cache-Control": "no-cache",
 }
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 VERSION_FILE = os.path.join(PROJECT_ROOT, "version.txt")
 CSV_FILE = os.path.join(PROJECT_ROOT, "src", "strategems.csv")
 IMG_DIR = os.path.join(PROJECT_ROOT, "img")
@@ -77,7 +82,7 @@ def load_local_strategem_entries():
             entries = set()
             codes = set()
             for row in reader:
-                name = (row.get("Name") or "").strip()
+                name = (row.get("OriginalName") or row.get("Name") or "").strip()
                 code = (row.get("Code") or "").strip()
                 if not name or not code:
                     continue
