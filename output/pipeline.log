@@ -1,27 +1,23 @@
-[2026-04-29 19:09:05] === Helldivers 2 Asset Pipeline Starting ===
-[2026-04-29 19:09:05] Preparing directory: ./img
-[2026-04-29 19:09:05] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
-[2026-04-29 19:09:06] [!] Wiki request was blocked with HTTP 403. The site is allowing a real browser but blocking direct requests.
-[2026-04-29 19:09:06] [!] Network Error: Failed to fetch data from https://helldivers.wiki.gg/wiki/Stratagems. Reason: 403 Client Error: Forbidden for url: https://helldivers.wiki.gg/wiki/Stratagems
-[2026-04-29 19:09:06] [!] Falling back to Playwright browser fetch because requests failed with 403 Client Error: Forbidden for url: https://helldivers.wiki.gg/wiki/Stratagems
-[2026-04-29 19:09:12] [OK] Browser fallback loaded 106 items using C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe.
-[2026-04-29 19:09:12] [OK] Saved 106 items to CSV via Playwright fallback.
-[2026-04-29 19:09:12] 
+[2026-05-01 17:59:46] === Helldivers 2 Asset Pipeline Starting ===
+[2026-05-01 17:59:46] Preparing directory: ./img
+[2026-05-01 17:59:46] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
+[2026-05-01 17:59:46] [OK] Saved 106 items to CSV via requests.
+[2026-05-01 17:59:46] 
 [*] Starting icon extraction process...
-[2026-04-29 19:09:12] Found 82 existing icon(s) in './img'. They will be skipped.
-[2026-04-29 19:09:12] 
+[2026-05-01 17:59:46] Found 82 existing icon(s) in './img'. They will be skipped.
+[2026-05-01 17:59:46] 
 [1/1] Processing: 4-2.png
-[2026-04-29 19:09:17]   Skipped OCR text: 'Ce i ae Dee' (best score: 0.455)
-[2026-04-29 19:09:21]   Skipped OCR text: 'oa arr Yoana' (best score: 0.435)
-[2026-04-29 19:09:25]   Detected: 'RESIIppiv' -> Resupply (Index: 90, OCR score: 0.588)
-[2026-04-29 19:09:29]   Skipped OCR text: 'LUMREpDepD' (best score: 0.444)
-[2026-04-29 19:09:34]   Detected: 'STERILIZED' -> TX-41 Sterilizer (Index: 23, OCR score: 0.750)
-[2026-04-29 19:09:38]   Detected: 'HOTDOG' -> AX/FLAM-75 Hot Dog (Index: 77, OCR score: 0.680)
-[2026-04-29 19:09:42]   Skipped OCR text: 'K-9' (best score: 0.480)
-[2026-04-29 19:09:42] 
+[2026-05-01 17:59:51]   Skipped OCR text: 'Ce i ae Dee' (best score: 0.455)
+[2026-05-01 17:59:55]   Skipped OCR text: 'oa arr Yoana' (best score: 0.435)
+[2026-05-01 17:59:59]   Detected: 'RESIIppiv' -> Resupply (Index: 90, OCR score: 0.588)
+[2026-05-01 18:00:03]   Skipped OCR text: 'LUMREpDepD' (best score: 0.444)
+[2026-05-01 18:00:07]   Detected: 'STERILIZED' -> TX-41 Sterilizer (Index: 23, OCR score: 0.750)
+[2026-05-01 18:00:11]   Detected: 'HOTDOG' -> AX/FLAM-75 Hot Dog (Index: 77, OCR score: 0.680)
+[2026-05-01 18:00:15]   Skipped OCR text: 'K-9' (best score: 0.480)
+[2026-05-01 18:00:15] 
 
 === Processing Complete ===
-[2026-04-29 19:09:42] Icon extraction summary: Found 82/105 unique icons.
-[2026-04-29 19:09:42] Found 23 missing icons. Writing details to 'missing_icons.log'.
-[2026-04-29 19:09:42] 
-=== Pipeline Finished in 36.51s ===
+[2026-05-01 18:00:15] Icon extraction summary: Found 82/105 unique icons.
+[2026-05-01 18:00:15] Found 23 missing icons. Writing details to 'missing_icons.log'.
+[2026-05-01 18:00:15] 
+=== Pipeline Finished in 28.73s ===

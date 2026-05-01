@@ -15,3 +15,8 @@ Extract icon:
             Detected: 'HOTDOG' -> AX/FLAM-75 Hot Dog (Index: 77, OCR score: 0.680)
             Skipped OCR text: 'K-9' (best score: 0.480)
         "
+    -on extract temp all icon for candidation with High Matching score OR Record saved Icon score for replace with Higher Matching score
+    -(in stg names) > 
+            (lent(name.split) > 2) >
+                (if name.split[0] has "-" || "/") then (name.split[0].remove) >
+                    (stgName.Matching(name.split[0].remove))
