@@ -238,26 +238,86 @@ def _detect_icon_boxes(
 
         candidates.append((x, y, w, h, area))
 
+    # เก็บเฉพาะพิกัดกล่องไว้ก่อน (ยังไม่ดึงภาพ เพื่อประหยัด CPU)
     boxes = []
     for x, y, w, h, _area in remove_overlapping_boxes(candidates):
         y_start = max(0, y - icon_padding)
         x_start = max(0, x - icon_padding)
         y_end = min(hud_img.shape[0], y + h + icon_padding)
         x_end = min(hud_img.shape[1], x + w + icon_padding)
-        icon_region = hud_img[y_start:y_end, x_start:x_end]
+        
+        boxes.append({
+            "y": y_start,
+            "x": x_start,
+            "w": x_end - x_start,
+            "h": y_end - y_start
+        })
 
-        if icon_region.size == 0:
-            continue
+    # ==========================================
+    # 🛡️ 3 RULES PIPELINE (กรอง Noise ขั้นเด็ดขาด)
+    # ==========================================
+    if len(boxes) >= 2:
+        # --- Rule 1: Similar Size Rule (ขนาดต้องใกล้เคียงกัน) ---
+        median_w = np.median([b["w"] for b in boxes])
+        median_h = np.median([b["h"] for b in boxes])
+        size_tolerance = 0.30  # ยอมรับความคลาดเคลื่อนของขนาดได้ 30%
 
-        boxes.append((
-            y_start,
-            x_start,
-            x_end - x_start,
-            y_end - y_start,
-            ensure_gray(icon_region),
-        ))
+        size_filtered = []
+        for b in boxes:
+            if (abs(b["w"] - median_w) / median_w <= size_tolerance) and \
+               (abs(b["h"] - median_h) / median_h <= size_tolerance):
+                size_filtered.append(b)
+        boxes = size_filtered
 
-    return sorted(boxes, key=lambda b: b[0])
+    if len(boxes) >= 2:
+        # --- Rule 2: Alignment Rule (ต้องตรงแนวแกน X ซ้ายหรือขวา) ---
+        median_left = np.median([b["x"] for b in boxes])
+        median_right = np.median([b["x"] + b["w"] for b in boxes])
+        alignment_tolerance = 12
+
+        aligned_boxes = []
+        for b in boxes:
+            is_left_aligned = abs(b["x"] - median_left) <= alignment_tolerance
+            is_right_aligned = abs((b["x"] + b["w"]) - median_right) <= alignment_tolerance
+            if is_left_aligned or is_right_aligned:
+                aligned_boxes.append(b)
+        boxes = aligned_boxes
+
+    if len(boxes) >= 2:
+        # --- Rule 3: Vertical Gap & Cluster Rule (ต้องเกาะกลุ่มกันในแนวตั้ง) ---
+        # เรียงกล่องจากบนลงล่าง
+        boxes = sorted(boxes, key=lambda b: b["y"])
+        median_h = np.median([b["h"] for b in boxes])
+        
+        # ระยะห่างสูงสุดที่ยอมรับได้ระหว่างไอคอน (เผื่อกรณีระบบมองข้ามไป 1 ช่อง เลยตั้งไว้ที่ 2.5 เท่าของความสูง)
+        max_gap = median_h * 2.5 
+        
+        clusters = []
+        current_cluster = [boxes[0]]
+        
+        for i in range(1, len(boxes)):
+            dist = boxes[i]["y"] - boxes[i-1]["y"]
+            if dist <= max_gap:
+                current_cluster.append(boxes[i])
+            else:
+                clusters.append(current_cluster)
+                current_cluster = [boxes[i]]
+        clusters.append(current_cluster)
+        
+        # เลือกกลุ่ม (Cluster) ที่มีไอคอนเกาะกลุ่มกันเยอะที่สุด
+        # วิธีนี้จะสลัดกล่องผีที่อยู่โดดเดี่ยวหรือหลงมา 1-2 อันด้านล่างทิ้งไปทันที
+        boxes = max(clusters, key=len)
+
+    # ==========================================
+    # ตัดภาพ (Crop) เฉพาะกล่องที่รอดชีวิตจากทั้ง 3 กฎ
+    # ==========================================
+    final_result = []
+    for b in boxes:
+        icon_region = hud_img[b["y"]:b["y"]+b["h"], b["x"]:b["x"]+b["w"]]
+        if icon_region.size > 0:
+            final_result.append((b["y"], b["x"], b["w"], b["h"], ensure_gray(icon_region)))
+
+    return sorted(final_result, key=lambda i: i[0])
 
 
 def remove_overlapping_boxes(candidates, overlap_threshold=0.45):
