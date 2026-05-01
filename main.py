@@ -26,8 +26,8 @@ from queue import Queue, Empty as QueueEmpty, Full as QueueFull
 IMG_DIR = "./img"
 CSV_FILE = "./src/strategems.csv"
 MATCH_THRESHOLD = 0.4
-HYBRID_MATCH_MARGIN = 0.003
-PHASH_CANDIDATES = 15
+HYBRID_MATCH_MARGIN = 0.0005
+PHASH_CANDIDATES = 110
 
 HOTKEY_DEBOUNCE_DELAY = 0.2  # 200ms debounce delay for hotkeys
 last_hotkey_time = {}

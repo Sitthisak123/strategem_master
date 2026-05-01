@@ -9,13 +9,14 @@ import numpy as np
 from src.utils.cannyEdgeImplement import apply_scharr_operator
 from src.utils.screen_regions import get_hud_region, scale_pixels
 
+# weights สำหรับการคำนวณ Hybrid Score (ปรับได้ตามความเหมาะสม) sum ต้องเท่ากับ 1.0
+HYBRID_EDGE_WEIGHT = 0.40
+HYBRID_GRAY_WEIGHT = 0.40
+HYBRID_HASH_WEIGHT = 0.20
 
 MATCH_THRESHOLD = 0.4
-HYBRID_EDGE_WEIGHT = 0.55
-HYBRID_GRAY_WEIGHT = 0.25
-HYBRID_HASH_WEIGHT = 0.20
-HYBRID_MATCH_MARGIN = 0.02
-PHASH_BITS = 64
+HYBRID_MATCH_MARGIN = 0.005 #this will be overridden by main.py for more strict matching
+PHASH_BITS = 256
 MIN_ICON_SIZE = 30
 MAX_ICON_SIZE = 150
 MIN_ICON_AREA = 1800
@@ -101,7 +102,7 @@ def normalize_lightness(img):
     return cv2.bilateralFilter(balanced, d=7, sigmaColor=60, sigmaSpace=60)
 
 
-def auto_canny(img, sigma=0.33):
+def auto_canny(img, sigma=0.20): 
     median = float(np.median(img))
     lower = int(max(0, (1.0 - sigma) * median))
     upper = int(min(255, (1.0 + sigma) * median))
@@ -151,7 +152,8 @@ def ensure_uint8(img):
     return np.uint8(np.clip(img, 0, 255))
 
 
-def image_phash(img, hash_size=8, highfreq_factor=4):
+# เปลี่ยน hash_size จาก 8 เป็น 16
+def image_phash(img, hash_size=16, highfreq_factor=4): 
     gray = normalize_lightness(img)
     size = hash_size * highfreq_factor
     resized = cv2.resize(gray, (size, size), interpolation=cv2.INTER_AREA)
