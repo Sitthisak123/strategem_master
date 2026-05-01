@@ -15,6 +15,7 @@ from icon_regions_overlay import IconRegionsOverlay
 from src.utils.strategem_detection import (
     detect_strategems_hybrid,
     load_detection_assets as load_detection_assets_for_matching,
+    detect_icon_boxes_new,
 )
 from src.utils.screen_regions import get_hud_region, scale_pixels
 import functools
@@ -169,49 +170,6 @@ def capture_helldivers_window():
     except Exception as e:
         print(f"Error capturing Helldivers 2 window: {e}")
         return None
-
-
-def preprocess_for_contours(img):
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray = cv2.GaussianBlur(gray, (5, 5), 0)
-    edges = cv2.Canny(gray, 50, 150)
-    return edges
-
-
-def detect_strategem_icons(hud_img, scale=1.0):
-    """
-    Detect square-like icon regions and return list of tuples:
-    (y, x, w, h, icon_region_gray)
-    """
-    edges = preprocess_for_contours(hud_img)
-    cnts, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    boxes = []
-    min_icon_size = scale_pixels(MIN_ICON_SIZE, scale, minimum=12)
-    max_icon_size = scale_pixels(MAX_ICON_SIZE, scale, minimum=min_icon_size + 1)
-    min_icon_area = max(250, int(round(MIN_ICON_AREA * scale * scale)))
-    icon_padding = scale_pixels(ICON_PADDING, scale, minimum=1)
-
-    for c in cnts:
-        x, y, w, h = cv2.boundingRect(c)
-        aspect = w / float(h) if h != 0 else 0
-        area = w * h
-        # Apply size constraints and ensure icon is on left HUD area
-        if (0.7 < aspect < 1.3 and area > min_icon_area and x < hud_img.shape[1] * 0.3 and
-                min_icon_size <= w <= max_icon_size and min_icon_size <= h <= max_icon_size):
-            # Apply padding with bounds checking
-            y_start = max(0, y - icon_padding)
-            x_start = max(0, x - icon_padding)
-            y_end = min(hud_img.shape[0], y + h + icon_padding)
-            x_end = min(hud_img.shape[1], x + w + icon_padding)
-            
-            # crop icon region with padding and store grayscale version
-            icon_region = hud_img[y_start:y_end, x_start:x_end]
-            if icon_region.size == 0:
-                continue
-            icon_gray = cv2.cvtColor(icon_region, cv2.COLOR_BGR2GRAY)
-            boxes.append((y_start, x_start, x_end - x_start, y_end - y_start, icon_gray))
-    # sort by vertical position (y)
-    return sorted(boxes, key=lambda b: b[0])
 
 
 def get_sorted_images(img_dir):
@@ -403,7 +361,7 @@ def handle_debug_overlay_hotkey(icon_overlay):
                 frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
             
             screenshot_hud, hud_region = get_hud_region(frame)
-            icon_boxes = detect_strategem_icons(screenshot_hud, hud_region.scale)
+            icon_boxes = detect_icon_boxes_new(screenshot_hud, hud_region.scale)
             simple_boxes = [(y, x, w, h) for (y, x, w, h, *rest) in icon_boxes]
             
             QTimer.singleShot(0, functools.partial(icon_overlay.display_icon_regions, frame, simple_boxes))

@@ -75,11 +75,27 @@ def ensure_gray(img):
 
 
 def normalize_lightness(img):
+    # หากภาพเป็นขาวดำอยู่แล้ว (2D array) ให้คืนค่าเดิมกลับไป
     if img.ndim == 2:
         lightness = img
     else:
-        lightness = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)[:, :, 0]
+        # 1. ดึงความสว่าง (Lightness) จาก LAB color space 
+        # (ใช้เพื่อดูรายละเอียดสีขาวด้านใน เช่น ลูกกระสุน)
+        lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+        l_channel = lab[:, :, 0]
 
+        # 2. ดึงความอิ่มตัวสี (Saturation) จาก HSV color space
+        # (ใช้เพื่อดึงกรอบสี แดง/เขียว/ฟ้า ให้หลุดออกมาจากท้องฟ้า/เมฆสีขาว)
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        s_channel = hsv[:, :, 1]
+
+        # 3. นำทั้งสองส่วนมารวมกัน (Blend)
+        # ให้ความสำคัญกับความสว่าง (70%) และกรอบสี (30%)
+        # ทำให้ขอบกรอบแข็งแรงขึ้นในขณะที่รายละเอียดสัญลักษณ์ด้านในไม่หายไป
+        blended = cv2.addWeighted(l_channel, 0.7, s_channel, 0.3, 0)
+        lightness = blended
+
+    # นำไปปรับ Contrast และลด Noise ตามปกติ
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     balanced = clahe.apply(lightness)
     return cv2.bilateralFilter(balanced, d=7, sigmaColor=60, sigmaSpace=60)
