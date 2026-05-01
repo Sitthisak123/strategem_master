@@ -10,6 +10,11 @@ from src.utils.screen_regions import get_hud_region, scale_pixels
 
 
 MATCH_THRESHOLD = 0.4
+HYBRID_EDGE_WEIGHT = 0.55
+HYBRID_GRAY_WEIGHT = 0.25
+HYBRID_HASH_WEIGHT = 0.20
+HYBRID_MATCH_MARGIN = 0.02
+PHASH_BITS = 64
 MIN_ICON_SIZE = 30
 MAX_ICON_SIZE = 150
 MIN_ICON_AREA = 1800
@@ -150,8 +155,10 @@ def hamming_distance(left, right):
 def build_template_features(templates):
     features = {}
     for code, template in templates.items():
+        normalized = normalize_lightness(template)
         features[code] = {
             "gray": template,
+            "normalized": normalized,
             "edges": new_edge_features(template),
             "hash": image_phash(template),
         }
@@ -307,6 +314,14 @@ def match_edges(search_edges, template_edges, scales):
     }
 
 
+def fit_template_scales(search_img, template_img):
+    ih, iw = template_img.shape[:2]
+    fit_scale = min(search_img.shape[0] / ih, search_img.shape[1] / iw)
+    min_scale = max(0.25, fit_scale * 0.65)
+    max_scale = min(2.5, max(fit_scale * 1.35, min_scale + 0.05))
+    return np.linspace(min_scale, max_scale, 14)
+
+
 def old_template_match(icon_region, template):
     search_edges = old_edge_features(icon_region)
     template_edges = old_edge_features(template)
@@ -317,24 +332,74 @@ def old_template_match(icon_region, template):
 def new_template_match(icon_region, template_feature):
     search_edges = new_edge_features(icon_region)
     template_edges = template_feature["edges"]
-    ih, iw = template_edges.shape
-    fit_scale = min(search_edges.shape[0] / ih, search_edges.shape[1] / iw)
-    min_scale = max(0.25, fit_scale * 0.65)
-    max_scale = min(2.5, max(fit_scale * 1.35, min_scale + 0.05))
-    scales = np.linspace(min_scale, max_scale, 14)
+    scales = fit_template_scales(search_edges, template_edges)
     return match_edges(search_edges, template_edges, scales)
 
 
-def shortlist_by_hash(icon_region, template_features, available_codes, limit=15):
+def build_query_features(icon_region):
+    normalized = normalize_lightness(icon_region)
+    return {
+        "normalized": normalized,
+        "edges": new_edge_features(icon_region),
+        "hash": image_phash(icon_region),
+    }
+
+
+def hash_similarity(query_hash, template_hash):
+    distance = hamming_distance(query_hash, template_hash)
+    return max(0.0, 1.0 - (distance / float(PHASH_BITS)))
+
+
+def clamp_match_score(score):
+    return max(0.0, float(score)) if np.isfinite(score) else 0.0
+
+
+def hybrid_template_match(query_features, template_feature):
+    scales = fit_template_scales(query_features["edges"], template_feature["edges"])
+    edge_result = match_edges(query_features["edges"], template_feature["edges"], scales)
+    gray_result = match_edges(
+        query_features["normalized"],
+        template_feature["normalized"],
+        scales,
+    )
+    edge_score = clamp_match_score(edge_result["score"])
+    gray_score = clamp_match_score(gray_result["score"])
+    phash_score = hash_similarity(query_features["hash"], template_feature["hash"])
+    score = (
+        (edge_score * HYBRID_EDGE_WEIGHT)
+        + (gray_score * HYBRID_GRAY_WEIGHT)
+        + (phash_score * HYBRID_HASH_WEIGHT)
+    )
+
+    return {
+        "location": edge_result["location"],
+        "scale": edge_result["scale"],
+        "score": score,
+        "size": edge_result["size"],
+        "edge_score": edge_score,
+        "gray_score": gray_score,
+        "hash_score": phash_score,
+    }
+
+
+def shortlist_by_query_hash(query_hash, template_features, available_codes, limit=15):
     if limit is None or limit <= 0 or limit >= len(available_codes):
         return list(available_codes)
 
-    query_hash = image_phash(icon_region)
     ranked = sorted(
         available_codes,
         key=lambda code: hamming_distance(query_hash, template_features[code]["hash"]),
     )
     return ranked[:limit]
+
+
+def shortlist_by_hash(icon_region, template_features, available_codes, limit=15):
+    return shortlist_by_query_hash(
+        image_phash(icon_region),
+        template_features,
+        available_codes,
+        limit,
+    )
 
 
 def detect_strategems_old(
@@ -383,6 +448,32 @@ def detect_strategems_new(
     )
 
 
+def detect_strategems_hybrid(
+    screenshot,
+    assets,
+    match_threshold=MATCH_THRESHOLD,
+    include_defaults=False,
+    max_results=4,
+    skip_first=2,
+    phash_candidates=15,
+    hybrid_margin=HYBRID_MATCH_MARGIN,
+    verbose=False,
+):
+    hud_img, hud_region = get_hud_region(screenshot)
+    icon_boxes = detect_icon_boxes_new(hud_img, hud_region.scale)
+    return _match_detected_boxes(
+        icon_boxes=icon_boxes[skip_first:] if len(icon_boxes) > skip_first else [],
+        assets=assets,
+        match_threshold=match_threshold,
+        include_defaults=include_defaults,
+        max_results=max_results,
+        mode="hybrid",
+        phash_candidates=phash_candidates,
+        hybrid_margin=hybrid_margin,
+        verbose=verbose,
+    )
+
+
 def _match_detected_boxes(
     icon_boxes,
     assets,
@@ -391,6 +482,7 @@ def _match_detected_boxes(
     max_results,
     mode,
     phash_candidates=None,
+    hybrid_margin=0.0,
     verbose=False,
 ):
     detected = []
@@ -401,8 +493,17 @@ def _match_detected_boxes(
             code for code in assets.templates
             if code not in matched_codes and code in assets.strategems_by_code
         ]
+        query_features = None
 
-        if mode == "new":
+        if mode == "hybrid":
+            query_features = build_query_features(icon_region)
+            available_codes = shortlist_by_query_hash(
+                query_features["hash"],
+                assets.template_features,
+                available_codes,
+                limit=phash_candidates,
+            )
+        elif mode == "new":
             available_codes = shortlist_by_hash(
                 icon_region,
                 assets.template_features,
@@ -411,23 +512,38 @@ def _match_detected_boxes(
             )
 
         best_score = match_threshold
+        second_score = -1.0
         best_entry = None
         best_extra = {}
 
         for code in available_codes:
             if mode == "old":
                 result = old_template_match(icon_region, assets.templates[code])
+            elif mode == "hybrid":
+                result = hybrid_template_match(query_features, assets.template_features[code])
             else:
                 result = new_template_match(icon_region, assets.template_features[code])
 
             if result["score"] > best_score:
+                second_score = best_score
                 best_score = result["score"]
                 best_entry = assets.strategems_by_code[code]
                 best_extra = result
+            elif result["score"] > second_score:
+                second_score = result["score"]
 
         if not best_entry:
             if verbose:
                 print(f"[{mode}] icon {idx}: no match")
+            continue
+
+        margin = best_score - second_score
+        if mode == "hybrid" and second_score >= match_threshold and margin < hybrid_margin:
+            if verbose:
+                print(
+                    f"[{mode}] icon {idx}: ambiguous {best_entry['name']} "
+                    f"({best_score:.3f}, margin {margin:.3f})"
+                )
             continue
 
         matched_codes.add(best_entry["code"])
@@ -440,10 +556,23 @@ def _match_detected_boxes(
         entry["confidence"] = best_score
         entry["detector"] = mode
         entry["match_scale"] = best_extra.get("scale")
+        if mode == "hybrid":
+            entry["edge_score"] = best_extra.get("edge_score")
+            entry["gray_score"] = best_extra.get("gray_score")
+            entry["hash_score"] = best_extra.get("hash_score")
+            entry["match_margin"] = margin
         detected.append(entry)
 
         if verbose:
-            print(f"[{mode}] icon {idx}: matched {entry['name']} ({best_score:.3f})")
+            extra = ""
+            if mode == "hybrid":
+                extra = (
+                    f" edge={entry['edge_score']:.3f}"
+                    f" gray={entry['gray_score']:.3f}"
+                    f" hash={entry['hash_score']:.3f}"
+                    f" margin={entry['match_margin']:.3f}"
+                )
+            print(f"[{mode}] icon {idx}: matched {entry['name']} ({best_score:.3f}){extra}")
 
     if max_results is None or max_results <= 0:
         return detected

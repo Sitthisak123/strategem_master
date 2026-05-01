@@ -14,14 +14,20 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.utils.strategem_detection import (
     detect_icon_boxes_new,
     detect_icon_boxes_old,
+    detect_strategems_hybrid,
     detect_strategems_new,
     detect_strategems_old,
     get_hud_region,
+    is_default_strategem,
     load_detection_assets,
 )
 
 
 DEFAULT_MANIFEST = PROJECT_ROOT / ".test" / "sample" / "samples.json"
+GROUP_SAMPLE_DIR = PROJECT_ROOT / "src" / "img" / "group"
+GROUP_MANIFEST = GROUP_SAMPLE_DIR / "icon_detection_samples.json"
+DETECTOR_NAMES = ("old", "new", "hybrid")
+LEGACY_DETECTOR_NAMES = ("old", "new")
 
 
 def normalize_codes(codes):
@@ -45,6 +51,8 @@ def compare_codes(expected, actual):
         "exact": expected == actual,
         "correct": correct,
         "positional": positional,
+        "expected_count": len(expected),
+        "actual_count": len(actual),
         "precision": precision,
         "recall": recall,
         "f1": f1,
@@ -56,14 +64,47 @@ def compare_codes(expected, actual):
 def load_manifest(path):
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    return data.get("samples", [])
+    return data
+
+
+def get_sample_dir(manifest_path, manifest_data, sample_dir_arg):
+    if sample_dir_arg:
+        sample_dir = Path(sample_dir_arg)
+    else:
+        sample_dir = Path(manifest_data.get("sample_dir", manifest_path.parent))
+
+    if sample_dir.is_absolute():
+        return sample_dir
+    return (manifest_path.parent / sample_dir).resolve()
+
+
+def filter_default_codes(codes, assets):
+    filtered = []
+    for code in codes:
+        strategem = assets.strategems_by_code.get(code)
+        if strategem and is_default_strategem(strategem):
+            continue
+        filtered.append(code)
+    return filtered
+
+
+def expected_codes_for_sample(sample, assets, skip_first, include_defaults):
+    expected = normalize_codes(sample.get("expected_codes", []))
+
+    if sample.get("apply_skip_first_to_expected", False):
+        expected = expected[skip_first:] if len(expected) > skip_first else []
+
+    if not include_defaults:
+        expected = filter_default_codes(expected, assets)
+
+    return expected
 
 
 def format_percent(value):
     return f"{value * 100:.1f}%"
 
 
-def run_detector(name, frame, assets, args, max_results):
+def run_detector(name, frame, assets, args, max_results, skip_first):
     if name == "old":
         return detect_strategems_old(
             frame,
@@ -71,7 +112,20 @@ def run_detector(name, frame, assets, args, max_results):
             match_threshold=args.threshold,
             include_defaults=args.include_defaults,
             max_results=max_results,
-            skip_first=args.skip_first,
+            skip_first=skip_first,
+            verbose=args.verbose,
+        )
+
+    if name == "hybrid":
+        return detect_strategems_hybrid(
+            frame,
+            assets,
+            match_threshold=args.threshold,
+            include_defaults=args.include_defaults,
+            max_results=max_results,
+            skip_first=skip_first,
+            phash_candidates=args.phash_candidates,
+            hybrid_margin=args.hybrid_margin,
             verbose=args.verbose,
         )
 
@@ -81,7 +135,7 @@ def run_detector(name, frame, assets, args, max_results):
         match_threshold=args.threshold,
         include_defaults=args.include_defaults,
         max_results=max_results,
-        skip_first=args.skip_first,
+        skip_first=skip_first,
         phash_candidates=args.phash_candidates,
         verbose=args.verbose,
     )
@@ -134,28 +188,79 @@ def warn_missing_assets(expected, assets):
         print(f"[WARN] Expected codes missing template images in img/: {missing_templates}")
 
 
+def detector_names_from_arg(value):
+    if value == "all":
+        return DETECTOR_NAMES
+    if value == "both":
+        return LEGACY_DETECTOR_NAMES
+    return (value,)
+
+
+def new_totals():
+    return {
+        "samples": 0,
+        "exact": 0,
+        "correct": 0,
+        "positional": 0,
+        "expected": 0,
+        "actual": 0,
+        "boxes": 0,
+        "used_boxes": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+    }
+
+
+def micro_stats(correct, actual, expected):
+    precision = correct / actual if actual else (1.0 if expected == 0 else 0.0)
+    recall = correct / expected if expected else (1.0 if actual == 0 else 0.0)
+    f1 = (2 * precision * recall / (precision + recall)) if precision + recall else 0.0
+    return precision, recall, f1
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Compare old and new strategem detection accuracy against sample images."
+        description="Compare Canny/edge strategem icon detection accuracy against sample images."
     )
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
+    parser.add_argument(
+        "--group-samples",
+        action="store_true",
+        help="Use the Canny edge test manifest in src/img/group.",
+    )
+    parser.add_argument("--sample-dir", default=None)
     parser.add_argument("--threshold", type=float, default=0.4)
-    parser.add_argument("--skip-first", type=int, default=2)
-    parser.add_argument("--phash-candidates", type=int, default=0)
+    parser.add_argument("--skip-first", type=int, default=None)
+    parser.add_argument("--phash-candidates", type=int, default=15)
+    parser.add_argument("--hybrid-margin", type=float, default=0.02)
     parser.add_argument("--max-results", type=int, default=None)
+    parser.add_argument(
+        "--detectors",
+        choices=["old", "new", "hybrid", "both", "all"],
+        default="all",
+    )
     parser.add_argument("--include-defaults", action="store_true")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--report", default=None)
     parser.add_argument("--debug-dir", default=None)
     args = parser.parse_args()
 
+    if args.group_samples and args.manifest == str(DEFAULT_MANIFEST):
+        args.manifest = str(GROUP_MANIFEST)
+
     manifest_path = Path(args.manifest)
-    sample_dir = manifest_path.parent
-    samples = [sample for sample in load_manifest(manifest_path) if sample.get("enabled", True)]
+    if args.skip_first is None:
+        args.skip_first = 3 if manifest_path.resolve() == GROUP_MANIFEST.resolve() else 2
+
+    manifest_data = load_manifest(manifest_path)
+    sample_dir = get_sample_dir(manifest_path, manifest_data, args.sample_dir)
+    samples = [sample for sample in manifest_data.get("samples", []) if sample.get("enabled", True)]
+    detector_names = detector_names_from_arg(args.detectors)
 
     if not samples:
         print(f"No enabled samples found in {manifest_path}")
-        print("Add images to .test/sample and add entries to samples.json.")
+        print("Add images and expected_codes entries to the selected manifest.")
         return 0
 
     assets = load_detection_assets()
@@ -164,18 +269,24 @@ def main():
         "threshold": args.threshold,
         "skip_first": args.skip_first,
         "include_defaults": args.include_defaults,
+        "hybrid_margin": args.hybrid_margin,
+        "phash_candidates": args.phash_candidates,
+        "detectors": list(detector_names),
         "samples": [],
         "summary": {},
     }
-    totals = {
-        "old": {"exact": 0, "precision": 0.0, "recall": 0.0, "f1": 0.0},
-        "new": {"exact": 0, "precision": 0.0, "recall": 0.0, "f1": 0.0},
-    }
+    totals = {detector_name: new_totals() for detector_name in detector_names}
     processed = 0
 
     for sample in samples:
         image_path = sample_dir / sample["image"]
-        expected = normalize_codes(sample.get("expected_codes", []))
+        sample_skip_first = int(sample.get("skip_first", args.skip_first))
+        expected = expected_codes_for_sample(
+            sample,
+            assets,
+            sample_skip_first,
+            args.include_defaults,
+        )
         frame = cv2.imread(str(image_path))
 
         if frame is None:
@@ -187,6 +298,7 @@ def main():
         print(f"Sample: {sample.get('name', sample['image'])}")
         print(f"Image: {image_path}")
         print(f"Expected: {expected}")
+        print(f"Skip first icon boxes: {sample_skip_first}")
         warn_missing_assets(expected, assets)
 
         max_results = args.max_results
@@ -197,11 +309,13 @@ def main():
             "name": sample.get("name", sample["image"]),
             "image": str(image_path),
             "expected_codes": expected,
+            "skip_first": sample_skip_first,
             "detectors": {},
         }
 
-        for detector_name in ("old", "new"):
+        for detector_name in detector_names:
             boxes, region = get_detector_boxes(detector_name, frame)
+            used_box_count = max(0, len(boxes) - sample_skip_first)
             if args.verbose:
                 print(f"[{detector_name}] icon boxes: {len(boxes)}")
 
@@ -212,23 +326,41 @@ def main():
                 )
                 save_debug_overlay(debug_path, frame, boxes, region)
 
-            detected_entries = run_detector(detector_name, frame, assets, args, max_results)
+            detected_entries = run_detector(
+                detector_name,
+                frame,
+                assets,
+                args,
+                max_results,
+                sample_skip_first,
+            )
             actual = [entry["code"] for entry in detected_entries]
             metrics = compare_codes(expected, actual)
 
             totals[detector_name]["exact"] += int(metrics["exact"])
+            totals[detector_name]["correct"] += metrics["correct"]
+            totals[detector_name]["positional"] += metrics["positional"]
+            totals[detector_name]["expected"] += metrics["expected_count"]
+            totals[detector_name]["actual"] += metrics["actual_count"]
+            totals[detector_name]["boxes"] += len(boxes)
+            totals[detector_name]["used_boxes"] += used_box_count
             totals[detector_name]["precision"] += metrics["precision"]
             totals[detector_name]["recall"] += metrics["recall"]
             totals[detector_name]["f1"] += metrics["f1"]
+            totals[detector_name]["samples"] += 1
 
             sample_report["detectors"][detector_name] = {
                 "actual_codes": actual,
                 "matches": detected_entries,
+                "box_count": len(boxes),
+                "used_box_count": used_box_count,
                 "metrics": metrics,
             }
 
             print(
-                f"{detector_name:>3}: {actual} | "
+                f"{detector_name:>3}: boxes={len(boxes)} used={used_box_count} "
+                f"detected={metrics['actual_count']}/{metrics['expected_count']} "
+                f"codes={actual} | "
                 f"exact={metrics['exact']} "
                 f"precision={format_percent(metrics['precision'])} "
                 f"recall={format_percent(metrics['recall'])} "
@@ -248,22 +380,42 @@ def main():
 
     print("")
     print("Summary")
-    for detector_name in ("old", "new"):
+    for detector_name in detector_names:
+        detector_total = totals[detector_name]
+        sample_count = detector_total["samples"]
+        micro_precision, micro_recall, micro_f1 = micro_stats(
+            detector_total["correct"],
+            detector_total["actual"],
+            detector_total["expected"],
+        )
         summary = {
-            "exact": totals[detector_name]["exact"],
-            "sample_count": processed,
-            "exact_rate": totals[detector_name]["exact"] / processed,
-            "precision": totals[detector_name]["precision"] / processed,
-            "recall": totals[detector_name]["recall"] / processed,
-            "f1": totals[detector_name]["f1"] / processed,
+            "exact": detector_total["exact"],
+            "sample_count": sample_count,
+            "expected_total": detector_total["expected"],
+            "detected_total": detector_total["actual"],
+            "correct_total": detector_total["correct"],
+            "positional_total": detector_total["positional"],
+            "box_total": detector_total["boxes"],
+            "used_box_total": detector_total["used_boxes"],
+            "exact_rate": detector_total["exact"] / sample_count,
+            "avg_precision": detector_total["precision"] / sample_count,
+            "avg_recall": detector_total["recall"] / sample_count,
+            "avg_f1": detector_total["f1"] / sample_count,
+            "micro_precision": micro_precision,
+            "micro_recall": micro_recall,
+            "micro_f1": micro_f1,
         }
         report["summary"][detector_name] = summary
         print(
             f"{detector_name:>3}: "
-            f"exact={summary['exact']}/{processed} "
-            f"precision={format_percent(summary['precision'])} "
-            f"recall={format_percent(summary['recall'])} "
-            f"f1={format_percent(summary['f1'])}"
+            f"exact={summary['exact']}/{sample_count} "
+            f"correct={summary['correct_total']}/{summary['expected_total']} "
+            f"detected={summary['detected_total']} "
+            f"boxes={summary['box_total']} used={summary['used_box_total']} "
+            f"avg_f1={format_percent(summary['avg_f1'])} "
+            f"micro_precision={format_percent(summary['micro_precision'])} "
+            f"micro_recall={format_percent(summary['micro_recall'])} "
+            f"micro_f1={format_percent(summary['micro_f1'])}"
         )
 
     if args.report:

@@ -12,7 +12,10 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QTimer
 from overlay_window import OverlayWindow
 from icon_regions_overlay import IconRegionsOverlay
-from src.utils.cannyEdgeImplement import enhanced_canny_template_match
+from src.utils.strategem_detection import (
+    detect_strategems_hybrid,
+    load_detection_assets as load_detection_assets_for_matching,
+)
 from src.utils.screen_regions import get_hud_region, scale_pixels
 import functools
 from threading import Thread
@@ -22,6 +25,8 @@ from queue import Queue, Empty as QueueEmpty, Full as QueueFull
 IMG_DIR = "./img"
 CSV_FILE = "./src/strategems.csv"
 MATCH_THRESHOLD = 0.4
+HYBRID_MATCH_MARGIN = 0.02
+PHASH_CANDIDATES = 15
 
 HOTKEY_DEBOUNCE_DELAY = 0.2  # 200ms debounce delay for hotkeys
 last_hotkey_time = {}
@@ -113,6 +118,7 @@ def load_strategems_and_templates():
 
 
 strategems_all, strategems_by_name = load_strategems_and_templates()
+DETECTION_ASSETS = load_detection_assets_for_matching(CSV_FILE, IMG_DIR)
 
 
 # Default strategems that appear in default slots
@@ -245,74 +251,23 @@ def match_template_image(icon_region_gray, needle_gray, method=cv2.TM_CCOEFF_NOR
 
 def run_enhanced_canny_template_match(screenshot):
     """
-    Detects strategems from a screenshot by matching detected icon regions
-    against pre-loaded templates using Canny edge detection.
-    
-    Optimized with early termination and score-based prioritization.
+    Detect strategems with the hybrid Canny/Scharr + grayscale + pHash matcher.
     """
-    detected_stgs = []
-    # Crop the screenshot to the HUD area where strategem icons appear.
-    screenshot_hud, hud_region = get_hud_region(screenshot)
-    icon_boxes = detect_strategem_icons(screenshot_hud, hud_region.scale)
-    
-    # Debug: Report what we found
-    if not icon_boxes:
-        print(f"[DEBUG] No icon boxes detected in HUD region. Frame shape: {screenshot.shape}, HUD: {hud_region}")
-    if not TEMPLATES:
-        print(f"[DEBUG] No templates loaded. TEMPLATES size: {len(TEMPLATES)}")
-    
-    if not icon_boxes or not TEMPLATES:
-        return detected_stgs
+    if not DETECTION_ASSETS.templates:
+        print(f"[DEBUG] No templates loaded. Template count: {len(DETECTION_ASSETS.templates)}")
+        return []
 
-    print(f"[DEBUG] Found {len(icon_boxes)} icon boxes, checking against {len(TEMPLATES)} templates")
-    matched_codes = set()
-
-    # Skip first 2 icons (default slots 0-1), start from index 2 onwards (custom slot 4)
-    custom_slot_icons = icon_boxes[2:] if len(icon_boxes) > 2 else []
-    
-    # Iterate through each detected icon box (skip default slots).
-    for idx, (y, x, w, h, icon_region) in enumerate(custom_slot_icons, start=3):
-        best_score = MATCH_THRESHOLD
-        best_entry = None
-        
-        # Pre-filter templates by code to avoid re-matching already detected strategems
-        available_templates = {code: tmpl for code, tmpl in TEMPLATES.items() 
-                              if code not in matched_codes}
-        
-        if not available_templates:
-            print(f"[DEBUG] No more available templates at icon {idx}")
-            break
-
-        # Compare the icon region against available strategem templates.
-        for code, template_img in available_templates.items():
-            # Use enhanced Canny edge detection to get a similarity score.
-            res = enhanced_canny_template_match(icon_region, template_img)
-            
-            if res['score'] > best_score:
-                best_score = res['score']
-                best_entry = strategems_all[code]
-                
-                # Early termination for very confident matches (>0.80 confidence)
-                if best_score > 0.80:
-                    break
-
-        # If a match is found, add only non-default strategems to detected slots.
-        if best_entry:
-            matched_codes.add(best_entry['code'])
-            if is_default_strategem(best_entry):
-                print(f"[DEBUG] Icon {idx}: Skipped default {best_entry['name']} (confidence: {best_score:.3f})")
-                continue
-
-            entry_copy = best_entry.copy()
-            entry_copy['confidence'] = best_score
-            detected_stgs.append(entry_copy)
-            print(f"[DEBUG] Icon {idx}: Matched {best_entry['name']} (confidence: {best_score:.3f})")
-        else:
-            print(f"[DEBUG] Icon {idx}: No match found (best score: {best_score:.3f})")
-
-    # Return the last 4 detected strategems, as that's the max in the game.
-    result = detected_stgs[-4:] if len(detected_stgs) > 4 else detected_stgs
-    return result
+    return detect_strategems_hybrid(
+        screenshot,
+        DETECTION_ASSETS,
+        match_threshold=MATCH_THRESHOLD,
+        include_defaults=False,
+        max_results=4,
+        skip_first=2,
+        phash_candidates=PHASH_CANDIDATES,
+        hybrid_margin=HYBRID_MATCH_MARGIN,
+        verbose=True,
+    )
 
 
 strategems_current = []
