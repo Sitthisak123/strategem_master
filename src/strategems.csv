@@ -26,7 +26,7 @@ Index,OriginalName,Name,Code
 25,EAT-411 Leveller,Leveller,44124
 26,GL-52 De-Escalator,De-Escalator,43213
 27,GL-28 Belt-Fed Grenade Launcher,Belt-Fed Grenade Launcher,412122
-28,B/MD C4 Pack,C4,432232
+28,B/MD C4 Pack,C4 Pack,432232
 29,MS-11 Solo Silo,Solo Silo,42344
 30,B/FLAM-80 Cremator,Cremator,443422
 31,M-1000 Maxigun,Maxigun,413422
@@ -58,29 +58,29 @@ Index,OriginalName,Name,Code
 57,E/GL-21 Grenadier Battlement,Grenadier Battlement,43413
 58,MD-8 Gas Mines,Gas Mines,4113
 59,E/AT-12 Anti-Tank Emplacement,Anti-Tank,421333
-60,A/MG-43 Machine Gun Sentry,Machine Gun,42332
-61,A/G-16 Gatling Sentry,Gatling,4231
-62,A/AC-8 Autocannon Sentry,Autocannon,423212
-63,A/M-12 Mortar Sentry,Mortar,42334
-64,A/MLS-4X Rocket Sentry,Rocket,42331
+60,A/MG-43 Machine Gun Sentry,Machine Gun Sentry,42332
+61,A/G-16 Gatling Sentry,Gatling Sentry,4231
+62,A/AC-8 Autocannon Sentry,Autocannon Sentry,423212
+63,A/M-12 Mortar Sentry,Mortar Sentry,42334
+64,A/MLS-4X Rocket Sentry,Rocket Sentry,42331
 65,A/ARC-3 Tesla Tower,Tesla Tower,423213
-66,A/M-23 EMS Mortar Sentry,EMS Mortar,42343
-67,A/LAS-98 Laser Sentry,Laser,423423
-68,A/FLAM-40 Flame Sentry,Flame,423422
-69,A/GM-17 Gas Mortar Sentry,Gas Mortar,42341
-70,B-1 Supply Pack,Supply,414224
-71,LIFT-850 Jump Pack,Jump,42242
+66,A/M-23 EMS Mortar Sentry,EMS Mortar Sentry,42343
+67,A/LAS-98 Laser Sentry,Laser Sentry,423423
+68,A/FLAM-40 Flame Sentry,Flame Sentry,423422
+69,A/GM-17 Gas Mortar Sentry,Gas Mortar Sentry,42341
+70,B-1 Supply Pack,Supply Pack,414224
+71,LIFT-850 Jump Pack,Jump Pack,42242
 72,SH-20 Ballistic Shield Backpack,Ballistic Shield,414421
 73,AX/AR-23 Guard Dog,Guard Dog,421234
 74,AX/LAS-5 Rover,Rover,421233
-75,SH-32 Shield Generator Pack,Shield Generator,421313
+75,SH-32 Shield Generator Pack,Shield Generator Pack,421313
 76,SH-51 Directional Shield,Directional Shield,421322
 77,AX/FLAM-75 Hot Dog,Hot Dog,421211
 78,B-100 Portable Hellbomb,Portable Hellbomb,43222
 79,AX/ARC-3 K-9,K-9,421231
-80,LIFT-860 Hover Pack,Hover,422413
+80,LIFT-860 Hover Pack,Hover Pack,422413
 81,AX/TX-13 Dog Breath,Dog Breath,421232
-82,LIFT-182 Warp Pack,Warp,413413
+82,LIFT-182 Warp Pack,Warp Pack,413413
 83,EXO-45 Patriot Exosuit,Patriot,1432144
 84,EXO-49 Emancipator Exosuit,Emancipator,1432142
 85,M-102 Fast Recon Vehicle,Fast Recon Vehicle,1434342

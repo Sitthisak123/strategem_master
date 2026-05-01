@@ -1,3 +1,4 @@
+import time
 import csv
 import os
 from collections import namedtuple
@@ -487,6 +488,10 @@ def _match_detected_boxes(
 ):
     detected = []
     matched_codes = set()
+    
+    # โฟลเดอร์สำหรับเซฟรูประหว่างทำงาน
+    debug_dir = "./output/debug"
+    os.makedirs(debug_dir, exist_ok=True)
 
     for idx, (_y, _x, _w, _h, icon_region) in enumerate(icon_boxes, start=1):
         available_codes = [
@@ -532,19 +537,39 @@ def _match_detected_boxes(
             elif result["score"] > second_score:
                 second_score = result["score"]
 
+        # -------------------------------------------------------------
+        # ระบบ Save ภาพแบบ Replace (ลบของเก่าทิ้ง เซฟของใหม่ทับตามหมายเลข Slot)
+        # 1. ค้นหาและลบภาพเก่าของ Slot นี้ทิ้งก่อน
+        for existing_file in os.listdir(debug_dir):
+            if existing_file.startswith(f"slot_{idx}_"):
+                try:
+                    os.remove(os.path.join(debug_dir, existing_file))
+                except Exception:
+                    pass
+
+        # 2. เซฟภาพใหม่ด้วยชื่อที่ระบุสถานะชัดเจน
         if not best_entry:
+            mismatch_filename = os.path.join(debug_dir, f"slot_{idx}_mismatch.png")
+            cv2.imwrite(mismatch_filename, icon_region)
             if verbose:
-                print(f"[{mode}] icon {idx}: no match")
+                print(f"[{mode}] icon {idx}: no match (saved to {mismatch_filename})")
             continue
 
         margin = best_score - second_score
         if mode == "hybrid" and second_score >= match_threshold and margin < hybrid_margin:
+            ambiguous_filename = os.path.join(debug_dir, f"slot_{idx}_ambiguous_{best_entry['code']}.png")
+            cv2.imwrite(ambiguous_filename, icon_region)
             if verbose:
                 print(
                     f"[{mode}] icon {idx}: ambiguous {best_entry['name']} "
-                    f"({best_score:.3f}, margin {margin:.3f})"
+                    f"({best_score:.3f}, margin {margin:.3f}) (saved to {ambiguous_filename})"
                 )
             continue
+
+        # กรณี Match สำเร็จ
+        match_filename = os.path.join(debug_dir, f"slot_{idx}_match_{best_entry['code']}.png")
+        cv2.imwrite(match_filename, icon_region)
+        # -------------------------------------------------------------
 
         matched_codes.add(best_entry["code"])
         if not include_defaults and is_default_strategem(best_entry):

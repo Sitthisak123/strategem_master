@@ -45,11 +45,11 @@ HIGH_CONFIDENCE_OCR_SCORE = 0.95
 SKIP_FIRST_ICON_BOXES = 3
 ICON_SCORE_FILE = os.path.join(OUTPUT_DIR, "_scores.json")
 GENERIC_SUFFIX_WORDS = {
-    "backpack",
-    "emplacement",
-    "exosuit",
-    "pack",
-    "sentry",
+    # "backpack",
+    # "emplacement",
+    # "exosuit",
+    # "pack",
+    # "sentry",
 }
 FAST_OCR_CONFIGS = [
     r"--oem 3 --psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/ .",
@@ -57,7 +57,7 @@ FAST_OCR_CONFIGS = [
 FALLBACK_OCR_CONFIGS = [
     r"--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/ .",
     r"--oem 3 --psm 11 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/ .",
-]
+] 
 
 try:
     pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH

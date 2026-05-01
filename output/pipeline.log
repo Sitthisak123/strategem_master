@@ -1,326 +1,326 @@
-[2026-05-01 18:58:31] === Helldivers 2 Asset Pipeline Starting ===
-[2026-05-01 18:58:31] Preparing directory: ./img
-[2026-05-01 18:58:31] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
-[2026-05-01 18:58:31] [OK] Saved 106 items to CSV via requests.
-[2026-05-01 18:58:31] 
+[2026-05-02 00:14:44] === Helldivers 2 Asset Pipeline Starting ===
+[2026-05-02 00:14:44] Preparing directory: ./img
+[2026-05-02 00:14:44] Fetching data from https://helldivers.wiki.gg/wiki/Stratagems...
+[2026-05-02 00:14:45] [OK] Saved 106 items to CSV via requests.
+[2026-05-02 00:14:45] 
 [*] Starting icon extraction process...
-[2026-05-01 18:58:31] Found 84 existing icon(s) in './img'. They will be skipped.
-[2026-05-01 18:58:31] 
+[2026-05-02 00:14:45] Found 85 existing icon(s) in './img'. They will be skipped.
+[2026-05-02 00:14:45] 
 [1/23] Processing: 1-0.png
-[2026-05-01 18:58:31]   Skipped first/default icon slot 1
-[2026-05-01 18:58:31]   Skipped first/default icon slot 2
-[2026-05-01 18:58:31]   Skipped first/default icon slot 3
-[2026-05-01 18:58:32]   Detected: 'EAGLENAPALMAIRSTRIKESe' -> Eagle Napalm Airstrike (Index: 49, OCR score: 1.032)
-[2026-05-01 18:58:32]   Detected: 'EAGLEREARM' -> Eagle Rearm (Index: 92, OCR score: 1.080)
-[2026-05-01 18:58:33]   Detected: 'EAGLE500KGBOMB one' -> Eagle 500kg Bomb (Index: 51, OCR score: 0.983)
-[2026-05-01 18:58:33]   Detected: 'SOLOSILO in' -> Solo Silo (Index: 29, OCR score: 0.969)
-[2026-05-01 18:58:34]   Detected: 'ROCKETSENTRY' -> Rocket (Index: 64, OCR score: 0.880)
-[2026-05-01 18:58:34]   Detected: 'ORBITALLASER Ai' -> Orbital Laser (Index: 42, OCR score: 1.003)
-[2026-05-01 18:58:34] 
+[2026-05-02 00:14:45]   Skipped first/default icon slot 1
+[2026-05-02 00:14:45]   Skipped first/default icon slot 2
+[2026-05-02 00:14:45]   Skipped first/default icon slot 3
+[2026-05-02 00:14:45]   Detected: 'EAGLENAPALMAIRSTRIKESe' -> Eagle Napalm Airstrike (Index: 49, OCR score: 1.032)
+[2026-05-02 00:14:46]   Detected: 'EAGLEREARM' -> Eagle Rearm (Index: 92, OCR score: 1.080)
+[2026-05-02 00:14:46]   Detected: 'EAGLE500KGBOMB one' -> Eagle 500kg Bomb (Index: 51, OCR score: 0.983)
+[2026-05-02 00:14:46]   Detected: 'SOLOSILO in' -> Solo Silo (Index: 29, OCR score: 0.969)
+[2026-05-02 00:14:47]   Detected: 'ROCKETSENTRY' -> Rocket Sentry (Index: 64, OCR score: 1.080)
+[2026-05-02 00:14:47]   Detected: 'ORBITALLASER Ai' -> Orbital Laser (Index: 42, OCR score: 1.003)
+[2026-05-02 00:14:47] 
 [2/23] Processing: 1-1.png
-[2026-05-01 18:58:35]   Skipped first/default icon slot 1
-[2026-05-01 18:58:35]   Skipped first/default icon slot 2
-[2026-05-01 18:58:35]   Skipped first/default icon slot 3
-[2026-05-01 18:58:35]   Detected: 'ORBITALPRECISIONSTRIKE9' -> Orbital Precision Strike (Index: 33, OCR score: 1.058)
-[2026-05-01 18:58:36]   Detected: 'ORBITALGATLINGBARRAGE/2488' -> Orbital Gatling Barrage (Index: 34, OCR score: 0.993)
-[2026-05-01 18:58:36]   Detected: 'ORBITALAIRBURSTSTRIKEf2' -> Orbital Airburst Strike (Index: 37, OCR score: 1.035)
-[2026-05-01 18:58:37]   Detected: 'ORBITALNAPALMBARRAGEGe' -> Orbital Napalm Barrage (Index: 43, OCR score: 1.032)
-[2026-05-01 18:58:37] 
+[2026-05-02 00:14:47]   Skipped first/default icon slot 1
+[2026-05-02 00:14:47]   Skipped first/default icon slot 2
+[2026-05-02 00:14:47]   Skipped first/default icon slot 3
+[2026-05-02 00:14:47]   Detected: 'ORBITALPRECISIONSTRIKE9' -> Orbital Precision Strike (Index: 33, OCR score: 1.058)
+[2026-05-02 00:14:48]   Detected: 'ORBITALGATLINGBARRAGE/2488' -> Orbital Gatling Barrage (Index: 34, OCR score: 0.993)
+[2026-05-02 00:14:48]   Detected: 'ORBITALAIRBURSTSTRIKEf2' -> Orbital Airburst Strike (Index: 37, OCR score: 1.035)
+[2026-05-02 00:14:49]   Detected: 'ORBITALNAPALMBARRAGEGe' -> Orbital Napalm Barrage (Index: 43, OCR score: 1.032)
+[2026-05-02 00:14:49] 
 [3/23] Processing: 1-2.png
-[2026-05-01 18:58:37]   Skipped first/default icon slot 1
-[2026-05-01 18:58:37]   Skipped first/default icon slot 2
-[2026-05-01 18:58:37]   Skipped first/default icon slot 3
-[2026-05-01 18:58:37]   Detected: 'ORBITAL120MMHEBARRAGE' -> Orbital 120mm HE Barrage (Index: 36, OCR score: 1.080)
-[2026-05-01 18:58:38]   Detected: 'ORBITALWALKINGBARRAGE' -> Orbital Walking Barrage (Index: 41, OCR score: 1.080)
-[2026-05-01 18:58:38]   Detected: 'ORBITAL380MMHEBARRAGE' -> Orbital 380mm HE Barrage (Index: 40, OCR score: 1.080)
-[2026-05-01 18:58:39]   Detected: 'ORBITALRAILCANNONSTRIKE' -> Orbital Railcannon Strike (Index: 44, OCR score: 1.080)
-[2026-05-01 18:58:39] 
+[2026-05-02 00:14:49]   Skipped first/default icon slot 1
+[2026-05-02 00:14:49]   Skipped first/default icon slot 2
+[2026-05-02 00:14:49]   Skipped first/default icon slot 3
+[2026-05-02 00:14:49]   Detected: 'ORBITAL120MMHEBARRAGE' -> Orbital 120mm HE Barrage (Index: 36, OCR score: 1.080)
+[2026-05-02 00:14:49]   Detected: 'ORBITALWALKINGBARRAGE' -> Orbital Walking Barrage (Index: 41, OCR score: 1.080)
+[2026-05-02 00:14:50]   Detected: 'ORBITAL380MMHEBARRAGE' -> Orbital 380mm HE Barrage (Index: 40, OCR score: 1.080)
+[2026-05-02 00:14:50]   Detected: 'ORBITALRAILCANNONSTRIKE' -> Orbital Railcannon Strike (Index: 44, OCR score: 1.080)
+[2026-05-02 00:14:50] 
 [4/23] Processing: 1-3.png
-[2026-05-01 18:58:39]   Skipped first/default icon slot 1
-[2026-05-01 18:58:39]   Skipped first/default icon slot 2
-[2026-05-01 18:58:39]   Skipped first/default icon slot 3
-[2026-05-01 18:58:40]   Detected: 'ORBITALEMSSTRIKE' -> Orbital EMS Strike (Index: 39, OCR score: 1.080)
-[2026-05-01 18:58:40]   Detected: 'ORBITALGASSTRIKE' -> Orbital Gas Strike (Index: 35, OCR score: 1.080)
-[2026-05-01 18:58:41]   Detected: 'ORBITALSMOKESTRIKE' -> Orbital Smoke Strike (Index: 38, OCR score: 1.080)
-[2026-05-01 18:58:41]   Detected: 'EAGLESTRAFINGRUN' -> Eagle Strafing Run (Index: 45, OCR score: 1.080)
-[2026-05-01 18:58:42]   Detected: 'EAGLESTRAFINGRUN' -> Eagle Strafing Run (Index: 45, OCR score: 1.080)
-[2026-05-01 18:58:42]   Candidate kept: Eagle Strafing Run existing score 1.080 >= 1.080
-[2026-05-01 18:58:42] 
+[2026-05-02 00:14:50]   Skipped first/default icon slot 1
+[2026-05-02 00:14:50]   Skipped first/default icon slot 2
+[2026-05-02 00:14:50]   Skipped first/default icon slot 3
+[2026-05-02 00:14:51]   Detected: 'ORBITALEMSSTRIKE' -> Orbital EMS Strike (Index: 39, OCR score: 1.080)
+[2026-05-02 00:14:51]   Detected: 'ORBITALGASSTRIKE' -> Orbital Gas Strike (Index: 35, OCR score: 1.080)
+[2026-05-02 00:14:51]   Detected: 'ORBITALSMOKESTRIKE' -> Orbital Smoke Strike (Index: 38, OCR score: 1.080)
+[2026-05-02 00:14:52]   Detected: 'EAGLESTRAFINGRUN' -> Eagle Strafing Run (Index: 45, OCR score: 1.080)
+[2026-05-02 00:14:52]   Detected: 'EAGLESTRAFINGRUN' -> Eagle Strafing Run (Index: 45, OCR score: 1.080)
+[2026-05-02 00:14:52]   Candidate kept: Eagle Strafing Run existing score 1.080 >= 1.080
+[2026-05-02 00:14:52] 
 [5/23] Processing: 1-4.png
-[2026-05-01 18:58:42]   Skipped first/default icon slot 1
-[2026-05-01 18:58:42]   Skipped first/default icon slot 2
-[2026-05-01 18:58:42]   Skipped first/default icon slot 3
-[2026-05-01 18:58:42]   Detected: 'EAGLE110MMROCRETPODS' -> Eagle 110mm Rocket Pods (Index: 50, OCR score: 0.950)
-[2026-05-01 18:58:43]   Detected: 'EAGLE110MMROCRKETPODS' -> Eagle 110mm Rocket Pods (Index: 50, OCR score: 0.976)
-[2026-05-01 18:58:43]   Detected: 'EAGLEAIRSTRIRE' -> Eagle Airstrike (Index: 46, OCR score: 0.929)
-[2026-05-01 18:58:44]   Detected: 'EAGLEAIRSTRIRE' -> Eagle Airstrike (Index: 46, OCR score: 0.929)
-[2026-05-01 18:58:44]   Candidate kept: Eagle Airstrike existing score 0.929 >= 0.929
-[2026-05-01 18:58:44]   Detected: 'EAGLECLUSTERBOMB' -> Eagle Cluster Bomb (Index: 47, OCR score: 1.080)
-[2026-05-01 18:58:45]   Detected: 'EAGLECLUSTERBOMB' -> Eagle Cluster Bomb (Index: 47, OCR score: 1.080)
-[2026-05-01 18:58:45]   Candidate kept: Eagle Cluster Bomb existing score 1.080 >= 1.080
-[2026-05-01 18:58:45]   Detected: 'EAGLESMORESTRIKE' -> Eagle Smoke Strike (Index: 48, OCR score: 0.938)
-[2026-05-01 18:58:46]   Detected: 'EAGLESMORESTRIKE e' -> Eagle Smoke Strike (Index: 48, OCR score: 0.909)
-[2026-05-01 18:58:46]   Candidate kept: Eagle Smoke Strike existing score 0.938 >= 0.909
-[2026-05-01 18:58:46] 
+[2026-05-02 00:14:52]   Skipped first/default icon slot 1
+[2026-05-02 00:14:52]   Skipped first/default icon slot 2
+[2026-05-02 00:14:52]   Skipped first/default icon slot 3
+[2026-05-02 00:14:53]   Detected: 'EAGLE110MMROCRETPODS' -> Eagle 110mm Rocket Pods (Index: 50, OCR score: 0.950)
+[2026-05-02 00:14:53]   Detected: 'EAGLE110MMROCRKETPODS' -> Eagle 110mm Rocket Pods (Index: 50, OCR score: 0.976)
+[2026-05-02 00:14:53]   Detected: 'EAGLEAIRSTRIRE' -> Eagle Airstrike (Index: 46, OCR score: 0.929)
+[2026-05-02 00:14:54]   Detected: 'EAGLEAIRSTRIRE' -> Eagle Airstrike (Index: 46, OCR score: 0.929)
+[2026-05-02 00:14:54]   Candidate kept: Eagle Airstrike existing score 0.929 >= 0.929
+[2026-05-02 00:14:54]   Detected: 'EAGLECLUSTERBOMB' -> Eagle Cluster Bomb (Index: 47, OCR score: 1.080)
+[2026-05-02 00:14:55]   Detected: 'EAGLECLUSTERBOMB' -> Eagle Cluster Bomb (Index: 47, OCR score: 1.080)
+[2026-05-02 00:14:55]   Candidate kept: Eagle Cluster Bomb existing score 1.080 >= 1.080
+[2026-05-02 00:14:55]   Detected: 'EAGLESMORESTRIKE' -> Eagle Smoke Strike (Index: 48, OCR score: 0.938)
+[2026-05-02 00:14:55]   Detected: 'EAGLESMORESTRIKE e' -> Eagle Smoke Strike (Index: 48, OCR score: 0.909)
+[2026-05-02 00:14:55]   Candidate kept: Eagle Smoke Strike existing score 0.938 >= 0.909
+[2026-05-02 00:14:55] 
 [6/23] Processing: 2-1.png
-[2026-05-01 18:58:46]   Skipped first/default icon slot 1
-[2026-05-01 18:58:46]   Skipped first/default icon slot 2
-[2026-05-01 18:58:46]   Skipped first/default icon slot 3
-[2026-05-01 18:58:46]   Detected: 'DEFOLIATIONTOOL a' -> Defoliation Tool (Index: 22, OCR score: 1.048)
-[2026-05-01 18:58:47]   Detected: 'MACHINEGUN' -> Machine Gun (Index: 1, OCR score: 1.080)
-[2026-05-01 18:58:47]   Detected: 'STALWART' -> Stalwart (Index: 3, OCR score: 1.080)
-[2026-05-01 18:58:48]   Detected: 'HEAVYMACHINEGUN' -> Heavy Machine Gun (Index: 9, OCR score: 1.080)
-[2026-05-01 18:58:48] 
+[2026-05-02 00:14:55]   Skipped first/default icon slot 1
+[2026-05-02 00:14:55]   Skipped first/default icon slot 2
+[2026-05-02 00:14:55]   Skipped first/default icon slot 3
+[2026-05-02 00:14:56]   Detected: 'DEFOLIATIONTOOL a' -> Defoliation Tool (Index: 22, OCR score: 1.048)
+[2026-05-02 00:14:56]   Detected: 'MACHINEGUN' -> Machine Gun (Index: 1, OCR score: 1.080)
+[2026-05-02 00:14:57]   Detected: 'STALWART' -> Stalwart (Index: 3, OCR score: 1.080)
+[2026-05-02 00:14:57]   Detected: 'HEAVYMACHINEGUN' -> Heavy Machine Gun (Index: 9, OCR score: 1.080)
+[2026-05-02 00:14:57] 
 [7/23] Processing: 2-10.png
-[2026-05-01 18:58:48]   Skipped first/default icon slot 1
-[2026-05-01 18:58:48]   Skipped first/default icon slot 2
-[2026-05-01 18:58:48]   Skipped first/default icon slot 3
-[2026-05-01 18:58:49]   Detected: 'GUARDDOGROVER ne' -> Guard Dog (Index: 73, OCR score: 0.776)
-[2026-05-01 18:58:49]   Detected: 'FASTRECONVEHICLE' -> Fast Recon Vehicle (Index: 85, OCR score: 1.080)
-[2026-05-01 18:58:50]   Detected: 'EMANCIPATOREXOSUIT' -> Emancipator (Index: 84, OCR score: 0.958)
-[2026-05-01 18:58:50]   Detected: 'GATLINGSENTRY eee' -> Gatling (Index: 61, OCR score: 0.788)
-[2026-05-01 18:58:50] 
+[2026-05-02 00:14:57]   Skipped first/default icon slot 1
+[2026-05-02 00:14:57]   Skipped first/default icon slot 2
+[2026-05-02 00:14:57]   Skipped first/default icon slot 3
+[2026-05-02 00:14:57]   Detected: 'GUARDDOGROVER ne' -> Guard Dog (Index: 73, OCR score: 0.776)
+[2026-05-02 00:14:58]   Detected: 'FASTRECONVEHICLE' -> Fast Recon Vehicle (Index: 85, OCR score: 1.080)
+[2026-05-02 00:14:58]   Detected: 'EMANCIPATOREXOSUIT' -> Emancipator (Index: 84, OCR score: 0.958)
+[2026-05-02 00:14:59]   Detected: 'GATLINGSENTRY eee' -> Gatling Sentry (Index: 61, OCR score: 0.977)
+[2026-05-02 00:14:59] 
 [8/23] Processing: 2-2.png
-[2026-05-01 18:58:50]   Skipped first/default icon slot 1
-[2026-05-01 18:58:50]   Skipped first/default icon slot 2
-[2026-05-01 18:58:50]   Skipped first/default icon slot 3
-[2026-05-01 18:58:51]   Detected: 'RAILGUN Sa' -> Railgun (Index: 16, OCR score: 0.955)
-[2026-05-01 18:58:51]   Detected: 'SPEARGUN Bean' -> Speargun (Index: 21, OCR score: 0.880)
-[2026-05-01 18:58:52]   Detected: 'ANTI-MATERIELRIFLE ES a' -> Anti-Materiel Rifle (Index: 5, OCR score: 0.999)
-[2026-05-01 18:58:52]   Detected: 'EPOCH -' -> Epoch (Index: 19, OCR score: 1.080)
-[2026-05-01 18:58:52] 
+[2026-05-02 00:14:59]   Skipped first/default icon slot 1
+[2026-05-02 00:14:59]   Skipped first/default icon slot 2
+[2026-05-02 00:14:59]   Skipped first/default icon slot 3
+[2026-05-02 00:14:59]   Detected: 'RAILGUN Sa' -> Railgun (Index: 16, OCR score: 0.955)
+[2026-05-02 00:15:00]   Detected: 'SPEARGUN Bean' -> Speargun (Index: 21, OCR score: 0.880)
+[2026-05-02 00:15:00]   Detected: 'ANTI-MATERIELRIFLE ES a' -> Anti-Materiel Rifle (Index: 5, OCR score: 0.999)
+[2026-05-02 00:15:00]   Detected: 'EPOCH -' -> Epoch (Index: 19, OCR score: 1.080)
+[2026-05-02 00:15:00] 
 [9/23] Processing: 2-3.png
-[2026-05-01 18:58:52]   Skipped first/default icon slot 1
-[2026-05-01 18:58:52]   Skipped first/default icon slot 2
-[2026-05-01 18:58:52]   Skipped first/default icon slot 3
-[2026-05-01 18:58:53]   Detected: 'GRENADELAUNCHERtes' -> Grenade Launcher (Index: 6, OCR score: 0.989)
-[2026-05-01 18:58:53]   Detected: 'FLAMETHROWER' -> Flamethrower (Index: 8, OCR score: 1.080)
-[2026-05-01 18:58:54]   Detected: 'LASERCANNON bona' -> Laser Cannon (Index: 4, OCR score: 0.926)
-[2026-05-01 18:58:54]   Detected: 'QUASARCANNON4' -> Quasar Cannon (Index: 12, OCR score: 1.040)
-[2026-05-01 18:58:58]   Detected: 'aes amACAN SD TN oe' -> Quasar Cannon (Index: 12, OCR score: 0.593)
-[2026-05-01 18:58:58]   Candidate kept: Quasar Cannon existing score 1.040 >= 0.593
-[2026-05-01 18:58:58] 
+[2026-05-02 00:15:00]   Skipped first/default icon slot 1
+[2026-05-02 00:15:00]   Skipped first/default icon slot 2
+[2026-05-02 00:15:00]   Skipped first/default icon slot 3
+[2026-05-02 00:15:01]   Detected: 'GRENADELAUNCHERtes' -> Grenade Launcher (Index: 6, OCR score: 0.989)
+[2026-05-02 00:15:01]   Detected: 'FLAMETHROWER' -> Flamethrower (Index: 8, OCR score: 1.080)
+[2026-05-02 00:15:02]   Detected: 'LASERCANNON bona' -> Laser Cannon (Index: 4, OCR score: 0.926)
+[2026-05-02 00:15:02]   Detected: 'QUASARCANNON4' -> Quasar Cannon (Index: 12, OCR score: 1.040)
+[2026-05-02 00:15:05]   Detected: 'aes amACAN SD TN oe' -> Quasar Cannon (Index: 12, OCR score: 0.593)
+[2026-05-02 00:15:05]   Candidate kept: Quasar Cannon existing score 1.040 >= 0.593
+[2026-05-02 00:15:05] 
 [10/23] Processing: 2-4.png
-[2026-05-01 18:58:58]   Skipped first/default icon slot 1
-[2026-05-01 18:58:58]   Skipped first/default icon slot 2
-[2026-05-01 18:58:58]   Skipped first/default icon slot 3
-[2026-05-01 18:58:59]   Detected: 'ARCTHROWER' -> Arc Thrower (Index: 11, OCR score: 1.080)
-[2026-05-01 18:58:59]   Detected: 'COMMANDO' -> Commando (Index: 14, OCR score: 1.080)
-[2026-05-01 18:59:00]   Detected: 'EXPENDABLENAPALM' -> Expendable Napalm (Index: 24, OCR score: 1.080)
-[2026-05-01 18:59:00]   Detected: 'SOLOSILO' -> Solo Silo (Index: 29, OCR score: 1.080)
-[2026-05-01 18:59:00] 
+[2026-05-02 00:15:05]   Skipped first/default icon slot 1
+[2026-05-02 00:15:05]   Skipped first/default icon slot 2
+[2026-05-02 00:15:05]   Skipped first/default icon slot 3
+[2026-05-02 00:15:05]   Detected: 'ARCTHROWER' -> Arc Thrower (Index: 11, OCR score: 1.080)
+[2026-05-02 00:15:06]   Detected: 'COMMANDO' -> Commando (Index: 14, OCR score: 1.080)
+[2026-05-02 00:15:06]   Detected: 'EXPENDABLENAPALM' -> Expendable Napalm (Index: 24, OCR score: 1.080)
+[2026-05-02 00:15:06]   Detected: 'SOLOSILO' -> Solo Silo (Index: 29, OCR score: 1.080)
+[2026-05-02 00:15:06] 
 [11/23] Processing: 2-5.png
-[2026-05-01 18:59:00]   Skipped first/default icon slot 1
-[2026-05-01 18:59:00]   Skipped first/default icon slot 2
-[2026-05-01 18:59:00]   Skipped first/default icon slot 3
-[2026-05-01 18:59:01]   Detected: 'EXPENDABLEANTI-TANK' -> Expendable Anti-Tank (Index: 2, OCR score: 1.080)
-[2026-05-01 18:59:01]   Detected: 'AUTOCANNON' -> Autocannon (Index: 10, OCR score: 1.080)
-[2026-05-01 18:59:02]   Detected: 'AIRBURSTROCKETLAUNCHER' -> Airburst Rocket Launcher (Index: 13, OCR score: 1.080)
-[2026-05-01 18:59:02]   Detected: 'SPEAR' -> Spear (Index: 15, OCR score: 1.080)
-[2026-05-01 18:59:02] 
+[2026-05-02 00:15:06]   Skipped first/default icon slot 1
+[2026-05-02 00:15:06]   Skipped first/default icon slot 2
+[2026-05-02 00:15:06]   Skipped first/default icon slot 3
+[2026-05-02 00:15:07]   Detected: 'EXPENDABLEANTI-TANK' -> Expendable Anti-Tank (Index: 2, OCR score: 1.080)
+[2026-05-02 00:15:07]   Detected: 'AUTOCANNON' -> Autocannon (Index: 10, OCR score: 1.080)
+[2026-05-02 00:15:07]   Detected: 'AIRBURSTROCKETLAUNCHER' -> Airburst Rocket Launcher (Index: 13, OCR score: 1.080)
+[2026-05-02 00:15:08]   Detected: 'SPEAR' -> Spear (Index: 15, OCR score: 1.080)
+[2026-05-02 00:15:08] 
 [12/23] Processing: 2-6.png
-[2026-05-01 18:59:02]   Skipped first/default icon slot 1
-[2026-05-01 18:59:02]   Skipped first/default icon slot 2
-[2026-05-01 18:59:02]   Skipped first/default icon slot 3
-[2026-05-01 18:59:03]   Detected: 'WASPLAUNCHER' -> W.A.S.P. Launcher (Index: 17, OCR score: 1.080)
-[2026-05-01 18:59:03]   Detected: 'MAXIGUN' -> Maxigun (Index: 31, OCR score: 1.080)
-[2026-05-01 18:59:04]   Detected: 'RECOILLESSRIFLE' -> Recoilless Rifle (Index: 7, OCR score: 1.080)
-[2026-05-01 18:59:04]   Detected: 'SUPPLYPACK' -> Supply (Index: 70, OCR score: 0.989)
-[2026-05-01 18:59:04] 
+[2026-05-02 00:15:08]   Skipped first/default icon slot 1
+[2026-05-02 00:15:08]   Skipped first/default icon slot 2
+[2026-05-02 00:15:08]   Skipped first/default icon slot 3
+[2026-05-02 00:15:08]   Detected: 'WASPLAUNCHER' -> W.A.S.P. Launcher (Index: 17, OCR score: 1.080)
+[2026-05-02 00:15:08]   Detected: 'MAXIGUN' -> Maxigun (Index: 31, OCR score: 1.080)
+[2026-05-02 00:15:09]   Detected: 'RECOILLESSRIFLE' -> Recoilless Rifle (Index: 7, OCR score: 1.080)
+[2026-05-02 00:15:09]   Detected: 'SUPPLYPACK' -> Supply Pack (Index: 70, OCR score: 1.080)
+[2026-05-02 00:15:09] 
 [13/23] Processing: 2-7.png
-[2026-05-01 18:59:04]   Skipped first/default icon slot 1
-[2026-05-01 18:59:04]   Skipped first/default icon slot 2
-[2026-05-01 18:59:04]   Skipped first/default icon slot 3
-[2026-05-01 18:59:05]   Detected: 'PORTABLEHELLBOMB' -> Portable Hellbomb (Index: 78, OCR score: 1.080)
-[2026-05-01 18:59:05]   Detected: 'WARPPACK' -> Warp (Index: 82, OCR score: 0.776)
-[2026-05-01 18:59:06]   Detected: 'JUMPPACK' -> Jump (Index: 71, OCR score: 0.776)
-[2026-05-01 18:59:06]   Detected: 'SHIELDGENERATORPACK' -> Shield Generator (Index: 75, OCR score: 0.985)
-[2026-05-01 18:59:06] 
+[2026-05-02 00:15:09]   Skipped first/default icon slot 1
+[2026-05-02 00:15:09]   Skipped first/default icon slot 2
+[2026-05-02 00:15:09]   Skipped first/default icon slot 3
+[2026-05-02 00:15:10]   Detected: 'PORTABLEHELLBOMB' -> Portable Hellbomb (Index: 78, OCR score: 1.080)
+[2026-05-02 00:15:10]   Detected: 'WARPPACK' -> Warp Pack (Index: 82, OCR score: 1.080)
+[2026-05-02 00:15:10]   Detected: 'JUMPPACK' -> Jump Pack (Index: 71, OCR score: 1.080)
+[2026-05-02 00:15:11]   Detected: 'SHIELDGENERATORPACK' -> Shield Generator Pack (Index: 75, OCR score: 1.080)
+[2026-05-02 00:15:11] 
 [14/23] Processing: 2-8.png
-[2026-05-01 18:59:06]   Skipped first/default icon slot 1
-[2026-05-01 18:59:06]   Skipped first/default icon slot 2
-[2026-05-01 18:59:06]   Skipped first/default icon slot 3
-[2026-05-01 18:59:07]   Detected: 'DIRECTIONALSHIELD' -> Directional Shield (Index: 76, OCR score: 1.080)
-[2026-05-01 18:59:07]   Detected: 'BALLISTICSHIELDBACHPACH' -> Ballistic Shield (Index: 72, OCR score: 0.869)
-[2026-05-01 18:59:08]   Detected: 'GUARDDOGHOTDOG' -> Guard Dog (Index: 73, OCR score: 0.807)
-[2026-05-01 18:59:08]   Detected: 'GUARDDOG' -> Guard Dog (Index: 73, OCR score: 1.080)
-[2026-05-01 18:59:08] 
+[2026-05-02 00:15:11]   Skipped first/default icon slot 1
+[2026-05-02 00:15:11]   Skipped first/default icon slot 2
+[2026-05-02 00:15:11]   Skipped first/default icon slot 3
+[2026-05-02 00:15:11]   Detected: 'DIRECTIONALSHIELD' -> Directional Shield (Index: 76, OCR score: 1.080)
+[2026-05-02 00:15:12]   Detected: 'BALLISTICSHIELDBACHPACH' -> Ballistic Shield (Index: 72, OCR score: 0.869)
+[2026-05-02 00:15:12]   Detected: 'GUARDDOGHOTDOG' -> Guard Dog (Index: 73, OCR score: 0.807)
+[2026-05-02 00:15:12]   Detected: 'GUARDDOG' -> Guard Dog (Index: 73, OCR score: 1.080)
+[2026-05-02 00:15:12] 
 [15/23] Processing: 3-1.png
-[2026-05-01 18:59:08]   Skipped first/default icon slot 1
-[2026-05-01 18:59:08]   Skipped first/default icon slot 2
-[2026-05-01 18:59:08]   Skipped first/default icon slot 3
-[2026-05-01 18:59:09]   Detected: 'MACHINEGUNSENTRY' -> Machine Gun (Index: 60, OCR score: 0.945)
-[2026-05-01 18:59:09]   Detected: 'LASERSENTRY' -> Laser (Index: 67, OCR score: 0.866)
-[2026-05-01 18:59:10]   Detected: 'ROCKETSENTRY' -> Rocket (Index: 64, OCR score: 0.880)
-[2026-05-01 18:59:10]   Candidate kept: Rocket existing score 0.880 >= 0.880
-[2026-05-01 18:59:10]   Detected: 'AUTOCANNONSENTRY' -> Autocannon (Index: 62, OCR score: 0.969)
-[2026-05-01 18:59:10] 
+[2026-05-02 00:15:12]   Skipped first/default icon slot 1
+[2026-05-02 00:15:12]   Skipped first/default icon slot 2
+[2026-05-02 00:15:12]   Skipped first/default icon slot 3
+[2026-05-02 00:15:13]   Detected: 'MACHINEGUNSENTRY' -> Machine Gun Sentry (Index: 60, OCR score: 1.080)
+[2026-05-02 00:15:13]   Detected: 'LASERSENTRY' -> Laser Sentry (Index: 67, OCR score: 1.080)
+[2026-05-02 00:15:13]   Detected: 'ROCKETSENTRY' -> Rocket Sentry (Index: 64, OCR score: 1.080)
+[2026-05-02 00:15:13]   Candidate kept: Rocket Sentry existing score 1.080 >= 1.080
+[2026-05-02 00:15:14]   Detected: 'AUTOCANNONSENTRY' -> Autocannon Sentry (Index: 62, OCR score: 1.080)
+[2026-05-02 00:15:14] 
 [16/23] Processing: 3-2.png
-[2026-05-01 18:59:10]   Skipped first/default icon slot 1
-[2026-05-01 18:59:10]   Skipped first/default icon slot 2
-[2026-05-01 18:59:10]   Skipped first/default icon slot 3
-[2026-05-01 18:59:11]   Detected: 'EMSMORTARSENTRY' -> EMS Mortar (Index: 66, OCR score: 0.962)
-[2026-05-01 18:59:11]   Detected: 'MORTARSENTRY' -> Mortar (Index: 63, OCR score: 0.937)
-[2026-05-01 18:59:12]   Detected: 'SHIELDGENERATORRELAY' -> Shield Generator Relay (Index: 55, OCR score: 1.080)
-[2026-05-01 18:59:13]   Detected: 'GRENADIERBATTLEMENT' -> Grenadier Battlement (Index: 57, OCR score: 1.080)
-[2026-05-01 18:59:13] 
+[2026-05-02 00:15:14]   Skipped first/default icon slot 1
+[2026-05-02 00:15:14]   Skipped first/default icon slot 2
+[2026-05-02 00:15:14]   Skipped first/default icon slot 3
+[2026-05-02 00:15:14]   Detected: 'EMSMORTARSENTRY' -> EMS Mortar Sentry (Index: 66, OCR score: 1.080)
+[2026-05-02 00:15:15]   Detected: 'MORTARSENTRY' -> Mortar Sentry (Index: 63, OCR score: 1.080)
+[2026-05-02 00:15:15]   Detected: 'SHIELDGENERATORRELAY' -> Shield Generator Relay (Index: 55, OCR score: 1.080)
+[2026-05-02 00:15:15]   Detected: 'GRENADIERBATTLEMENT' -> Grenadier Battlement (Index: 57, OCR score: 1.080)
+[2026-05-02 00:15:15] 
 [17/23] Processing: 3-3.png
-[2026-05-01 18:59:13]   Skipped first/default icon slot 1
-[2026-05-01 18:59:13]   Skipped first/default icon slot 2
-[2026-05-01 18:59:13]   Skipped first/default icon slot 3
-[2026-05-01 18:59:13]   Detected: 'ANTI-TANKEMPLACEMENT' -> Anti-Tank (Index: 59, OCR score: 0.964)
-[2026-05-01 18:59:14]   Detected: 'HMGEMPLACEMENT' -> HMG (Index: 56, OCR score: 0.904)
-[2026-05-01 18:59:14]   Detected: 'TESLATOWER wf' -> Tesla Tower (Index: 65, OCR score: 0.989)
-[2026-05-01 18:59:15]   Detected: 'ANTI-TANKMINES' -> Anti-Tank Mines (Index: 54, OCR score: 1.080)
-[2026-05-01 18:59:15] 
+[2026-05-02 00:15:15]   Skipped first/default icon slot 1
+[2026-05-02 00:15:15]   Skipped first/default icon slot 2
+[2026-05-02 00:15:15]   Skipped first/default icon slot 3
+[2026-05-02 00:15:16]   Detected: 'ANTI-TANKEMPLACEMENT' -> Anti-Tank (Index: 59, OCR score: 0.964)
+[2026-05-02 00:15:16]   Detected: 'HMGEMPLACEMENT' -> HMG (Index: 56, OCR score: 0.904)
+[2026-05-02 00:15:17]   Detected: 'TESLATOWER wf' -> Tesla Tower (Index: 65, OCR score: 0.989)
+[2026-05-02 00:15:17]   Detected: 'ANTI-TANKMINES' -> Anti-Tank Mines (Index: 54, OCR score: 1.080)
+[2026-05-02 00:15:17] 
 [18/23] Processing: 3-4.png
-[2026-05-01 18:59:15]   Skipped first/default icon slot 1
-[2026-05-01 18:59:15]   Skipped first/default icon slot 2
-[2026-05-01 18:59:15]   Skipped first/default icon slot 3
-[2026-05-01 18:59:15]   Detected: 'GASMINES' -> Gas Mines (Index: 58, OCR score: 1.080)
-[2026-05-01 18:59:16]   Detected: 'ANTI-PERSONNELMINEFIELD' -> Anti-Personnel Minefield (Index: 52, OCR score: 1.080)
-[2026-05-01 18:59:16]   Detected: 'INCENDIARYMINES' -> Incendiary Mines (Index: 53, OCR score: 1.080)
-[2026-05-01 18:59:17]   Detected: 'ORBITALPRECISIONSTRIKE' -> Orbital Precision Strike (Index: 33, OCR score: 1.080)
-[2026-05-01 18:59:17] 
+[2026-05-02 00:15:17]   Skipped first/default icon slot 1
+[2026-05-02 00:15:17]   Skipped first/default icon slot 2
+[2026-05-02 00:15:17]   Skipped first/default icon slot 3
+[2026-05-02 00:15:17]   Detected: 'GASMINES' -> Gas Mines (Index: 58, OCR score: 1.080)
+[2026-05-02 00:15:18]   Detected: 'ANTI-PERSONNELMINEFIELD' -> Anti-Personnel Minefield (Index: 52, OCR score: 1.080)
+[2026-05-02 00:15:18]   Detected: 'INCENDIARYMINES' -> Incendiary Mines (Index: 53, OCR score: 1.080)
+[2026-05-02 00:15:19]   Detected: 'ORBITALPRECISIONSTRIKE' -> Orbital Precision Strike (Index: 33, OCR score: 1.080)
+[2026-05-02 00:15:19] 
 [19/23] Processing: 4-1.png
-[2026-05-01 18:59:17]   Skipped first/default icon slot 1
-[2026-05-01 18:59:17]   Skipped first/default icon slot 2
-[2026-05-01 18:59:17]   Skipped first/default icon slot 3
-[2026-05-01 18:59:17]   Detected: 'BULLETctno' -> Bullet Storm (Index: 20, OCR score: 0.762)
-[2026-05-01 18:59:18]   Detected: 'SPEARGIIN' -> Speargun (Index: 21, OCR score: 0.824)
-[2026-05-01 18:59:18]   Candidate kept: Speargun existing score 0.880 >= 0.824
-[2026-05-01 18:59:18]   Detected: 'GASMORTARSENTDV' -> Gas Mortar (Index: 69, OCR score: 0.830)
-[2026-05-01 18:59:19]   Detected: 'PORTABLEHELLBOMB' -> Portable Hellbomb (Index: 78, OCR score: 1.080)
-[2026-05-01 18:59:19]   Candidate kept: Portable Hellbomb existing score 1.080 >= 1.080
-[2026-05-01 18:59:19] 
+[2026-05-02 00:15:19]   Skipped first/default icon slot 1
+[2026-05-02 00:15:19]   Skipped first/default icon slot 2
+[2026-05-02 00:15:19]   Skipped first/default icon slot 3
+[2026-05-02 00:15:19]   Detected: 'BULLETctno' -> Bullet Storm (Index: 20, OCR score: 0.762)
+[2026-05-02 00:15:20]   Detected: 'SPEARGIIN' -> Speargun (Index: 21, OCR score: 0.824)
+[2026-05-02 00:15:20]   Candidate kept: Speargun existing score 0.880 >= 0.824
+[2026-05-02 00:15:20]   Detected: 'GASMORTARSENTDYV' -> Gas Mortar Sentry (Index: 69, OCR score: 0.903)
+[2026-05-02 00:15:20]   Detected: 'PORTABLEHELLBOMB' -> Portable Hellbomb (Index: 78, OCR score: 1.080)
+[2026-05-02 00:15:20]   Candidate kept: Portable Hellbomb existing score 1.080 >= 1.080
+[2026-05-02 00:15:20] 
 [20/23] Processing: 4-2.png
-[2026-05-01 18:59:19]   Skipped first/default icon slot 1
-[2026-05-01 18:59:19]   Skipped first/default icon slot 2
-[2026-05-01 18:59:19]   Skipped first/default icon slot 3
-[2026-05-01 18:59:19]   Detected: 'LUMREDcrn' -> Lumberer (Index: 88, OCR score: 0.706)
-[2026-05-01 18:59:20]   Detected: 'STERILIZED' -> Sterilizer (Index: 23, OCR score: 0.900)
-[2026-05-01 18:59:20]   Detected: 'HOTDOG' -> Hot Dog (Index: 77, OCR score: 1.080)
-[2026-05-01 18:59:21]   Detected: 'K-9' -> K-9 (Index: 79, OCR score: 1.080)
-[2026-05-01 18:59:21] 
+[2026-05-02 00:15:20]   Skipped first/default icon slot 1
+[2026-05-02 00:15:20]   Skipped first/default icon slot 2
+[2026-05-02 00:15:20]   Skipped first/default icon slot 3
+[2026-05-02 00:15:21]   Detected: 'LUMREDcrn' -> Lumberer (Index: 88, OCR score: 0.706)
+[2026-05-02 00:15:21]   Detected: 'STERILIZED' -> Sterilizer (Index: 23, OCR score: 0.900)
+[2026-05-02 00:15:22]   Detected: 'HOTDOG' -> Hot Dog (Index: 77, OCR score: 1.080)
+[2026-05-02 00:15:22]   Detected: 'K-9' -> K-9 (Index: 79, OCR score: 1.080)
+[2026-05-02 00:15:22] 
 [21/23] Processing: 4-3.png
-[2026-05-01 18:59:21]   Skipped first/default icon slot 1
-[2026-05-01 18:59:21]   Skipped first/default icon slot 2
-[2026-05-01 18:59:21]   Skipped first/default icon slot 3
-[2026-05-01 18:59:21]   Detected: 'CREMatTno' -> Cremator (Index: 30, OCR score: 0.824)
-[2026-05-01 18:59:22]   Detected: 'ROVER Z' -> Rover (Index: 74, OCR score: 0.989)
-[2026-05-01 18:59:22]   Detected: 'DOGBREATH' -> Dog Breath (Index: 81, OCR score: 1.080)
-[2026-05-01 18:59:23]   Detected: 'BREARTHROUGH' -> Breakthrough (Index: 87, OCR score: 0.917)
-[2026-05-01 18:59:23]   Detected: 'BREARTHROUGH' -> Breakthrough (Index: 87, OCR score: 0.917)
-[2026-05-01 18:59:23]   Candidate kept: Breakthrough existing score 0.917 >= 0.917
-[2026-05-01 18:59:23] 
+[2026-05-02 00:15:22]   Skipped first/default icon slot 1
+[2026-05-02 00:15:22]   Skipped first/default icon slot 2
+[2026-05-02 00:15:22]   Skipped first/default icon slot 3
+[2026-05-02 00:15:22]   Detected: 'CREMatTno' -> Cremator (Index: 30, OCR score: 0.824)
+[2026-05-02 00:15:23]   Detected: 'ROVER Z' -> Rover (Index: 74, OCR score: 0.989)
+[2026-05-02 00:15:23]   Detected: 'DOGBREATH' -> Dog Breath (Index: 81, OCR score: 1.080)
+[2026-05-02 00:15:24]   Detected: 'BREARTHROUGH' -> Breakthrough (Index: 87, OCR score: 0.917)
+[2026-05-02 00:15:24]   Detected: 'BREARTHROUGH' -> Breakthrough (Index: 87, OCR score: 0.917)
+[2026-05-02 00:15:24]   Candidate kept: Breakthrough existing score 0.917 >= 0.917
+[2026-05-02 00:15:24] 
 [22/23] Processing: rd-sbk.png
-[2026-05-01 18:59:23]   Skipped first/default icon slot 1
-[2026-05-01 18:59:23]   Skipped first/default icon slot 2
-[2026-05-01 18:59:23]   Skipped first/default icon slot 3
-[2026-05-01 18:59:24]   Detected: 'BREACHINGHAMMER' -> Breaching Hammer (Index: 18, OCR score: 1.080)
-[2026-05-01 18:59:24]   Detected: 'BASTIONMKXVI' -> Bastion MK XVI (Index: 86, OCR score: 1.080)
-[2026-05-01 18:59:25]   Detected: 'BELT-FEDGRENADELAUNCHER' -> Belt-Fed Grenade Launcher (Index: 27, OCR score: 1.080)
-[2026-05-01 18:59:25]   Detected: 'LEVELLER' -> Leveller (Index: 25, OCR score: 1.080)
-[2026-05-01 18:59:25] 
+[2026-05-02 00:15:24]   Skipped first/default icon slot 1
+[2026-05-02 00:15:24]   Skipped first/default icon slot 2
+[2026-05-02 00:15:24]   Skipped first/default icon slot 3
+[2026-05-02 00:15:24]   Detected: 'BREACHINGHAMMER' -> Breaching Hammer (Index: 18, OCR score: 1.080)
+[2026-05-02 00:15:25]   Detected: 'BASTIONMKXVI' -> Bastion MK XVI (Index: 86, OCR score: 1.080)
+[2026-05-02 00:15:25]   Detected: 'BELT-FEDGRENADELAUNCHER' -> Belt-Fed Grenade Launcher (Index: 27, OCR score: 1.080)
+[2026-05-02 00:15:25]   Detected: 'LEVELLER' -> Leveller (Index: 25, OCR score: 1.080)
+[2026-05-02 00:15:25] 
 [23/23] Processing: rd-sbk2.png
-[2026-05-01 18:59:25]   Skipped first/default icon slot 1
-[2026-05-01 18:59:25]   Skipped first/default icon slot 2
-[2026-05-01 18:59:25]   Skipped first/default icon slot 3
-[2026-05-01 18:59:26]   Detected: 'C4PACK' -> C4 (Index: 28, OCR score: 0.880)
-[2026-05-01 18:59:26]   Detected: 'K-9' -> K-9 (Index: 79, OCR score: 1.080)
-[2026-05-01 18:59:26]   Candidate kept: K-9 existing score 1.080 >= 1.080
-[2026-05-01 18:59:27]   Detected: 'DE-ESCALATOR' -> De-Escalator (Index: 26, OCR score: 1.080)
-[2026-05-01 18:59:27]   Detected: 'GRENADELAUNCHER' -> Grenade Launcher (Index: 6, OCR score: 1.080)
-[2026-05-01 18:59:27]   Saved: 1431342.png (score: 0.917, text: 'BREARTHROUGH', source: 4-3.png)
-[2026-05-01 18:59:27]   Skipped existing: 1432142.png (candidate score 0.958 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 1432312.png (candidate score 0.706 <= saved score 0.750)
-[2026-05-01 18:59:27]   Skipped existing: 143414242.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 1434342.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 22123.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 2321.png (candidate score 0.976 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 2324.png (candidate score 0.938 <= saved score 0.938)
-[2026-05-01 18:59:27]   Skipped existing: 233.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 2342.png (candidate score 1.032 <= saved score 1.032)
-[2026-05-01 18:59:27]   Skipped existing: 2343.png (candidate score 0.929 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 23443.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 23444.png (candidate score 0.983 <= saved score 1.013)
-[2026-05-01 18:59:27]   Skipped existing: 32443.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 3314.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 332.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 333.png (candidate score 1.035 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 334132.png (candidate score 1.032 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 334134.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 3342.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 3343.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 34122.png (candidate score 0.993 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 3422144.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 34234.png (candidate score 1.003 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 343434.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 4113.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 4114.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 412122.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41213.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41214.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 4122.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 4123.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41241.png (candidate score 0.900 <= saved score 0.900)
-[2026-05-01 18:59:27]   Skipped existing: 41242.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41243.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41244.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41312.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41324.png (candidate score 0.999 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41331.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41334.png (candidate score 1.048 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 413413.png (candidate score 0.776 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 413422.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41421.png (candidate score 0.926 <= saved score 0.997)
-[2026-05-01 18:59:27]   Skipped existing: 414221.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 414223.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 414224.png (candidate score 0.989 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 41423.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 414321.png (candidate score 0.762 <= saved score 0.762)
-[2026-05-01 18:59:27]   Skipped existing: 414421.png (candidate score 0.869 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 421211.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 421231.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Saved: 421232.png (score: 1.080, text: 'DOGBREATH', source: 4-3.png)
-[2026-05-01 18:59:27]   Saved: 421233.png (score: 0.989, text: 'ROVER Z', source: 4-3.png)
-[2026-05-01 18:59:27]   Skipped existing: 421234.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 421313.png (candidate score 0.985 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 421322.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 421331.png (candidate score 0.904 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 421333.png (candidate score 0.964 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42213.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42242.png (candidate score 0.776 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 4231.png (candidate score 0.788 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 423212.png (candidate score 0.969 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 423213.png (candidate score 0.989 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42331.png (candidate score 0.880 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42332.png (candidate score 0.945 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42334.png (candidate score 0.937 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42341.png (candidate score 0.830 <= saved score 0.875)
-[2026-05-01 18:59:27]   Skipped existing: 423423.png (candidate score 0.866 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42343.png (candidate score 0.962 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 42344.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 43213.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 43222.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 432232.png (candidate score 0.880 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 434123.png (candidate score 0.880 <= saved score 1.021)
-[2026-05-01 18:59:27]   Skipped existing: 43413.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 434211.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 434213.png (candidate score 0.955 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 44121.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 44123.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 44124.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 441313.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 44213.png (candidate score 1.040 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 44243.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Skipped existing: 44244.png (candidate score 1.080 <= saved score 1.080)
-[2026-05-01 18:59:27]   Saved: 443422.png (score: 0.824, text: 'CREMatTno', source: 4-3.png)
-[2026-05-01 18:59:27]   [OK] Saved 4 new icon(s), replaced 0 icon(s).
-[2026-05-01 18:59:27] 
+[2026-05-02 00:15:25]   Skipped first/default icon slot 1
+[2026-05-02 00:15:25]   Skipped first/default icon slot 2
+[2026-05-02 00:15:25]   Skipped first/default icon slot 3
+[2026-05-02 00:15:26]   Detected: 'C4PACK' -> C4 Pack (Index: 28, OCR score: 1.080)
+[2026-05-02 00:15:26]   Detected: 'K-9' -> K-9 (Index: 79, OCR score: 1.080)
+[2026-05-02 00:15:26]   Candidate kept: K-9 existing score 1.080 >= 1.080
+[2026-05-02 00:15:27]   Detected: 'DE-ESCALATOR' -> De-Escalator (Index: 26, OCR score: 1.080)
+[2026-05-02 00:15:27]   Detected: 'GRENADELAUNCHER' -> Grenade Launcher (Index: 6, OCR score: 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 1431342.png (candidate score 0.917 <= saved score 0.917)
+[2026-05-02 00:15:27]   Skipped existing: 1432142.png (candidate score 0.958 <= saved score 0.958)
+[2026-05-02 00:15:27]   Skipped existing: 1432312.png (candidate score 0.706 <= saved score 0.706)
+[2026-05-02 00:15:27]   Skipped existing: 143414242.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 1434342.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 22123.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 2321.png (candidate score 0.976 <= saved score 0.976)
+[2026-05-02 00:15:27]   Skipped existing: 2324.png (candidate score 0.938 <= saved score 0.938)
+[2026-05-02 00:15:27]   Skipped existing: 233.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 2342.png (candidate score 1.032 <= saved score 1.032)
+[2026-05-02 00:15:27]   Skipped existing: 2343.png (candidate score 0.929 <= saved score 0.929)
+[2026-05-02 00:15:27]   Skipped existing: 23443.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 23444.png (candidate score 0.983 <= saved score 0.983)
+[2026-05-02 00:15:27]   Skipped existing: 32443.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 3314.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 332.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 333.png (candidate score 1.035 <= saved score 1.035)
+[2026-05-02 00:15:27]   Skipped existing: 334132.png (candidate score 1.032 <= saved score 1.032)
+[2026-05-02 00:15:27]   Skipped existing: 334134.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 3342.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 3343.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 34122.png (candidate score 0.993 <= saved score 0.993)
+[2026-05-02 00:15:27]   Skipped existing: 3422144.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 34234.png (candidate score 1.003 <= saved score 1.003)
+[2026-05-02 00:15:27]   Skipped existing: 343434.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 4113.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 4114.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 412122.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41213.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41214.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 4122.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 4123.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41241.png (candidate score 0.900 <= saved score 0.900)
+[2026-05-02 00:15:27]   Skipped existing: 41242.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41243.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41244.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41312.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41324.png (candidate score 0.999 <= saved score 0.999)
+[2026-05-02 00:15:27]   Skipped existing: 41331.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41334.png (candidate score 1.048 <= saved score 1.048)
+[2026-05-02 00:15:27]   Replaced: 413413.png (score: 1.080, text: 'WARPPACK', source: 2-7.png)
+[2026-05-02 00:15:27]   Skipped existing: 413422.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 41421.png (candidate score 0.926 <= saved score 0.926)
+[2026-05-02 00:15:27]   Skipped existing: 414221.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 414223.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Replaced: 414224.png (score: 1.080, text: 'SUPPLYPACK', source: 2-6.png)
+[2026-05-02 00:15:27]   Skipped existing: 41423.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 414321.png (candidate score 0.762 <= saved score 0.762)
+[2026-05-02 00:15:27]   Skipped existing: 414421.png (candidate score 0.869 <= saved score 0.869)
+[2026-05-02 00:15:27]   Skipped existing: 421211.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 421231.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 421232.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 421233.png (candidate score 0.989 <= saved score 0.989)
+[2026-05-02 00:15:27]   Skipped existing: 421234.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Replaced: 421313.png (score: 1.080, text: 'SHIELDGENERATORPACK', source: 2-7.png)
+[2026-05-02 00:15:27]   Skipped existing: 421322.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 421331.png (candidate score 0.904 <= saved score 0.904)
+[2026-05-02 00:15:27]   Skipped existing: 421333.png (candidate score 0.964 <= saved score 0.964)
+[2026-05-02 00:15:27]   Skipped existing: 42213.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Replaced: 42242.png (score: 1.080, text: 'JUMPPACK', source: 2-7.png)
+[2026-05-02 00:15:27]   Replaced: 4231.png (score: 0.977, text: 'GATLINGSENTRY eee', source: 2-10.png)
+[2026-05-02 00:15:27]   Replaced: 423212.png (score: 1.080, text: 'AUTOCANNONSENTRY', source: 3-1.png)
+[2026-05-02 00:15:27]   Skipped existing: 423213.png (candidate score 0.989 <= saved score 0.989)
+[2026-05-02 00:15:27]   Replaced: 42331.png (score: 1.080, text: 'ROCKETSENTRY', source: 1-0.png)
+[2026-05-02 00:15:27]   Replaced: 42332.png (score: 1.080, text: 'MACHINEGUNSENTRY', source: 3-1.png)
+[2026-05-02 00:15:27]   Replaced: 42334.png (score: 1.080, text: 'MORTARSENTRY', source: 3-2.png)
+[2026-05-02 00:15:27]   Replaced: 42341.png (score: 0.903, text: 'GASMORTARSENTDYV', source: 4-1.png)
+[2026-05-02 00:15:27]   Replaced: 423423.png (score: 1.080, text: 'LASERSENTRY', source: 3-1.png)
+[2026-05-02 00:15:27]   Replaced: 42343.png (score: 1.080, text: 'EMSMORTARSENTRY', source: 3-2.png)
+[2026-05-02 00:15:27]   Skipped existing: 42344.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 43213.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 43222.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Replaced: 432232.png (score: 1.080, text: 'C4PACK', source: rd-sbk2.png)
+[2026-05-02 00:15:27]   Skipped existing: 434123.png (candidate score 0.880 <= saved score 0.880)
+[2026-05-02 00:15:27]   Skipped existing: 43413.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 434211.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 434213.png (candidate score 0.955 <= saved score 0.955)
+[2026-05-02 00:15:27]   Skipped existing: 44121.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 44123.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 44124.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 441313.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 44213.png (candidate score 1.040 <= saved score 1.040)
+[2026-05-02 00:15:27]   Skipped existing: 44243.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 44244.png (candidate score 1.080 <= saved score 1.080)
+[2026-05-02 00:15:27]   Skipped existing: 443422.png (candidate score 0.824 <= saved score 0.824)
+[2026-05-02 00:15:27]   [OK] Saved 0 new icon(s), replaced 13 icon(s).
+[2026-05-02 00:15:27] 
 
 === Processing Complete ===
-[2026-05-01 18:59:27] Icon extraction summary: Found 88/105 unique icons.
-[2026-05-01 18:59:27] Found 17 missing icons. Writing details to 'missing_icons.log'.
-[2026-05-01 18:59:27] 
-=== Pipeline Finished in 56.62s ===
+[2026-05-02 00:15:27] Icon extraction summary: Found 85/105 unique icons.
+[2026-05-02 00:15:27] Found 20 missing icons. Writing details to 'missing_icons.log'.
+[2026-05-02 00:15:27] 
+=== Pipeline Finished in 42.74s ===
