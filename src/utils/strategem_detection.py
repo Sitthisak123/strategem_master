@@ -125,51 +125,53 @@ def preprocess_contours_old(img):
 def preprocess_contours_new(img):
     # ==========================================
     # 🌟 1. Upscale Resolution (เพิ่มความละเอียด 2 เท่า)
-    # ทำให้เส้นขอบบางๆ หนาขึ้น Canny จะจับเส้นได้คมและไม่ขาดง่าย
     # ==========================================
     scale_factor = 2.0
     high_res = cv2.resize(img, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
     
     # ==========================================
-    # 🌟 2. แยก Channel แสงและสี (L, S, V)
+    # 🌟 2. ดึงมิติแสงและสี + รวมร่างแบบสมดุล
     # ==========================================
     lab = cv2.cvtColor(high_res, cv2.COLOR_BGR2LAB)
     hsv = cv2.cvtColor(high_res, cv2.COLOR_BGR2HSV)
     
-    l_channel = lab[:, :, 0] # มิติความสว่าง
-    s_channel = hsv[:, :, 1] # มิติความสดของสี (กรอบเหลือง/เขียว จะลอยออกมา)
-    v_channel = hsv[:, :, 2] # มิติความเข้ม
+    l_channel = lab[:, :, 0] # มิติความสว่าง (ดีสำหรับสัญลักษณ์ข้างใน)
+    s_channel = hsv[:, :, 1] # มิติความสดสี (ดีสำหรับกรอบไอคอน)
     
-    # อัด Contrast ให้หนักขึ้นด้วย CLAHE
-    clahe = cv2.createCLAHE(clipLimit=2.5, tileGridSize=(8, 8))
-    l_eq = clahe.apply(l_channel)
-    s_eq = clahe.apply(s_channel)
-    v_eq = clahe.apply(v_channel)
+    # ผสมแสง 80% และสี 20% (ดึงขอบให้ชัดโดยไม่ดึง Noise สีมาเยอะเกิน)
+    blended = cv2.addWeighted(l_channel, 0.8, s_channel, 0.2, 0)
     
     # ==========================================
-    # 🌟 3. Multi-Channel Edge Fusion (หาขอบจากทุกมิติ)
+    # 🌟 3. อัด Contrast เบาๆ + ลบ Noise อัจฉริยะ (สำคัญมาก!)
     # ==========================================
-    # ดึงขอบแบบ Dynamic (เพิ่ม sigma=0.33 เพื่อให้จับขอบได้กว้างขึ้น)
-    edges_l = auto_canny(l_eq, sigma=0.33)
-    edges_s = auto_canny(s_eq, sigma=0.33)
-    edges_v = auto_canny(v_eq, sigma=0.33)
+    # ลด clipLimit ลงมาเหลือ 1.5 ไม่ให้ขุด Noise ฉากหลังมามากเกินไป
+    clahe = cv2.createCLAHE(clipLimit=1.5, tileGridSize=(8, 8))
+    balanced = clahe.apply(blended)
     
-    # นำเส้นขอบจากทั้ง 3 มิติมาซ้อนทับกัน (OR)
-    # ถ้าเส้นขอบหายไปในมิติของแสง มิติของสีจะช่วยเติมให้เส้นเต็ม!
-    combined_edges = cv2.bitwise_or(edges_l, edges_s)
-    combined_edges = cv2.bitwise_or(combined_edges, edges_v)
+    # 🔥 ทีเด็ด: Bilateral Filter (เบลอพื้นผิวให้เรียบ แต่รักษาความคมของเส้นขอบไอคอนไว้)
+    smoothed = cv2.bilateralFilter(balanced, d=9, sigmaColor=75, sigmaSpace=75)
     
     # ==========================================
-    # 🌟 4. Morphological Closing + Downscale
+    # 🌟 4. หาเส้นขอบ Canny + ถมรอยแหว่ง
     # ==========================================
-    # เนื่องจากภาพขยาย 2 เท่า ต้องใช้ Kernel ถมรอยรั่วที่ใหญ่ขึ้น (5x5)
+    # Auto-Canny แบบปรับจูนให้รับกับภาพที่ผ่าน Bilateral Filter แล้ว
+    median = float(np.median(smoothed))
+    sigma = 0.25
+    lower = int(max(0, (1.0 - sigma) * median))
+    upper = int(min(255, (1.0 + sigma) * median))
+    if upper <= lower:
+        lower, upper = 30, 90
+        
+    edges = cv2.Canny(smoothed, lower, upper)
+    
+    # ถมเส้นขอบให้เชื่อมต่อกัน
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-    closed_edges = cv2.morphologyEx(combined_edges, cv2.MORPH_CLOSE, kernel)
+    closed_edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
     
-    # ย่อภาพกลับไปขนาดปกติเพื่อส่งไปหาพิกัดกล่อง (ใช้ INTER_AREA เพื่อรักษาเส้นขอบ)
+    # ==========================================
+    # 🌟 5. ย่อภาพกลับเป็นขนาดเดิม
+    # ==========================================
     final_edges = cv2.resize(closed_edges, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_AREA)
-    
-    # ตัดขุย Noise สีเทาออก ให้เหลือแค่ขาว-ดำ (Binary)
     _, final_edges = cv2.threshold(final_edges, 50, 255, cv2.THRESH_BINARY)
     
     return final_edges
