@@ -123,57 +123,40 @@ def preprocess_contours_old(img):
 
 
 def preprocess_contours_new(img):
-    # ==========================================
-    # 🌟 1. Upscale Resolution (เพิ่มความละเอียด 2 เท่า)
-    # ==========================================
     scale_factor = 2.0
     high_res = cv2.resize(img, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
-    
-    # ==========================================
-    # 🌟 2. ดึงมิติแสงและสี + รวมร่างแบบสมดุล
-    # ==========================================
+
     lab = cv2.cvtColor(high_res, cv2.COLOR_BGR2LAB)
     hsv = cv2.cvtColor(high_res, cv2.COLOR_BGR2HSV)
-    
-    l_channel = lab[:, :, 0] # มิติความสว่าง (ดีสำหรับสัญลักษณ์ข้างใน)
-    s_channel = hsv[:, :, 1] # มิติความสดสี (ดีสำหรับกรอบไอคอน)
-    
-    # ผสมแสง 80% และสี 20% (ดึงขอบให้ชัดโดยไม่ดึง Noise สีมาเยอะเกิน)
-    blended = cv2.addWeighted(l_channel, 0.8, s_channel, 0.2, 0)
-    
-    # ==========================================
-    # 🌟 3. อัด Contrast เบาๆ + ลบ Noise อัจฉริยะ (สำคัญมาก!)
-    # ==========================================
-    # ลด clipLimit ลงมาเหลือ 1.5 ไม่ให้ขุด Noise ฉากหลังมามากเกินไป
-    clahe = cv2.createCLAHE(clipLimit=1.5, tileGridSize=(8, 8))
+
+    l_channel = lab[:, :, 0]
+    s_channel = hsv[:, :, 1]
+
+    blended = cv2.addWeighted(l_channel, 0.50, s_channel, 0.50, 0)
+
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     balanced = clahe.apply(blended)
-    
-    # 🔥 ทีเด็ด: Bilateral Filter (เบลอพื้นผิวให้เรียบ แต่รักษาความคมของเส้นขอบไอคอนไว้)
-    smoothed = cv2.bilateralFilter(balanced, d=9, sigmaColor=75, sigmaSpace=75)
-    
-    # ==========================================
-    # 🌟 4. หาเส้นขอบ Canny + ถมรอยแหว่ง
-    # ==========================================
-    # Auto-Canny แบบปรับจูนให้รับกับภาพที่ผ่าน Bilateral Filter แล้ว
+
+    smoothed = cv2.bilateralFilter(balanced, d=7, sigmaColor=50, sigmaSpace=50)
+
     median = float(np.median(smoothed))
-    sigma = 0.25
+    sigma = 0.20
     lower = int(max(0, (1.0 - sigma) * median))
     upper = int(min(255, (1.0 + sigma) * median))
     if upper <= lower:
-        lower, upper = 30, 90
-        
+        lower, upper = 20, 80
+
     edges = cv2.Canny(smoothed, lower, upper)
-    
-    # ถมเส้นขอบให้เชื่อมต่อกัน
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-    closed_edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
-    
-    # ==========================================
-    # 🌟 5. ย่อภาพกลับเป็นขนาดเดิม
-    # ==========================================
-    final_edges = cv2.resize(closed_edges, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_AREA)
-    _, final_edges = cv2.threshold(final_edges, 50, 255, cv2.THRESH_BINARY)
-    
+
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    closed_edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel, iterations=1)
+    closed_edges = cv2.dilate(closed_edges, kernel, iterations=1)
+
+    final_edges = cv2.resize(
+        closed_edges,
+        (img.shape[1], img.shape[0]),
+        interpolation=cv2.INTER_NEAREST
+    )
     return final_edges
 
 
