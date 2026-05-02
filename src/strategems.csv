@@ -54,10 +54,10 @@ Index,OriginalName,Name,Code
 53,MD-I4 Incendiary Mines,Incendiary Mines,4114
 54,MD-17 Anti-Tank Mines,Anti-Tank Mines,4122
 55,FX-12 Shield Generator Relay,Shield Generator Relay,441313
-56,E/MG-101 HMG Emplacement,HMG,421331
+56,E/MG-101 HMG Emplacement,HMG Emplacement,421331
 57,E/GL-21 Grenadier Battlement,Grenadier Battlement,43413
 58,MD-8 Gas Mines,Gas Mines,4113
-59,E/AT-12 Anti-Tank Emplacement,Anti-Tank,421333
+59,E/AT-12 Anti-Tank Emplacement,Anti-Tank Emplacement,421333
 60,A/MG-43 Machine Gun Sentry,Machine Gun Sentry,42332
 61,A/G-16 Gatling Sentry,Gatling Sentry,4231
 62,A/AC-8 Autocannon Sentry,Autocannon Sentry,423212
@@ -70,7 +70,7 @@ Index,OriginalName,Name,Code
 69,A/GM-17 Gas Mortar Sentry,Gas Mortar Sentry,42341
 70,B-1 Supply Pack,Supply Pack,414224
 71,LIFT-850 Jump Pack,Jump Pack,42242
-72,SH-20 Ballistic Shield Backpack,Ballistic Shield,414421
+72,SH-20 Ballistic Shield Backpack,Ballistic Shield Backpack,414421
 73,AX/AR-23 Guard Dog,Guard Dog,421234
 74,AX/LAS-5 Rover,Rover,421233
 75,SH-32 Shield Generator Pack,Shield Generator Pack,421313
@@ -81,12 +81,12 @@ Index,OriginalName,Name,Code
 80,LIFT-860 Hover Pack,Hover Pack,422413
 81,AX/TX-13 Dog Breath,Dog Breath,421232
 82,LIFT-182 Warp Pack,Warp Pack,413413
-83,EXO-45 Patriot Exosuit,Patriot,1432144
-84,EXO-49 Emancipator Exosuit,Emancipator,1432142
+83,EXO-45 Patriot Exosuit,Patriot Exosuit,1432144
+84,EXO-49 Emancipator Exosuit,Emancipator Exosuit,1432142
 85,M-102 Fast Recon Vehicle,Fast Recon Vehicle,1434342
 86,TD-220 Bastion MK XVI,Bastion MK XVI,143414242
-87,EXO-55 Breakthrough Exosuit,Breakthrough,1431342
-88,EXO-51 Lumberer Exosuit,Lumberer,1432312
+87,EXO-55 Breakthrough Exosuit,Breakthrough Exosuit,1431342
+88,EXO-51 Lumberer Exosuit,Lumberer Exosuit,1432312
 89,Reinforce,Reinforce,24312
 90,Resupply,Resupply,4423
 91,SoS Beacon,SoS Beacon,2432

@@ -11,9 +11,16 @@ import cv2
 import numpy as np
 import pytesseract
 import requests
-from bs4 import BeautifulSoup
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
+
+from bs4 import BeautifulSoup
 from wiki_browser_fallback import fetch_strategems_via_browser
+from src.utils.screen_regions import get_hud_region
+from src.utils.strategem_detection import detect_icon_boxes_new
 
 
 WIKI_URL = "https://helldivers.wiki.gg/wiki/Stratagems"
@@ -487,8 +494,8 @@ def fetch_strategem_data(logger):
 
 
 def extract_and_save_icons(logger, all_strategems):
-    """OCR and extract icons, then log missing ones."""
-    logger.info("\n[*] Starting icon extraction process...")
+    """OCR and extract icons, then log missing ones using Advanced HUD Detection."""
+    logger.info("\n[*] Starting icon extraction process with Advanced HUD Detection...")
     if not all_strategems:
         logger.warning("[!] Cannot extract icons because strategem data is empty.")
         return
@@ -524,46 +531,48 @@ def extract_and_save_icons(logger, all_strategems):
         if frame is None:
             continue
 
-        frame_height, frame_width = frame.shape[:2]
-        hud_top, hud_bottom = 30, min(frame_height, 800)
-        hud_left, hud_right = 30, min(frame_width, 600)
-        if hud_top >= hud_bottom or hud_left >= hud_right:
-            logger.warning(f"[!] HUD crop is empty for '{img_file}'. Skipping file.")
+        # ==========================================
+        # 🌟 อัปเกรด: ใช้ระบบตรวจจับ HUD ขั้นสูง
+        # ==========================================
+        try:
+            from src.utils.screen_regions import get_hud_region
+            from src.utils.strategem_detection import detect_icon_boxes_new
+        except ImportError:
+            from screen_regions import get_hud_region
+            from strategem_detection import detect_icon_boxes_new
+
+        # 1. ครอปเฉพาะ HUD (ตัดขยะบนหน้าจอทิ้ง)
+        hud, hud_region = get_hud_region(frame)
+        
+        # 2. ค้นหาไอคอนด้วยระบบ Grid Alignment + Smart Top-Left Normalization
+        icon_boxes = detect_icon_boxes_new(hud, hud_region.scale)
+
+        if not icon_boxes:
+            logger.warning(f"  [!] No icons detected in '{img_file}'")
             continue
 
-        hud = frame[hud_top:hud_bottom, hud_left:hud_right]
-        gray = cv2.cvtColor(hud, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(cv2.GaussianBlur(gray, (5, 5), 0), 50, 150)
-        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        candidate_boxes = []
-        for contour in contours:
-            x, y, width, height = cv2.boundingRect(contour)
-            if (
-                0.65 < (width / float(height)) < 1.35
-                and width * height > 1800
-                and x < hud.shape[1] * 0.3
-                and MIN_ICON_SIZE <= width <= MAX_ICON_SIZE
-                and MIN_ICON_SIZE <= height <= MAX_ICON_SIZE
-            ):
-                candidate_boxes.append((y, x, width, height))
-
-        candidate_boxes.sort(key=lambda box: (box[0], box[1]))
-        for box_index, (y, x, width, height) in enumerate(candidate_boxes):
+        # icon_boxes ส่งค่าพิกัดที่ดัดทรงแล้วกลับมา
+        for box_index, (y, x, width, height, icon_gray) in enumerate(icon_boxes):
             if box_index < SKIP_FIRST_ICON_BOXES:
                 logger.info(f"  Skipped first/default icon slot {box_index + 1}")
                 continue
 
-            y_start = max(0, y - ICON_PADDING)
-            x_start = max(0, x - ICON_PADDING)
-            y_end = min(hud.shape[0], y + height + ICON_PADDING)
-            x_end = min(hud.shape[1], x + width + ICON_PADDING)
-            icon_img = hud[y_start:y_end, x_start:x_end]
+            # 3. ตัดภาพไอคอน (ความกว้าง/สูง ถูก Normalization มาแล้วอย่างสมบูรณ์แบบ)
+            icon_img = hud[y:y + height, x:x + width]
 
+            # 4. กำหนดจุดสำหรับดึง Text (OCR) 
+            # อิงพิกัด x + width ซึ่งตอนนี้มั่นใจได้ว่าเป็นขอบขวาของตัวไอคอนจริงๆ 
             text_start = min(hud.shape[1] - 1, x + width + TEXT_GAP_AFTER_ICON)
             text_end = min(hud.shape[1], text_start + TEXT_ROI_WIDTH)
+            
+            # ป้องกัน Error กรณีกล่องอยู่ชิดขอบจอเกินไป
+            if text_start >= text_end or text_start >= hud.shape[1] or text_end <= 0:
+                 continue
+                 
             name_roi = hud[y:y + height, text_start:text_end]
             top_half = name_roi[:name_roi.shape[0] // 2, :]
+            
+            # 5. วิเคราะห์ OCR เพื่อหาชื่อ Stratagem
             strategem_info, raw_text, score = find_strategem_by_ocr(top_half, all_strategems)
 
             if strategem_info:
@@ -583,6 +592,9 @@ def extract_and_save_icons(logger, all_strategems):
             else:
                 logger.info(f"  Skipped OCR text: '{raw_text}' (best score: {score:.3f})")
 
+    # ==========================================
+    # ส่วนบันทึกและสรุปผล (คงไว้ตามเดิม)
+    # ==========================================
     icons_saved_count = 0
     icons_replaced_count = 0
     for stg_code, item in sorted(best_candidates.items()):

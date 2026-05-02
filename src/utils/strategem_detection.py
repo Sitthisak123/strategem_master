@@ -376,38 +376,44 @@ def _detect_icon_boxes(
         boxes = max(clusters, key=len)
 
     # ==========================================
-    # 🌟 4. Center-Anchored Normalization (รองรับไอคอนเอียง/กล่องบวม)
+    # 🌟 4. Smart Top-Left Normalization (อุดช่องโหว่กรณี "ทุกช่องมีเลขห้อยท้ายหมด")
     # ==========================================
     if len(boxes) > 0:
         boxes = sorted(boxes, key=lambda b: b["y"])
         
-        # หาค่ากลางของกล่องที่ปกติดี
         all_w = [b["w"] for b in boxes]
         all_h = [b["h"] for b in boxes]
-        median_w = int(np.median(all_w))
-        median_h = int(np.median(all_h))
         
-        square_size = int((median_w + median_h) / 2) 
+        # 1. หาความกว้างที่เล็กที่สุด (ถ้ามีสักช่องที่ไม่มีเลขห้อยท้าย นี่คือขนาดแท้จริง!)
+        min_w = min(all_w)
+        
+        # 2. คำนวณระยะห่างระหว่างช่อง (Grid Step) เพื่อสร้างไม้บรรทัด
+        gaps = [boxes[i]["y"] - boxes[i-1]["y"] for i in range(1, len(boxes))]
+        valid_gaps = [g for g in gaps if g < np.median(all_h) * 1.5]
+        
+        if valid_gaps:
+            robust_step = np.median(valid_gaps)
+            # 3. เช็คจับผิด: ถ้าระยะความกว้างที่เล็กที่สุด ดันใหญ่จนเกือบชนช่องถัดไป (ratio > 0.95)
+            # นั่นแปลว่า "พกของที่มีเลขห้อยท้ายมาทั้ง 4 ช่องเลยนี่นา!"
+            if (min_w / robust_step) > 0.95:
+                # โดนจับได้แล้ว! บังคับลดขนาดกลับไปเป็น 88% ของระยะช่อง (ขนาดมาตรฐานเกม)
+                square_size = int(robust_step * 0.88)
+            else:
+                # ถ้ารอดแปลว่ามีช่องปกติอยู่ ใช้ขนาดของช่องปกตินั้นได้เลย
+                square_size = min_w
+        else:
+            square_size = min_w
 
         for b in boxes:
-            # 1. หา "จุดศูนย์กลาง" ของกล่องเดิม (ไม่ว่ามันจะบวมแค่ไหน ศูนย์กลางจะยังอยู่ตรงกลางไอคอนเสมอ)
-            center_x = b["x"] + (b["w"] / 2.0)
-            center_y = b["y"] + (b["h"] / 2.0)
-            
-            # 2. คำนวณ x, y มุมซ้ายบนใหม่ โดยกางออกจากจุดศูนย์กลาง
-            b["x"] = int(center_x - (square_size / 2.0))
-            b["y"] = int(center_y - (square_size / 2.0))
-            
-            # 3. บังคับความกว้าง/สูงให้เป็นจัตุรัสเป๊ะๆ
+            # ยึดมุมซ้ายบนเป็นสมอเรือ แล้วบังคับสวมขนาดที่ถูกต้องทับลงไป
             b["w"] = square_size
             b["h"] = square_size
             
-        print(f"\n--- DEBUG: Center-Anchored Normalization Active ---")
+        print(f"\n--- DEBUG: Smart Top-Left Normalization Active ---")
         print(f"    Forced Square Size: {square_size}x{square_size}")
 
     # ==========================================
 
-    # ==========================================
     final_result = []
     for b in boxes:
         icon_region = hud_img[b["y"]:b["y"]+b["h"], b["x"]:b["x"]+b["w"]]
