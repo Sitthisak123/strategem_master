@@ -123,7 +123,56 @@ def preprocess_contours_old(img):
 
 
 def preprocess_contours_new(img):
-    return close_edges(auto_canny(normalize_lightness(img)))
+    # ==========================================
+    # 🌟 1. Upscale Resolution (เพิ่มความละเอียด 2 เท่า)
+    # ทำให้เส้นขอบบางๆ หนาขึ้น Canny จะจับเส้นได้คมและไม่ขาดง่าย
+    # ==========================================
+    scale_factor = 2.0
+    high_res = cv2.resize(img, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
+    
+    # ==========================================
+    # 🌟 2. แยก Channel แสงและสี (L, S, V)
+    # ==========================================
+    lab = cv2.cvtColor(high_res, cv2.COLOR_BGR2LAB)
+    hsv = cv2.cvtColor(high_res, cv2.COLOR_BGR2HSV)
+    
+    l_channel = lab[:, :, 0] # มิติความสว่าง
+    s_channel = hsv[:, :, 1] # มิติความสดของสี (กรอบเหลือง/เขียว จะลอยออกมา)
+    v_channel = hsv[:, :, 2] # มิติความเข้ม
+    
+    # อัด Contrast ให้หนักขึ้นด้วย CLAHE
+    clahe = cv2.createCLAHE(clipLimit=2.5, tileGridSize=(8, 8))
+    l_eq = clahe.apply(l_channel)
+    s_eq = clahe.apply(s_channel)
+    v_eq = clahe.apply(v_channel)
+    
+    # ==========================================
+    # 🌟 3. Multi-Channel Edge Fusion (หาขอบจากทุกมิติ)
+    # ==========================================
+    # ดึงขอบแบบ Dynamic (เพิ่ม sigma=0.33 เพื่อให้จับขอบได้กว้างขึ้น)
+    edges_l = auto_canny(l_eq, sigma=0.33)
+    edges_s = auto_canny(s_eq, sigma=0.33)
+    edges_v = auto_canny(v_eq, sigma=0.33)
+    
+    # นำเส้นขอบจากทั้ง 3 มิติมาซ้อนทับกัน (OR)
+    # ถ้าเส้นขอบหายไปในมิติของแสง มิติของสีจะช่วยเติมให้เส้นเต็ม!
+    combined_edges = cv2.bitwise_or(edges_l, edges_s)
+    combined_edges = cv2.bitwise_or(combined_edges, edges_v)
+    
+    # ==========================================
+    # 🌟 4. Morphological Closing + Downscale
+    # ==========================================
+    # เนื่องจากภาพขยาย 2 เท่า ต้องใช้ Kernel ถมรอยรั่วที่ใหญ่ขึ้น (5x5)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    closed_edges = cv2.morphologyEx(combined_edges, cv2.MORPH_CLOSE, kernel)
+    
+    # ย่อภาพกลับไปขนาดปกติเพื่อส่งไปหาพิกัดกล่อง (ใช้ INTER_AREA เพื่อรักษาเส้นขอบ)
+    final_edges = cv2.resize(closed_edges, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_AREA)
+    
+    # ตัดขุย Noise สีเทาออก ให้เหลือแค่ขาว-ดำ (Binary)
+    _, final_edges = cv2.threshold(final_edges, 50, 255, cv2.THRESH_BINARY)
+    
+    return final_edges
 
 
 def old_edge_features(img):
@@ -232,74 +281,51 @@ def _detect_icon_boxes(
     max_icon_size,
     min_icon_area,
     icon_padding,
-    retrieval_mode, # ไม่ได้ใช้แล้ว แต่รับมาเพื่อให้ function signature ไม่พัง
+    retrieval_mode,
     max_x_ratio,
 ):
-    # 🌟 1. เปลี่ยนโหมดเป็น RETR_TREE เพื่อดึง "ลำดับชั้น (Hierarchy)"
+    # 🌟 1. หา Contour (ดึงลำดับชั้นด้วย RETR_TREE เผื่อซ่อนในพุ่มไม้)
     cnts, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     
     candidates = []
     max_icon_x = hud_img.shape[1] * max_x_ratio
 
-    # เช็คก่อนว่ามีกล่องไหม
     if hierarchy is not None:
-        # วนลูปจับคู่พิกัดกล่อง (c) กับสถานะลำดับชั้น (h)
-        # โครงสร้าง h คือ [Next, Previous, First_Child, Parent]
         for c, h in zip(cnts, hierarchy[0]):
             x, y, w, box_h = cv2.boundingRect(c)
             aspect = w / float(box_h) if box_h != 0 else 0
             area = w * box_h
 
-            # ข้ามกล่องที่อยู่ผิดโซน (ไม่ได้อยู่ฝั่งซ้ายของจอ)
             if x >= max_icon_x:
                 continue
 
-            child_idx = h[2]  # index ของลูกตัวแรก (ถ้ามีค่า != -1 แปลว่านี่คือกล่องแม่)
-            parent_idx = h[3] # index ของกล่องแม่ (ถ้ามีค่า != -1 แปลว่านี่คือกล่องลูก)
+            child_idx = h[2]  
+            parent_idx = h[3] 
 
-            # 🌟 2. ลอจิกเจาะกล่อง: เลือกเฉพาะ "กล่องที่ใช่"
-            
-            # เงื่อนไขกล่องปกติ/กล่องแม่ที่ขนาดเป๊ะ
             is_valid_size = (0.7 < aspect < 1.3) and (min_icon_area < area) and (min_icon_size <= w <= max_icon_size)
             
-            # ถ้าขนาดมันได้มาตรฐาน ก็ถือว่าเป็นผู้ท้าชิงได้เลย
             if is_valid_size:
                 candidates.append((x, y, w, box_h, area))
-            
-            # 🌟 3. ทีเด็ด: เจอกล่องยักษ์ที่ขนาดไม่ผ่าน แต่มีกล่องลูกอยู่ข้างใน!
             elif child_idx != -1: 
-                # (สมมติว่าเป็นกล่องพุ่มไม้ยักษ์ไซส์ 176)
-                # เราไม่เอากล่องแม่ แต่เรา "แอบดู" ว่าลูกของมันล่ะ ขนาดพอดี 67x67 ไหม?
-                # หมายเหตุ: ในทางปฏิบัติ OpenCV จะคืนค่าลูกๆ ทั้งหมดมาในลูปนี้อยู่แล้ว 
-                # และลูกๆ เหล่านั้นจะถูกจับเข้าเงื่อนไข is_valid_size ด้านบนเองโดยอัตโนมัติ!
-                # (แปลว่าเราไม่ต้องเขียนโค้ดมุดเข้าไปเอาลูกเลย RETR_TREE ทำหน้าที่ขุดลูกออกมาให้หมดแล้ว)
                 pass 
 
     expected_area = ((min_icon_size + max_icon_size) / 2.0) ** 2
 
-    # เก็บเฉพาะพิกัดกล่อง โดยใช้ Smart NMS 
-    # (ตอนนี้จะได้เฉพาะกล่องลูกขนาดเป๊ะๆ 67x67 มาแข่งกันเท่านั้น กล่องแม่ยักษ์จะโดนคัดออกไปตั้งแต่ด่านแรกแล้ว)
+    # 🌟 2. ลบกล่องซ้อนทับ (Smart NMS)
     boxes = []
     for x, y, w, box_h, _area in remove_overlapping_boxes(candidates, expected_area):
         y_start = max(0, y - icon_padding)
         x_start = max(0, x - icon_padding)
-        y_end = min(hud_img.shape[0], y + box_h + icon_padding)
-        x_end = min(hud_img.shape[1], x + w + icon_padding)
         
         boxes.append({
             "y": y_start,
             "x": x_start,
-            "w": x_end - x_start,
-            "h": y_end - y_start
+            "w": w + (icon_padding * 2),
+            "h": box_h + (icon_padding * 2)
         })
 
-    # =============== DEBUG LOG: เริ่มต้น ===============
-    print(f"\n--- DEBUG: Canny เจอทั้งหมด {len(boxes)} กล่อง ---")
-    for i, b in enumerate(boxes):
-        print(f"  Box {i+1}: y={b['y']}, x={b['x']}, w={b['w']}, h={b['h']}")
-
     # ==========================================
-    # 🛡️ 3 RULES PIPELINE
+    # 🌟 3. กรองด้วย 3 กฎเหล็ก
     # ==========================================
     if len(boxes) >= 2:
         # --- Rule 1: Similar Size Rule ---
@@ -307,15 +333,12 @@ def _detect_icon_boxes(
         median_h = np.median([b["h"] for b in boxes])
         size_tolerance = 0.30  
         
-        print(f"\n--- DEBUG: [Rule 1] เทียบขนาด (Median W:{median_w:.1f}, H:{median_h:.1f}) ---")
         size_filtered = []
         for b in boxes:
             w_diff = abs(b["w"] - median_w) / median_w
             h_diff = abs(b["h"] - median_h) / median_h
             if w_diff <= size_tolerance and h_diff <= size_tolerance:
                 size_filtered.append(b)
-            else:
-                print(f"  [ตกอบ Rule 1] กล่องที่ y={b['y']} ขนาดเพี้ยน (w_diff={w_diff:.2f}, h_diff={h_diff:.2f})")
         boxes = size_filtered
 
     if len(boxes) >= 2:
@@ -324,15 +347,12 @@ def _detect_icon_boxes(
         median_right = np.median([b["x"] + b["w"] for b in boxes])
         alignment_tolerance = 12
 
-        print(f"\n--- DEBUG: [Rule 2] เทียบแนวตั้ง (Median Left:{median_left:.1f}, Right:{median_right:.1f}) ---")
         aligned_boxes = []
         for b in boxes:
             is_left_aligned = abs(b["x"] - median_left) <= alignment_tolerance
             is_right_aligned = abs((b["x"] + b["w"]) - median_right) <= alignment_tolerance
             if is_left_aligned or is_right_aligned:
                 aligned_boxes.append(b)
-            else:
-                print(f"  [ตกขอบ Rule 2] กล่องที่ y={b['y']} เบี้ยว! (x={b['x']}, right={b['x']+b['w']})")
         boxes = aligned_boxes
 
     if len(boxes) >= 2:
@@ -341,52 +361,49 @@ def _detect_icon_boxes(
         median_h = np.median([b["h"] for b in boxes])
         max_gap = median_h * 2.5 
         
-        print(f"\n--- DEBUG: [Rule 3] แบ่งกลุ่ม (Max Gap:{max_gap:.1f}) ---")
         clusters = []
         current_cluster = [boxes[0]]
-        
         for i in range(1, len(boxes)):
             dist = boxes[i]["y"] - boxes[i-1]["y"]
             if dist <= max_gap:
                 current_cluster.append(boxes[i])
             else:
                 clusters.append(current_cluster)
-                print(f"  [โดนหั่นกลุ่ม] ช่องว่างระหว่าง y={boxes[i-1]['y']} กับ y={boxes[i]['y']} คือ {dist}")
                 current_cluster = [boxes[i]]
         clusters.append(current_cluster)
-        
-        best_cluster = max(clusters, key=len)
-        print(f"  [สรุป] มีทั้งหมด {len(clusters)} กลุ่ม เลือกกลุ่มที่มีขนาด {len(best_cluster)} กล่อง")
-        boxes = best_cluster
+        boxes = max(clusters, key=len)
 
     # ==========================================
-    # 🌟 อัปเกรดท่าไม้ตาย: จัดทรงกล่อง + จัดแถว Y (Grid Alignment)
+    # 🌟 4. Center-Anchored Normalization (รองรับไอคอนเอียง/กล่องบวม)
     # ==========================================
-    boxes = sorted(boxes, key=lambda b: b["y"]) # เรียงจากบนลงล่างก่อน
-    
-    final_median_x = int(np.median([b["x"] for b in boxes]))
-    # final_median_w = int(np.median([b["w"] for b in boxes]))
-    final_median_h = int(np.median([b["h"] for b in boxes]))
-    
-    # คำนวณระยะห่างระหว่างกล่อง (Step) ที่ควรจะเป็น
-    if len(boxes) >= 2:
-        gaps = [boxes[i]["y"] - boxes[i-1]["y"] for i in range(1, len(boxes))]
-        median_step = int(np.median(gaps))
+    if len(boxes) > 0:
+        boxes = sorted(boxes, key=lambda b: b["y"])
         
-        # ปรับตำแหน่ง Y ของทุกกล่องให้ห่างเท่าๆ กัน โดยยึดกล่องแรกเป็นหลัก
-        start_y = boxes[0]["y"]
-        for i, b in enumerate(boxes):
-            b["y"] = start_y + (i * median_step)
-            b["x"] = final_median_x
-            b["w"] = final_median_h
-            b["h"] = final_median_h
-        print(f"\n--- DEBUG: จัดแถวใหม่ Step Y:{median_step}, X:{final_median_x}, W:{final_median_h}, H:{final_median_h} ---")
-    else:
-        # กรณีมีกล่องเดียว แค่ดัดขนาดเฉยๆ
+        # หาค่ากลางของกล่องที่ปกติดี
+        all_w = [b["w"] for b in boxes]
+        all_h = [b["h"] for b in boxes]
+        median_w = int(np.median(all_w))
+        median_h = int(np.median(all_h))
+        
+        square_size = int((median_w + median_h) / 2) 
+
         for b in boxes:
-            b["x"] = final_median_x
-            b["w"] = final_median_h
-            b["h"] = final_median_h
+            # 1. หา "จุดศูนย์กลาง" ของกล่องเดิม (ไม่ว่ามันจะบวมแค่ไหน ศูนย์กลางจะยังอยู่ตรงกลางไอคอนเสมอ)
+            center_x = b["x"] + (b["w"] / 2.0)
+            center_y = b["y"] + (b["h"] / 2.0)
+            
+            # 2. คำนวณ x, y มุมซ้ายบนใหม่ โดยกางออกจากจุดศูนย์กลาง
+            b["x"] = int(center_x - (square_size / 2.0))
+            b["y"] = int(center_y - (square_size / 2.0))
+            
+            # 3. บังคับความกว้าง/สูงให้เป็นจัตุรัสเป๊ะๆ
+            b["w"] = square_size
+            b["h"] = square_size
+            
+        print(f"\n--- DEBUG: Center-Anchored Normalization Active ---")
+        print(f"    Forced Square Size: {square_size}x{square_size}")
+
+    # ==========================================
 
     # ==========================================
     final_result = []
