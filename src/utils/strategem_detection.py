@@ -18,7 +18,7 @@ MATCH_THRESHOLD = 0.5 #this will be overridden by main.py for more strict matchi
 HYBRID_MATCH_MARGIN = 0.005 #this will be overridden by main.py for more strict matching
 PHASH_BITS = 256
 MIN_ICON_SIZE = 30
-MAX_ICON_SIZE = 150
+MAX_ICON_SIZE = 100
 MIN_ICON_AREA = 1800
 ICON_PADDING = 1
 DEFAULT_STRATEGEM_NAMES = {
@@ -232,37 +232,58 @@ def _detect_icon_boxes(
     max_icon_size,
     min_icon_area,
     icon_padding,
-    retrieval_mode,
+    retrieval_mode, # ไม่ได้ใช้แล้ว แต่รับมาเพื่อให้ function signature ไม่พัง
     max_x_ratio,
 ):
-    cnts, _ = cv2.findContours(edges, retrieval_mode, cv2.CHAIN_APPROX_SIMPLE)
+    # 🌟 1. เปลี่ยนโหมดเป็น RETR_TREE เพื่อดึง "ลำดับชั้น (Hierarchy)"
+    cnts, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    
     candidates = []
     max_icon_x = hud_img.shape[1] * max_x_ratio
 
-    for c in cnts:
-        x, y, w, h = cv2.boundingRect(c)
-        aspect = w / float(h) if h != 0 else 0
-        area = w * h
+    # เช็คก่อนว่ามีกล่องไหม
+    if hierarchy is not None:
+        # วนลูปจับคู่พิกัดกล่อง (c) กับสถานะลำดับชั้น (h)
+        # โครงสร้าง h คือ [Next, Previous, First_Child, Parent]
+        for c, h in zip(cnts, hierarchy[0]):
+            x, y, w, box_h = cv2.boundingRect(c)
+            aspect = w / float(box_h) if box_h != 0 else 0
+            area = w * box_h
 
-        if not (
-            0.7 < aspect < 1.3
-            and area > min_icon_area
-            and x < max_icon_x
-            and min_icon_size <= w <= max_icon_size
-            and min_icon_size <= h <= max_icon_size
-        ):
-            continue
+            # ข้ามกล่องที่อยู่ผิดโซน (ไม่ได้อยู่ฝั่งซ้ายของจอ)
+            if x >= max_icon_x:
+                continue
 
-        candidates.append((x, y, w, h, area))
+            child_idx = h[2]  # index ของลูกตัวแรก (ถ้ามีค่า != -1 แปลว่านี่คือกล่องแม่)
+            parent_idx = h[3] # index ของกล่องแม่ (ถ้ามีค่า != -1 แปลว่านี่คือกล่องลูก)
+
+            # 🌟 2. ลอจิกเจาะกล่อง: เลือกเฉพาะ "กล่องที่ใช่"
+            
+            # เงื่อนไขกล่องปกติ/กล่องแม่ที่ขนาดเป๊ะ
+            is_valid_size = (0.7 < aspect < 1.3) and (min_icon_area < area) and (min_icon_size <= w <= max_icon_size)
+            
+            # ถ้าขนาดมันได้มาตรฐาน ก็ถือว่าเป็นผู้ท้าชิงได้เลย
+            if is_valid_size:
+                candidates.append((x, y, w, box_h, area))
+            
+            # 🌟 3. ทีเด็ด: เจอกล่องยักษ์ที่ขนาดไม่ผ่าน แต่มีกล่องลูกอยู่ข้างใน!
+            elif child_idx != -1: 
+                # (สมมติว่าเป็นกล่องพุ่มไม้ยักษ์ไซส์ 176)
+                # เราไม่เอากล่องแม่ แต่เรา "แอบดู" ว่าลูกของมันล่ะ ขนาดพอดี 67x67 ไหม?
+                # หมายเหตุ: ในทางปฏิบัติ OpenCV จะคืนค่าลูกๆ ทั้งหมดมาในลูปนี้อยู่แล้ว 
+                # และลูกๆ เหล่านั้นจะถูกจับเข้าเงื่อนไข is_valid_size ด้านบนเองโดยอัตโนมัติ!
+                # (แปลว่าเราไม่ต้องเขียนโค้ดมุดเข้าไปเอาลูกเลย RETR_TREE ทำหน้าที่ขุดลูกออกมาให้หมดแล้ว)
+                pass 
 
     expected_area = ((min_icon_size + max_icon_size) / 2.0) ** 2
 
-    # เก็บเฉพาะพิกัดกล่อง โดยใช้ Smart NMS
+    # เก็บเฉพาะพิกัดกล่อง โดยใช้ Smart NMS 
+    # (ตอนนี้จะได้เฉพาะกล่องลูกขนาดเป๊ะๆ 67x67 มาแข่งกันเท่านั้น กล่องแม่ยักษ์จะโดนคัดออกไปตั้งแต่ด่านแรกแล้ว)
     boxes = []
-    for x, y, w, h, _area in remove_overlapping_boxes(candidates, expected_area):
+    for x, y, w, box_h, _area in remove_overlapping_boxes(candidates, expected_area):
         y_start = max(0, y - icon_padding)
         x_start = max(0, x - icon_padding)
-        y_end = min(hud_img.shape[0], y + h + icon_padding)
+        y_end = min(hud_img.shape[0], y + box_h + icon_padding)
         x_end = min(hud_img.shape[1], x + w + icon_padding)
         
         boxes.append({
@@ -337,6 +358,35 @@ def _detect_icon_boxes(
         best_cluster = max(clusters, key=len)
         print(f"  [สรุป] มีทั้งหมด {len(clusters)} กลุ่ม เลือกกลุ่มที่มีขนาด {len(best_cluster)} กล่อง")
         boxes = best_cluster
+
+    # ==========================================
+    # 🌟 อัปเกรดท่าไม้ตาย: จัดทรงกล่อง + จัดแถว Y (Grid Alignment)
+    # ==========================================
+    boxes = sorted(boxes, key=lambda b: b["y"]) # เรียงจากบนลงล่างก่อน
+    
+    final_median_x = int(np.median([b["x"] for b in boxes]))
+    # final_median_w = int(np.median([b["w"] for b in boxes]))
+    final_median_h = int(np.median([b["h"] for b in boxes]))
+    
+    # คำนวณระยะห่างระหว่างกล่อง (Step) ที่ควรจะเป็น
+    if len(boxes) >= 2:
+        gaps = [boxes[i]["y"] - boxes[i-1]["y"] for i in range(1, len(boxes))]
+        median_step = int(np.median(gaps))
+        
+        # ปรับตำแหน่ง Y ของทุกกล่องให้ห่างเท่าๆ กัน โดยยึดกล่องแรกเป็นหลัก
+        start_y = boxes[0]["y"]
+        for i, b in enumerate(boxes):
+            b["y"] = start_y + (i * median_step)
+            b["x"] = final_median_x
+            b["w"] = final_median_h
+            b["h"] = final_median_h
+        print(f"\n--- DEBUG: จัดแถวใหม่ Step Y:{median_step}, X:{final_median_x}, W:{final_median_h}, H:{final_median_h} ---")
+    else:
+        # กรณีมีกล่องเดียว แค่ดัดขนาดเฉยๆ
+        for b in boxes:
+            b["x"] = final_median_x
+            b["w"] = final_median_h
+            b["h"] = final_median_h
 
     # ==========================================
     final_result = []
