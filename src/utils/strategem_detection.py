@@ -14,7 +14,7 @@ HYBRID_EDGE_WEIGHT = 0.40
 HYBRID_GRAY_WEIGHT = 0.40
 HYBRID_HASH_WEIGHT = 0.20
 
-MATCH_THRESHOLD = 0.4
+MATCH_THRESHOLD = 0.5 #this will be overridden by main.py for more strict matching
 HYBRID_MATCH_MARGIN = 0.005 #this will be overridden by main.py for more strict matching
 PHASH_BITS = 256
 MIN_ICON_SIZE = 30
