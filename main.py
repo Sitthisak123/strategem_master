@@ -33,13 +33,6 @@ HOTKEY_DEBOUNCE_DELAY = 0.2  # 200ms debounce delay for hotkeys
 last_hotkey_time = {}
 pyautogui.PAUSE = 0.03  # Reduced delay between PyAutoGUI actions
 
-
-# Icon size constraints (in pixels)
-MIN_ICON_SIZE = 30
-MAX_ICON_SIZE = 150
-MIN_ICON_AREA = 1800
-ICON_PADDING = 1  # Padding in pixels around detected icons
-
 # hotkeys
 EXIT_KEYS = "ctrl+c"
 REINFORCE_KEYS = {
@@ -404,6 +397,8 @@ def check_hotkey(overlay_window, icon_overlay, event):
         return
     if handle_debug_overlay_hotkey(icon_overlay):
         return
+    if handle_save_hud_hotkey():
+        return
     if handle_quick_access_hotkeys():
         return
     if handle_slot_activation_hotkeys(event, overlay_window):
@@ -438,6 +433,32 @@ def check_required_assets():
     
     print("[OK] All required assets found.")
 
+def handle_save_hud_hotkey():
+    """Handles the ctrl+p hotkey to save the transformed HUD image."""
+    if keyboard.is_pressed('ctrl+\\'):
+        now = time.time()
+        if now - last_hotkey_time.get('save_hud', 0) > HOTKEY_DEBOUNCE_DELAY:
+            frame = capture_helldivers_window()
+            if frame is None:
+                screenshot = pyautogui.screenshot()
+                frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+            
+            from src.utils.screen_regions import get_hud_region
+            from src.utils.strategem_detection import preprocess_contours_new
+            
+            screenshot_hud, _ = get_hud_region(frame)
+            
+            # แปลงภาพ HUD ด้วยวิธีเดียวกับที่ AI ใช้หา Contour เป๊ะๆ
+            transformed_hud = preprocess_contours_new(screenshot_hud)
+            
+            os.makedirs("./output/debug", exist_ok=True)
+            save_path = "./output/debug/FINAL_TRANSFORMED_HUD.png"
+            cv2.imwrite(save_path, transformed_hud)
+            print(f"\n[Debug] ✅ Saved final transformed HUD to: {save_path}")
+            
+            last_hotkey_time['save_hud'] = now
+        return True
+    return False
 
 def main():
     # Run asset check first

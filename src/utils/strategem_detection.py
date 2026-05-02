@@ -134,17 +134,32 @@ def old_edge_features(img):
 
 
 def new_edge_features(img):
+    # 1. ปรับแสง UI ก่อน เพื่อไม่ให้ความมืดของฉากหลังมารบกวน
     normalized = normalize_lightness(img)
-    canny = auto_canny(normalized)
-    sobel = ensure_uint8(apply_scharr_operator(normalized))
-    _, sobel_binary = cv2.threshold(
-        sobel,
-        0,
-        255,
-        cv2.THRESH_BINARY + cv2.THRESH_OTSU,
-    )
-    return close_edges(cv2.bitwise_or(canny, sobel_binary))
+    
+    # 2. ส่งภาพที่ปรับแสงแล้ว ไปทำ Edge Detection สไตล์ PineTools
+    return pinetools_laplacian_edge(normalized)
 
+def pinetools_laplacian_edge(img):
+    if len(img.shape) == 3:
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    else:
+        gray = img.copy()
+    
+    laplacian_kernel = np.array([
+        [-1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1],
+        [-1, -1, 24, -1, -1],
+        [-1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1]
+    ], dtype=np.float32)
+    
+    lap_result = cv2.filter2D(gray, cv2.CV_64F, laplacian_kernel)
+    abs_lap = np.absolute(lap_result)
+    clipped_lap = np.clip(abs_lap, 0, 255).astype(np.uint8)
+    
+    # กลับสีเป็นพื้นขาว เส้นขอบดำ
+    return cv2.bitwise_not(clipped_lap)
 
 def ensure_uint8(img):
     if img.dtype == np.uint8:
@@ -240,9 +255,11 @@ def _detect_icon_boxes(
 
         candidates.append((x, y, w, h, area))
 
-    # เก็บเฉพาะพิกัดกล่องไว้ก่อน (ยังไม่ดึงภาพ เพื่อประหยัด CPU)
+    expected_area = ((min_icon_size + max_icon_size) / 2.0) ** 2
+
+    # เก็บเฉพาะพิกัดกล่อง โดยใช้ Smart NMS
     boxes = []
-    for x, y, w, h, _area in remove_overlapping_boxes(candidates):
+    for x, y, w, h, _area in remove_overlapping_boxes(candidates, expected_area):
         y_start = max(0, y - icon_padding)
         x_start = max(0, x - icon_padding)
         y_end = min(hud_img.shape[0], y + h + icon_padding)
@@ -255,45 +272,55 @@ def _detect_icon_boxes(
             "h": y_end - y_start
         })
 
+    # =============== DEBUG LOG: เริ่มต้น ===============
+    print(f"\n--- DEBUG: Canny เจอทั้งหมด {len(boxes)} กล่อง ---")
+    for i, b in enumerate(boxes):
+        print(f"  Box {i+1}: y={b['y']}, x={b['x']}, w={b['w']}, h={b['h']}")
+
     # ==========================================
-    # 🛡️ 3 RULES PIPELINE (กรอง Noise ขั้นเด็ดขาด)
+    # 🛡️ 3 RULES PIPELINE
     # ==========================================
     if len(boxes) >= 2:
-        # --- Rule 1: Similar Size Rule (ขนาดต้องใกล้เคียงกัน) ---
+        # --- Rule 1: Similar Size Rule ---
         median_w = np.median([b["w"] for b in boxes])
         median_h = np.median([b["h"] for b in boxes])
-        size_tolerance = 0.30  # ยอมรับความคลาดเคลื่อนของขนาดได้ 30%
-
+        size_tolerance = 0.30  
+        
+        print(f"\n--- DEBUG: [Rule 1] เทียบขนาด (Median W:{median_w:.1f}, H:{median_h:.1f}) ---")
         size_filtered = []
         for b in boxes:
-            if (abs(b["w"] - median_w) / median_w <= size_tolerance) and \
-               (abs(b["h"] - median_h) / median_h <= size_tolerance):
+            w_diff = abs(b["w"] - median_w) / median_w
+            h_diff = abs(b["h"] - median_h) / median_h
+            if w_diff <= size_tolerance and h_diff <= size_tolerance:
                 size_filtered.append(b)
+            else:
+                print(f"  [ตกอบ Rule 1] กล่องที่ y={b['y']} ขนาดเพี้ยน (w_diff={w_diff:.2f}, h_diff={h_diff:.2f})")
         boxes = size_filtered
 
     if len(boxes) >= 2:
-        # --- Rule 2: Alignment Rule (ต้องตรงแนวแกน X ซ้ายหรือขวา) ---
+        # --- Rule 2: Alignment Rule ---
         median_left = np.median([b["x"] for b in boxes])
         median_right = np.median([b["x"] + b["w"] for b in boxes])
         alignment_tolerance = 12
 
+        print(f"\n--- DEBUG: [Rule 2] เทียบแนวตั้ง (Median Left:{median_left:.1f}, Right:{median_right:.1f}) ---")
         aligned_boxes = []
         for b in boxes:
             is_left_aligned = abs(b["x"] - median_left) <= alignment_tolerance
             is_right_aligned = abs((b["x"] + b["w"]) - median_right) <= alignment_tolerance
             if is_left_aligned or is_right_aligned:
                 aligned_boxes.append(b)
+            else:
+                print(f"  [ตกขอบ Rule 2] กล่องที่ y={b['y']} เบี้ยว! (x={b['x']}, right={b['x']+b['w']})")
         boxes = aligned_boxes
 
     if len(boxes) >= 2:
-        # --- Rule 3: Vertical Gap & Cluster Rule (ต้องเกาะกลุ่มกันในแนวตั้ง) ---
-        # เรียงกล่องจากบนลงล่าง
+        # --- Rule 3: Vertical Gap & Cluster Rule ---
         boxes = sorted(boxes, key=lambda b: b["y"])
         median_h = np.median([b["h"] for b in boxes])
-        
-        # ระยะห่างสูงสุดที่ยอมรับได้ระหว่างไอคอน (เผื่อกรณีระบบมองข้ามไป 1 ช่อง เลยตั้งไว้ที่ 2.5 เท่าของความสูง)
         max_gap = median_h * 2.5 
         
+        print(f"\n--- DEBUG: [Rule 3] แบ่งกลุ่ม (Max Gap:{max_gap:.1f}) ---")
         clusters = []
         current_cluster = [boxes[0]]
         
@@ -303,15 +330,14 @@ def _detect_icon_boxes(
                 current_cluster.append(boxes[i])
             else:
                 clusters.append(current_cluster)
+                print(f"  [โดนหั่นกลุ่ม] ช่องว่างระหว่าง y={boxes[i-1]['y']} กับ y={boxes[i]['y']} คือ {dist}")
                 current_cluster = [boxes[i]]
         clusters.append(current_cluster)
         
-        # เลือกกลุ่ม (Cluster) ที่มีไอคอนเกาะกลุ่มกันเยอะที่สุด
-        # วิธีนี้จะสลัดกล่องผีที่อยู่โดดเดี่ยวหรือหลงมา 1-2 อันด้านล่างทิ้งไปทันที
-        boxes = max(clusters, key=len)
+        best_cluster = max(clusters, key=len)
+        print(f"  [สรุป] มีทั้งหมด {len(clusters)} กลุ่ม เลือกกลุ่มที่มีขนาด {len(best_cluster)} กล่อง")
+        boxes = best_cluster
 
-    # ==========================================
-    # ตัดภาพ (Crop) เฉพาะกล่องที่รอดชีวิตจากทั้ง 3 กฎ
     # ==========================================
     final_result = []
     for b in boxes:
@@ -322,14 +348,12 @@ def _detect_icon_boxes(
     return sorted(final_result, key=lambda i: i[0])
 
 
-def remove_overlapping_boxes(candidates, overlap_threshold=0.45):
+def remove_overlapping_boxes(candidates, expected_area, overlap_threshold=0.45):
     selected = []
-
-    for candidate in sorted(candidates, key=lambda item: item[4], reverse=True):
+    for candidate in sorted(candidates, key=lambda item: abs(item[4] - expected_area)):
         if any(overlap_ratio(candidate, existing) > overlap_threshold for existing in selected):
             continue
         selected.append(candidate)
-
     return selected
 
 
